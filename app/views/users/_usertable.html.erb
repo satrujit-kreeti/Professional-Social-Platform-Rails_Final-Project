@@ -1,0 +1,61 @@
+<table class="table table-hover table-bordered align-middle rounded">
+  <thead class="table-dark">
+    <tr>
+      <th class="text-center">Name</th>
+      <th class="text-center">Email</th>
+      <th class="text-center">Qualification</th>
+      <th class="text-center">Experience</th>
+      <th class="text-center">Current Organization</th>
+      <th class="text-center">Skills</th>
+      <th class="text-center">LinkedIn</th>
+
+
+
+
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr>
+        <td class="text-center d-flex align-items-center">
+          <div class=" overflow-hidden d-flex justify-content-center align-items-center me-3">
+            <% if u.profile_photo.attached? %>
+              <%= link_to user_profile_path(u) do %>
+                <%= image_tag u.profile_photo, class: 'rounded-circle avatar-image' %>
+                  <% end %>
+                    <% else %>
+                      <div class="default-profile-picture">
+                        <i class="fas fa-user fa-lg"></i>
+                      </div>
+                      <% end %>
+          </div>
+          <strong>
+            <%= link_to u.username, user_profile_path(u), class: "name-link" %>
+          </strong>
+        </td>
+        <td class="text-center">
+          <%= u.email %>
+        </td>
+        <td class="text-center">
+          <%= u.qualification %>
+        </td>
+        <td class="text-center">
+          <%= u.experience %>
+        </td>
+        <td class="text-center">
+          <%= u.current_organization %>
+        </td>
+        <td class="text-center">
+          <%= u.skills %>
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-primary">
+            <a href="<%= u.linkedin_profile %>">Link</a>
+
+          </button>
+
+        </td>
+      </tr>
+      <% end %>
+  </tbody>
+</table>

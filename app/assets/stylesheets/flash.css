@@ -1,0 +1,15 @@
+.alert {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.alert>.notice,
+.alert>.alert {
+
+  padding-top: 0.8rem !important;
+  padding-bottom: 0.8rem !important;
+  padding-inline: 0.8rem !important;
+
+}
