@@ -1,0 +1,11 @@
+<div class="certificate-fields">
+  <%= certificate_fields.label :name, 'Certificate Name' %>
+  <%= certificate_fields.text_field :name %>
+  <%= certificate_fields.label :document, 'Upload Certificate' %>
+  <%= certificate_fields.file_field :document, multiple: true %>
+  <% if certificate_fields.object.document.attached? %>
+    <p>Uploaded Certificate: <%= certificate_fields.object.document.filename %></p>
+  <% end %>
+  <%= certificate_fields.check_box :_destroy %>
+  <%= certificate_fields.label :_destroy, 'Remove' %>
+</div>

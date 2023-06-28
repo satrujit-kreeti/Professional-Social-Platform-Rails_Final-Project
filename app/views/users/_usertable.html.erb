@@ -8,10 +8,6 @@
       <th class="text-center">Current Organization</th>
       <th class="text-center">Skills</th>
       <th class="text-center">LinkedIn</th>
-
-
-
-
     </tr>
   </thead>
   <tbody>
@@ -19,15 +15,15 @@
       <tr>
         <td class="text-center d-flex align-items-center">
           <div class=" overflow-hidden d-flex justify-content-center align-items-center me-3">
-            <% if u.profile_photo.attached? %>
-              <%= link_to user_profile_path(u) do %>
-                <%= image_tag u.profile_photo, class: 'rounded-circle avatar-image' %>
-                  <% end %>
-                    <% else %>
-                      <div class="default-profile-picture">
-                        <i class="fas fa-user fa-lg"></i>
-                      </div>
-                      <% end %>
+            <%= link_to user_profile_path(u) do %>
+              <% if u.profile_photo.attached? %>
+                <%= image_tag u.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+              <% else %>
+                <div class="default-profile-picture">
+                  <i class="fas fa-user fa-lg"></i>
+                </div>
+              <% end %>
+            <% end %>
           </div>
           <strong>
             <%= link_to u.username, user_profile_path(u), class: "name-link" %>
@@ -46,16 +42,24 @@
           <%= u.current_organization %>
         </td>
         <td class="text-center">
-          <%= u.skills %>
+          <div class="skill-chips">
+            <% u.skills.split(',').each do |skill| %>
+              <span class="skill-chip">
+                <%= skill.strip %>
+              </span>
+            <% end %>
+          </div>
         </td>
         <td class="text-center">
-          <button type="button" class="btn btn-primary">
-            <a href="<%= u.linkedin_profile %>">Link</a>
-
-          </button>
-
+          <% if u.linkedin_profile=="" %>
+            <button type="button" class="btn secondary-btn btn-secondary" disabled>Link</button>
+          <% else%>
+            <button type="button" class="btn secondary-btn btn-primary">
+              <a href="<%= u.linkedin_profile %>">Link</a>
+            </button>
+          <% end%>
         </td>
       </tr>
-      <% end %>
+    <% end %>
   </tbody>
 </table>

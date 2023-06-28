@@ -13,7 +13,21 @@
  *= require_tree .
  *= require_self
  */
+
+
 * {
   font-family: 'League Spartan', sans-serif;
 
+}
+
+.material-icons {
+  cursor: pointer; /* Set the cursor style to pointer */
+}
+
+.container-fluid{
+  background-color: white;
+}
+
+body{
+  background-color: #f9f9f9 !important;
 }

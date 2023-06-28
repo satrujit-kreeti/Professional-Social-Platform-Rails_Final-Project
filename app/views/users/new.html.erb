@@ -1,75 +1,106 @@
-<!-- new.html.erb -->
-
-<div class="contain d-flex justify-content-center align-items-center">
-  <div class="card p-4 card_css">
-    <h1 class="mb-3 mx-auto">Register</h1>
-
-    <%= form_with model: @user, url: users_path do |f| %>
-      <div class="mb-3">
-        <%= f.label :username, 'Name' , class: 'form-label' %>
+<div class="container">
+  <div class=" d-flex justify-content-center align-items-center mt-5">
+    <div class="card p-4 card_css">
+      <h1 class="mb-3 mx-auto">Register</h1>
+      <%= form_with model: @user, url: users_path, multipart: true do |f| %>
+        <div class="mb-3">
+          <%= f.label :username, 'Name' , class: 'form-label' %>
           <%= f.text_field :username, class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.label :email, 'Email' , class: 'form-label' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :email, 'Email' , class: 'form-label' %>
           <%= f.email_field :email, class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.label :password, 'Password' , class: 'form-label' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :password, 'Password' , class: 'form-label' %>
           <%= f.password_field :password, class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.label :profile_photo, 'Profile Image' , class: 'form-label' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :profile_photo, 'Upload Profile Image' , class: 'form-label' %>
           <%= f.file_field :profile_photo, accept: 'image/jpeg,image/png' , class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.label :linkedin_profile, 'LinkedIn Profile' , class: 'form-label' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :cv, 'Upload CV' , class: 'form-label' %>
+          <%= f.file_field :cv, accept: 'application/pdf' , class: 'form-control' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :cv_download_permission, 'Who can download your CV ?' , class: 'form-label d-block' %>
+          <div class="d-flex gap-4">
+            <div class="form-check w-100 ">
+              <%= f.radio_button :cv_download_permission, 'everyone' , class: 'form-check-input' %>
+              <%= f.label :cv_download_permission_everyone, 'Everyone' , class: 'form-check-label' %>
+            </div>
+            <div class="form-check w-100">
+              <%= f.radio_button :cv_download_permission, 'connections' , class: 'form-check-input' %>
+              <%= f.label :cv_download_permission_connections, 'Connections' , class: 'form-check-label' %>
+            </div>
+            <div class="form-check w-100">
+              <%= f.radio_button :cv_download_permission, 'onlyme' , class: 'form-check-input' %>
+              <%= f.label :cv_download_permission_onlyme, 'Only Me' , class: 'form-check-label' %>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <%= f.label :linkedin_profile, 'LinkedIn Profile' , class: 'form-label' %>
           <%= f.text_field :linkedin_profile, class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.label :qualification, 'Qualification' , class: 'form-label' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :qualification, 'Qualification' , class: 'form-label' %>
           <%= f.select :qualification,['B.Tech','B.A', 'B.Sc' ,'B.Com' ], {}, class: 'form-select' %>
-      </div>
-
-      <div class="mb-3">
-        <%= f.label :experience, 'Experience' , class: 'form-label d-block' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :experience, 'Experience' , class: 'form-label d-block' %>
           <div class="d-flex gap-4">
             <div class="form-check w-100 ">
               <%= f.radio_button :experience, 'experienced' , class: 'form-check-input' %>
-                <%= f.label :experience_experienced, 'Experienced' , class: 'form-check-label' %>
+              <%= f.label :experience_experienced, 'Experienced' , class: 'form-check-label' %>
             </div>
             <div class="form-check w-100">
               <%= f.radio_button :experience, 'fresher' , class: 'form-check-input' %>
-                <%= f.label :experience_fresher, 'Fresher' , class: 'form-check-label' %>
+              <%= f.label :experience_fresher, 'Fresher' , class: 'form-check-label' %>
             </div>
           </div>
-      </div>
-
-      <!-- <div class="mb-3">
-        <%= f.label :experience, 'Years Range' , class: 'form-label' %>
-          <%= f.select :experience, ['0-1 Years', '1-5 Years' , '5-10 Years' , 'More than 10 Years' ], {}, {
-            class: 'form-select' , disabled: @disabled_value } %>
-      </div> -->
-
-
-
-      <div class="mb-3">
-        <%= f.label :current_organization, 'Current Organization' , class: 'form-label' %>
+        </div>
+        <!-- <div class="mb-3">
+          <%= f.label :experience, 'Years Range' , class: 'form-label' %>
+            <%= f.select :experience, ['0-1 Years', '1-5 Years' , '5-10 Years' , 'More than 10 Years' ], {}, {
+              class: 'form-select' , disabled: @disabled_value } %>
+        </div> -->
+        <div class="mb-3">
+          <%= f.label :current_organization, 'Current Organization' , class: 'form-label' %>
           <%= f.text_field :current_organization, class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.label :skills, 'Skills' , class: 'form-label' %>
+        </div>
+        <div class="mb-3">
+          <%= f.label :skills, 'Skills' , class: 'form-label' %>
           <%= f.text_field :skills, class: 'form-control' %>
-      </div>
-      <div class="mb-3">
-        <%= f.check_box :relevant_skill_notification, class: 'form-check-input' %>
-          <%= f.label :relevant_skill_notification, 'Click here to receive relevant notification for job posting' ,
-            class: 'form-check-label' %>
-      </div>
-
-
-      <%= f.submit 'Register' , class: 'btn btn-primary btn-lg w-100 mb-3' %>
-        <%= link_to "Login" , login_path, class: "btn btn-outline-secondary btn-lg w-100" %>
-        
+        </div>
+        <!-- Certificates -->
+        <div class="mb-3">
+          <h3>Upload Certificates</h3>
+          <%= f.fields_for :certificates do |certificate_fields| %>
+            <div class="certificate-fields">
+              <%= certificate_fields.label :name, 'Certificate Name' %>
+              <%= certificate_fields.text_field :name %>
+              <%= certificate_fields.label :document, 'Upload Certificate' %>
+              <%= certificate_fields.file_field :document, multiple: true %>
+              <% if certificate_fields.object.document.attached? %>
+                <p>Uploaded Certificate: <%= certificate_fields.object.document.filename %></p>
+              <% end %>
+              <%= certificate_fields.check_box :_destroy %>
+              <%= certificate_fields.label :_destroy, 'Remove' %>
+            </div>
           <% end %>
+          <div class="actions">
+            <%= link_to_add_certificate 'Add Certificate', f, :certificates, class: 'btn btn-primary' %>
+          </div>
+        </div>
+        <div class="mb-3">
+          <%= f.check_box :relevant_skill_notification, class: 'form-check-input' %>
+          <%= f.label :relevant_skill_notification, 'Click here to receive relevant notification for job posting' , class: 'form-check-label' %>
+        </div>
+        <%= f.submit 'Register' , class: 'btn full-btn btn-primary btn-lg w-100 mb-3' %>
+        <%= link_to "Login" , login_path, class: "btn full-btn btn-outline-secondary btn-lg w-100" %>
+      <% end %>
+    </div>
   </div>
 </div>

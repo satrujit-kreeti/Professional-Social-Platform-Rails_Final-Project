@@ -1,0 +1,40 @@
+<%= render 'shared/navbar'%>
+<div class="container">
+  <div class="d-flex flex-column gap-1 profile1 pt-3">
+    <div class="list-container">
+      <% if @friends.any? %>
+        <% @friends.each do |f| %>
+          <div class="list-item">
+            <div class="details-container">
+              <% if f.profile_photo.attached? %>
+                <%= image_tag f.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+              <% else %>
+                <div class="default-profile-picture">
+                  <i class="fas fa-user fa-lg"></i>
+                </div>
+              <% end %>
+              <div class="secondary-details-container">
+                <%= link_to f.username, user_profile_path(f), class: 'title-text' %>
+                <span class="description-text">
+                  <%= f.current_organization %>
+                </span>
+              </div>
+            </div>
+            <div class="details-container">
+              <%= link_to 'View profile', user_profile_path(f), class: "btn secondary-btn btn-primary" %>
+              <%= link_to 'Message', user_profile_path(f), class: "btn secondary-btn btn-primary btn-success" %>
+              <%= link_to 'Disconnect', disconnect_user_path(f), method: :post, class: "btn secondary-btn btn-primary btn-danger" %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="list-container gap-0">
+          <div class="icon">
+            <i class="material-icons no-connection">diversity_2</i>
+          </div>
+          <p class="text-no-connection">You have not made any connections yet.</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

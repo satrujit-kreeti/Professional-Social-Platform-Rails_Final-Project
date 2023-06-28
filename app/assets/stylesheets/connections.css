@@ -1,0 +1,24 @@
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+
+    margin-top: 40vh;
+}
+  
+.icon {
+    font-size: 4rem;     
+}
+
+
+.no-connection{
+    font-size: 48px !important;
+    color: #b1b1b1;
+}
+
+.text-no-connection{
+    color: #787878;
+    
+}

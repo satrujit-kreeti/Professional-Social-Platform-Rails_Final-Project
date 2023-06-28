@@ -1,72 +1,126 @@
-<nav class="d-flex justify-content-between align-items-center">
-  <div class="d-flex align-items-center">
-    <%= link_to home_path do %>
-      <i class="fas fa-arrow-left fa-2x back-icon me-4"></i>
-      <% end %>
-        <h2>Profile</h2>
-  </div>
-
-  <%= render 'profilemenu-dropdown' %>
-
-</nav>
-
+<%= render 'shared/navbar'%>
 <div class="container">
   <div class="row gap-2 flex-column flex-md-row">
     <div class="col-12 col-md-4 profile1 ">
-      <div class="d-flex flex-column align-items-center gap-4">
-        <div class="profile-picture-container">
-          <% if current_user.profile_photo.attached? %>
-            <%= image_tag current_user.profile_photo, class: 'profile-picture' %>
-              <% else %>
-                <div class="default-profile-picture-lg profile-picture">
-                  <i class="fas fa-user fa-5x"></i>
-                </div>
-                <% end %>
-        </div>
+      <div class="d-flex flex-column align-items-center gap-3 p-3">
+        <% if current_user.profile_photo.attached? %>
+          <%= image_tag current_user.compressed_profile_photo_big, class: 'profile-picture' %>
+        <% else %>
+          <div class="default-profile-picture-lg profile-picture">
+            <i class="fas fa-user fa-5x"></i>
+          </div>
+        <% end %>
         <div class="profile-actions w-100">
-          <a href="<%= current_user.linkedin_profile %>" class="btn btn-primary w-100">LinkedIn Profile</a>
+          <% if current_user.linkedin_profile=="" %>
+            <button type="button" class="btn full-btn btn-secondary w-100" disabled>LinkedIn Profile</button>
+          <% else %>
+            <a href="<%= current_user.linkedin_profile %>" class="btn full-btn btn-primary w-100">LinkedIn Profile</a>
+          <% end %>
         </div>
-
         <div class="profile-2 w-100">
-          <%= link_to "Edit Profile" , edit_user_path(current_user), class: "btn btn-primary w-100 edit" %>
-            <%= link_to "Delete Account" , "users/#{current_user.id}/delete_account" , method: :delete,
-              class: " btn btn-primary w-100 delete" %>
-
+          <%= link_to "Edit Profile" , edit_user_path(current_user), class: "btn  full-btn btn-success w-100" %>
+          <%= link_to 'Delete Account' , delete_account_path(current_user), method: :delete, data: {
+                    turbo_confirm: "Are you sure?"
+                  }, class: 'btn full-btn btn-danger' %>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-8 profile-3">
-      <div class=" col profile-details">
-        <p><strong class="title">Name</strong>
-          <%= current_user.username %>
-        </p>
-        <p><strong class="title">Email</strong>
-          <%= current_user.email %>
-        </p>
-        <p><strong class="title">Qualification</strong>
-          <%= current_user.qualification %>
-        </p>
-        <p><strong class="title">Experience</strong>
-          <%= current_user.experience %>
-        </p>
-        <p><strong class="title">Current Organization</strong>
-          <% if current_user.current_organization=="" %>
-            <%= "Not working right now" %>
-              <%else%>
-                <%= current_user.current_organization %>
-                  <%end%>
-        </p>
-        <p><strong class="title">Skills</strong>
-          <%= current_user.skills %>
-        </p>
-
-
+    <div class="col-12 col-md-8">
+      <div class="profile-3">
+        <div class=" col profile-details">
+          <p><strong class="title">Name</strong>
+            <%= current_user.username %>
+          </p>
+          <p><strong class="title">Email</strong>
+            <%= current_user.email %>
+          </p>
+          <p><strong class="title">Qualification</strong>
+            <%= current_user.qualification %>
+          </p>
+          <p><strong class="title">Experience</strong>
+            <%= current_user.experience %>
+          </p>
+          <p class="mb-0"><strong class="title">Current Organization</strong>
+            <% if current_user.current_organization=="" %>
+              <%= "Not working right now" %>
+            <%else%>
+              <%= current_user.current_organization %>
+            <%end%>
+          </p>
+        </div>
       </div>
-
-
-
-
-
+      <div class="profile-3 pb-4">
+        <div class=" col profile-details">
+          <p class="title-skill">
+            <strong class="title">Skills</strong>
+            <div class="skill-chips">
+              <% if current_user.current_organization=="" %>
+                <span class="skill-chip">
+                  <%= "No skills" %>
+                </span>
+              <%else%>
+                <% current_user.skills.split(',').each do |skill| %>
+                  <span class="skill-chip">
+                    <%= skill.strip %>
+                  </span>
+                <% end %>
+              <% end %>
+            </div>
+          </p>
+        </div>
+      </div>
+      <div class="profile-3 pb-4">
+        <div class=" col profile-details">
+          <p class="mb-0"><strong class="title">Notification Preference</strong>
+            <div class="profile-4 pt-1">
+              Relevant skill notification
+              <% if current_user.relevant_skill_notification==true %>
+                <span class="chip-true"> Enabled</span>
+              <% else %>
+                <span class="chip-false"> Disabled</span>
+              <% end %>
+            </div>
+          </p>
+        </div>
+      </div>
+      <% if current_user.cv.attached? %>
+        <div class="profile-3 pb-4">
+          <div class=" col profile-details">
+            <p class="mb-0"><strong class="title">CV</strong>
+              <div class="profile-4 pt-1">
+                Who can download your CV?
+                <% if current_user.cv_download_permission=="everyone" %>
+                  <span class="chip-everyone"> Everyone</span>
+                <% elsif current_user.cv_download_permission=="connections" %>
+                  <span class="chip-connections"> Connections</span>
+                <% else %>
+                  <span class="chip-noone"> Only Me </span>
+                <% end %>
+              </div>
+              <% if current_user.cv.attached? %>
+                <%= link_to 'Download CV' , rails_blob_url(current_user.cv), class: 'btn full-btn btn-outline-primary mt-4' ,
+                target: '_blank' %>
+              <% else %>
+                <%= "Please upload your CV" %>
+              <% end %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+      <% if current_user.certificates.any? %>
+        <h2>Certificates</h2>
+        <div class="row">
+          <% current_user.certificates.each do |certificate| %>
+            <div class="col-md-4">
+              <div class="thumbnail">
+                <%= image_tag certificate.variant(resize: '200x200' ), class: 'img-thumbnail' if certificate.image? %>
+                <%= link_to certificate.filename, rails_blob_path(certificate, disposition: 'attachment' ) %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
+</div>
 </div>
