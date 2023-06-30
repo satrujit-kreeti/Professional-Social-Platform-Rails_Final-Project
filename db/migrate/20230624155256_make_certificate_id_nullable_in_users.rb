@@ -1,5 +1,5 @@
 class MakeCertificateIdNullableInUsers < ActiveRecord::Migration[6.1]
   def change
-    change_column :users, :certificate_id, :bigint, null: true
+    change_column_null :users, :certificate_id, true
   end
 end

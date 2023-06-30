@@ -33,6 +33,7 @@ default: &default
     - .woff2
 
   extensions:
+    - .erb
     - .mjs
     - .js
     - .sass
@@ -70,6 +71,12 @@ development:
       "Access-Control-Allow-Origin": "*"
     watch_options:
       ignored: "**/node_modules/**"
+
+  loaders:
+    babel:
+      test: /\.(js|jsx)$/
+      use: ["babel-loader@8.3.0"]
+      exclude: /node_modules/
 
 test:
   <<: *default
