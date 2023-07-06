@@ -1,0 +1,59 @@
+<%= render 'shared/navbar' %>
+<div class="container">
+  <div class="post-details posts profile1">
+    <div class="details-container">
+      <% if @post.user.profile_photo.attached? %>
+        <%= image_tag @post.user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+      <% else %>
+        <div class="default-profile-picture">
+          <i class="fas fa-user fa-lg"></i>
+        </div>
+      <% end %>
+      <div class="secondary-details-container">
+        <% if current_user.id == @post.user.id %>
+          <%= link_to @post.user.username, profile_path, class: 'title-text' , method: :get%>
+        <% else %>
+          <%= link_to @post.user.username, user_profile_path(@post.user), class: 'title-text' , method: :get %>
+        <% end %>
+        <span class="description-text">
+          <%= @post.user.current_organization %>
+        </span>
+      </div>
+    </div>
+    <div class="post-content mt-3 mb-3">
+      <p><%= @post.content %></p>
+    </div>
+    <div class="post-buttons">
+      <div class="post-button">
+        <span class="material-symbols-outlined">
+          report
+        </span>
+        <span class= "post-button-title">Report</span>
+      </div>
+      <%= link_to new_post_comment_path(@post) , method: :get do %>
+        <div class="post-button">
+          <span  class= "material-symbols-outlined">chat_bubble</span>
+          <span class="post-button-title">Comment</span>
+        </div>
+      <% end %>
+      <div class="post-button">
+        <% if current_user && @post.liking_users.include?(current_user) %>
+          <span class="material-symbols-rounded <%= @post.liked_by?(current_user) ? 'liked' : '' %>" id="icon">
+            thumb_up
+          </span>
+          <%= link_to "Liked", post_likes_path(@post), method: :post, remote: true, id: "like-button", class: "post-button-title-on" , data: "#{@post.id}" %>
+        <% else %>
+          <span class="material-symbols-outlined <%= @post.liked_by?(current_user) ? '' : 'liked' %>" id="icon">
+            thumb_up
+          </span>
+          <%= link_to "Like", post_likes_path(@post), method: :post, remote: true, id: "like-button", class: "post-button-title", data: "#{@post.id}" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class= "profile1 posts mt-2 gap-4">
+    <span class="title-header">Comments</span>
+    <%= render partial: 'comments/comments_list', locals: { comment: @post.comments } %>
+    <%= link_to "Add Comment", new_post_comment_path(@post), class: "btn full-btn btn-outline-primary w-100 mt-4" , method: :get %>
+  </div>
+</div>

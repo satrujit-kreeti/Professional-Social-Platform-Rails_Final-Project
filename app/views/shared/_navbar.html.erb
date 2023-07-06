@@ -4,11 +4,11 @@
       <%= image_tag 'Logo.png', class: 'rounded-circle avatar-image', alt: 'Logo' %>
     <% end %>
     <div class="nav-menu">
-      <%= link_to "Dashboard", home_path, class: current_page?(home_path) ? "current" : "others" %>
-      <%= link_to "Connections", user_connections_path(current_user), class: current_page?(user_connections_path(current_user)) ? "current" : "others" %>
-      <%= link_to "Add Network", pending_requests_path, class: current_page?(pending_requests_path) ? "current" : "others" %>
-      <%= link_to "Jobs", root_path, class: current_page?(root_path) ? "current" : "others" %>
-      <%= link_to "Messages", root_path, class: current_page?(root_path) ? "current" : "others" %>
+      <%= link_to "Dashboard", home_path, class: current_page?(home_path) ? "current" : "others", method: :get %>
+      <%= link_to "Connections", user_connections_path(current_user), class: current_page?(user_connections_path(current_user)) ? "current" : "others" , method: :get%>
+      <%= link_to "Add Network", pending_requests_path, class: current_page?(pending_requests_path) ? "current" : "others" , method: :get%>
+      <%= link_to "Jobs", root_path, class: current_page?(root_path) ? "current" : "others" ,method: :get %>
+      <%= link_to "Messages", root_path, class: current_page?(root_path) ? "current" : "others" , method: :get%>
     </div>
     <%= render 'shared/profilemenu-dropdown' %>
   </div>

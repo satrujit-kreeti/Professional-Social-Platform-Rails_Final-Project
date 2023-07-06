@@ -76,30 +76,11 @@
         </div>
         <!-- Certificates -->
         <div class="mb-3">
-          <h3>Upload Certificates</h3>
-          <%= f.fields_for :certificates do |certificate_fields| %>
-            <div class="certificate-fields">
-              <%= certificate_fields.label :name, 'Certificate Name' %>
-              <%= certificate_fields.text_field :name %>
-              <%= certificate_fields.label :document, 'Upload Certificate' %>
-              <%= certificate_fields.file_field :document, multiple: true %>
-              <% if certificate_fields.object.document.attached? %>
-                <p>Uploaded Certificate: <%= certificate_fields.object.document.filename %></p>
-              <% end %>
-              <%= certificate_fields.check_box :_destroy %>
-              <%= certificate_fields.label :_destroy, 'Remove' %>
-            </div>
-          <% end %>
-          <div class="actions">
-            <%= link_to_add_certificate 'Add Certificate', f, :certificates, class: 'btn btn-primary' %>
-          </div>
-        </div>
-        <div class="mb-3">
           <%= f.check_box :relevant_skill_notification, class: 'form-check-input' %>
           <%= f.label :relevant_skill_notification, 'Click here to receive relevant notification for job posting' , class: 'form-check-label' %>
         </div>
         <%= f.submit 'Register' , class: 'btn full-btn btn-primary btn-lg w-100 mb-3' %>
-        <%= link_to "Login" , login_path, class: "btn full-btn btn-outline-secondary btn-lg w-100" %>
+        <%= link_to "Login" , login_path, class: "btn full-btn btn-outline-secondary btn-lg w-100" , method: :get%>
       <% end %>
     </div>
   </div>

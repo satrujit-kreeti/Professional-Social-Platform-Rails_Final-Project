@@ -46,3 +46,7 @@
   right: 0;
 
 }
+
+.dropdown-toggler{
+  cursor: pointer;
+}

@@ -15,7 +15,7 @@
       <tr>
         <td class="text-center d-flex align-items-center">
           <div class=" overflow-hidden d-flex justify-content-center align-items-center me-3">
-            <%= link_to user_profile_path(u) do %>
+            <%= link_to user_profile_path(u) , method: :getdo %>
               <% if u.profile_photo.attached? %>
                 <%= image_tag u.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
               <% else %>
@@ -26,7 +26,7 @@
             <% end %>
           </div>
           <strong>
-            <%= link_to u.username, user_profile_path(u), class: "name-link" %>
+            <%= link_to u.username, user_profile_path(u), class: "name-link" , method: :get%>
           </strong>
         </td>
         <td class="text-center">

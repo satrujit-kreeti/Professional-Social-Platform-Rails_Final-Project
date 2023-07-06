@@ -1,0 +1,13 @@
+<% if comment.present? %>
+  <% last_comment = comment.last %>
+  <div class="d-flex flex-row gap-2 align-items-center w-50">
+    <% if last_comment.user.profile_photo.attached? %>
+      <%= image_tag last_comment.user.compressed_profile_photo, class: 'rounded-circle avatar-image comment-avatar' %>
+    <% else %>
+      <div class="default-profile-picture">
+        <i class="fas fa-user fa-lg"></i>
+      </div>
+    <% end %>
+    <span class="comment-content truncate"><%= last_comment.content %></span>
+  </div>
+<% end %>

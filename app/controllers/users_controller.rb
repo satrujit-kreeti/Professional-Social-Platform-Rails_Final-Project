@@ -44,6 +44,7 @@ class UsersController < ApplicationController
   end
 
   def home
+    @posts = Post.all
 
     @users = User.all
     if current_user.nil?
@@ -120,7 +121,6 @@ class UsersController < ApplicationController
     @pending_requests = Friendship.where(friend_id: @user.id, connected: false)
   end
   
-    
 
 
   private
@@ -139,4 +139,6 @@ class UsersController < ApplicationController
       redirect_to root_path, notice: 'Please login to access this page'
     end
   end
+
+
 end

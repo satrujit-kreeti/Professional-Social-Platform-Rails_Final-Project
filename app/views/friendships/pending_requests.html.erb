@@ -1,7 +1,14 @@
 <%=  render 'shared/navbar'%>
 <div class= "container">
   <div class= "d-flex flex-column gap-1 profile1">
-    <h2 class="title-header"> Connection Request </h2>
+    <div class="connection-request-header">
+      <span class="title-header">Connection Request</span>
+      <% if @pending_requests.any? %>
+        <span class="pending-requests-count">
+          <span class="count-text"><%= @pending_requests.count %></span>
+        </span>
+      <% end %>
+    </div>
     <hr class= "line-break">
     <div class= "list-container">
       <% if @pending_requests.any? %>
@@ -17,7 +24,7 @@
                 </div>
               <% end %>
               <div class="secondary-details-container">
-                <%= link_to requested_user.username, user_path(requested_user), class:'title-text' %>
+                <%= link_to requested_user.username, user_path(requested_user), class:'title-text' , method: :get%>
                 <span class="description-text">
                   <%= requested_user.current_organization %>
                 </span>
@@ -36,6 +43,38 @@
           </div>
           <p class="text-no-connection">You did not made any connection till now.</p>
         </div>
+      <% end %>
+    </div>
+  </div>
+  <div class= "d-flex flex-column gap-1 profile1 mt-4">
+    <div class="connection-request-header">
+      <span class="title-header">Our Suggestions</span>
+    </div>
+    <hr class= "line-break">
+    <div class= "list-container">
+      <% @users.reverse.each do |u| %>
+        <% unless @user.friends.include?(u) || u.id == current_user.id  %>
+          <div class= "list-item">
+            <div class="details-container">
+              <% if u.profile_photo.attached? %>
+                <%= image_tag u.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+              <% else %>
+                <div class="default-profile-picture">
+                  <i class="fas fa-user fa-lg"></i>
+                </div>
+              <% end %>
+              <div class="secondary-details-container">
+                <%= link_to u.username, user_profile_path(u), class:'title-text' , method: :get%>
+                <span class="description-text">
+                  <%= u.current_organization %>
+                </span>
+              </div>
+            </div>
+            <div class="details-container">
+              <%= button_to "Connect", connect_user_path(u), method: :post, class: "btn secondary-btn btn-primary btn-success" %>
+            </div>
+          </div>
+        <%end%>
       <% end %>
     </div>
   </div>

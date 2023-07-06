@@ -79,7 +79,7 @@
       <%if @user.cv_download_permission=="everyone" && @user.cv.attached?%>
         <div class="profile-3 pb-4">
           <p class="mb-0 w-100"><strong class="title">CV</strong>
-            <%= link_to 'Download CV' , rails_blob_url(@user.cv), class: 'btn full-btn btn-outline-primary mt-4 w-100' ,
+            <%= link_to 'Download CV' , rails_blob_url(@user.cv), class: 'btn full-btn btn-outline-primary mt-4 w-100' , method: :get,
               target: '_blank' %>
           </p>
         </div>
@@ -88,7 +88,7 @@
           <% if @user.cv_download_permission=="connections" && @user.cv.attached?%>
             <div class="profile-3 pb-4">
               <p class="mb-0 w-100"><strong class="title">CV</strong>
-                <%= link_to 'Download CV' , rails_blob_url(@user.cv), class: 'btn full-btn btn-outline-primary mt-4 w-100' ,
+                <%= link_to 'Download CV' , rails_blob_url(@user.cv), class: 'btn full-btn btn-outline-primary mt-4 w-100' , method: :get,
               target: '_blank' %>
               </p>
             </div>

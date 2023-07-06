@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get '/login', to:'sessions#new'
   post '/login', to:'sessions#create'
-  get '/logout', to:'sessions#destroy'
+  delete '/logout', to:'sessions#destroy'
   get '/home', to: 'users#home'
 
   get '/users/details/:id', to:'users#edit', as: 'edit_user'
@@ -27,15 +27,22 @@ Rails.application.routes.draw do
     member do
       get 'connect', to: 'users#connect'
       post 'connect', to: 'users#connect'
-
-      # delete 'disconnect', to: 'users#disconnect'
-      # delete 'disconnect', to: 'users#disconnect', as: 'disconnect'
-      match 'disconnect', to: 'users#disconnect', via: [:delete, :get]
+      match 'disconnect', to: 'users#disconnect', via: [:delete, :get, :post]
     end
     get 'connections', on: :member
   end
   
+  resources :users do
+    resources :posts, only: [:new, :create]
+  end
 
+  resources :posts, only: [:show] do
+    resources :comments, only: [:new, :create]
+  end
+
+  resources :posts do
+    resources :likes, only: :create
+  end
 
   get '/users/:id/connections', to: 'users#connections', as: 'user_connections'
 

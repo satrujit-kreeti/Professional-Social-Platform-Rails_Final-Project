@@ -1,6 +1,13 @@
-<%= render 'shared/navbar'%>
+<%= render 'shared/navbar' %>
 <div class="container">
-  <div class="overflow-hidden rounded">
-    <%= render 'usertable' %>
+  <div class="d-flex flex-row gap-3">
+    <%= link_to "Create Post", "/users/#{current_user.id}/posts/new", class: "btn full-btn btn-primary w-100 mb-5" %>
+    <%= link_to "Create Job", "/users/#{current_user.id}/posts/new", class: "btn full-btn btn-success w-100 mb-5" %>
   </div>
+  <% Post.order(created_at: :desc).each do |p| %>
+    <% friendship = Friendship.find_by(user_id: current_user.id, friend_id: p.user_id, connected: true) %>
+    <% if friendship || p.user == current_user %>
+      <%= render partial: "posts/post", locals: { p: p } %>
+    <% end %>
+  <% end %>
 </div>

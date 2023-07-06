@@ -1,6 +1,7 @@
 class FriendshipsController < ApplicationController
 
     def pending_requests
+      @users = User.all
       @user = current_user
       @pending_requests = Friendship.where(friend_id: @user.id, connected: false)
     end

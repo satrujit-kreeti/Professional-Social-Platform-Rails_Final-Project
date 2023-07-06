@@ -14,6 +14,12 @@ class User < ApplicationRecord
   validates :username, presence:true
   validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
 
+  has_many :posts
+  has_many :comments
+
+  has_many :likes
+  has_many :liking_posts, through: :likes, source: :post
+
 
   def password_required?
     return false if password.present?

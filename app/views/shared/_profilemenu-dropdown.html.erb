@@ -1,36 +1,37 @@
-<div class=" d-flex" data-bs-toggle="dropdown" aria-expanded="false">
-  <div class="overflow-hidden d-flex justify-content-center align-items-center gap-1">
-    <% if current_user.profile_photo.attached? %>
-      <%= image_tag current_user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
-    <% else %>
-      <div class="default-profile-picture">
-        <i class="fas fa-user fa-lg"></i>
-      </div>
-    <% end %>
-    <i class="material-icons">expand_more</i>
+<div class="position-relative">
+  <div data-bs-toggle="dropdown" aria-expanded="false" class=" d-flex dropdown-toggler">
+    <div class="overflow-hidden d-flex justify-content-center align-items-center gap-1">
+      <% if current_user.profile_photo.attached? %>
+        <%= image_tag current_user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+      <% else %>
+        <div class="default-profile-picture">
+          <i class="fas fa-user fa-lg"></i>
+        </div>
+      <% end %>
+      <%= image_tag 'keyboard_arrow_down.svg', alt: 'Icon', class: 'icon' %>
+    </div>
   </div>
+  <ul class="dropdown-menu dropdown-menu-end ">
+    <li class="dropdown-header">
+      <span>
+        <%=current_user.username%>
+      </span>
+      <%=current_user.email%>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li class="dropdown-item">
+      <%= link_to "Profile" , profile_path , method: :get%>
+    </li>
+    <li class="dropdown-item mt-1">
+      <%= link_to "Change password" , profile_path , method: :get%>
+    </li>
+    <li>
+      <hr class="dropdown-divider">
+    </li>
+    <li class="dropdown-item">
+      <%= link_to "Logout" , logout_path, method: :delete %>
+    </li>
+  </ul>
 </div>
-<ul class="dropdown-menu dropdown-menu-end ">
-  <li class="dropdown-header">
-    <span>
-      <%=current_user.username%>
-    </span>
-    <%=current_user.email%>
-  </li>
-  <li>
-    <hr class="dropdown-divider">
-  </li>
-  <li class="dropdown-item">
-    <%= link_to "Profile" , profile_path %>
-  </li>
-  <li class="dropdown-item mt-1">
-    <%= link_to "Change password" , profile_path %>
-  </li>
-  <li>
-    <hr class="dropdown-divider">
-  </li>
-  <li class="dropdown-item">
-    <%= link_to "Logout" , logout_path, method: :delete %>
-  </li>
-</ul>
-<%# "@babel/plugin-proposal-private-property-in-object": "7.21.11", %>

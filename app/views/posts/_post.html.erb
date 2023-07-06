@@ -1,0 +1,56 @@
+<div class="posts mb-3 profile1" id="post-container-<%= p.id %>">
+  <div class="details-container">
+    <% if p.user.profile_photo.attached? %>
+      <%= image_tag p.user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+    <% else %>
+      <div class="default-profile-picture">
+        <i class="fas fa-user fa-lg"></i>
+      </div>
+    <% end %>
+    <div class="secondary-details-container">
+      <% if current_user.id == p.user.id %>
+        <%= link_to p.user.username, profile_path, class: 'title-text' , method: :get%>
+      <% else %>
+        <%= link_to p.user.username, user_profile_path(p.user), class: 'title-text' , method: :get %>
+      <% end %>
+      <span class="description-text">
+        <%= p.user.current_organization %>
+      </span>
+    </div>
+  </div>
+  <article class="content">
+    <%= link_to post_path(p), class: 'post-link w-100' , method: :get do %>
+      <p class="post-content pt-3"><%= p.content %></p>
+    <% end %>
+    <div class="post-buttons comments">
+      <div class="post-buttons">
+        <div class="post-button">
+          <span class="material-symbols-outlined">
+            report
+          </span>
+          <span class= "post-button-title">Report</span>
+        </div>
+        <%= link_to new_post_comment_path(p) , method: :get do %>
+          <div class="post-button">
+            <span  class= "material-symbols-outlined">chat_bubble</span>
+            <span class="post-button-title">Comment</span>
+          </div>
+        <% end %>
+        <div class="post-button">
+          <% if current_user && p.liking_users.include?(current_user) %>
+            <span class="material-symbols-rounded <%= p.liked_by?(current_user) ? 'liked' : '' %> icon" >
+              thumb_up
+            </span>
+            <%= link_to "Liked", post_likes_path(p), method: :post, remote: true, class: "post-button-title-on like-button" %>
+          <% else %>
+            <span class="material-symbols-outlined <%= p.liked_by?(current_user) ? '' : 'liked' %> icon" >
+              thumb_up
+            </span>
+            <%= link_to "Like", post_likes_path(p), method: :post, remote: true,  class: "post-button-title like-button" %>
+          <% end %>
+        </div>
+      </div>
+      <%= render partial: "comments/comment", locals: { comment: p.comments }, class: "w-50"%>
+    </div>
+  </article>
+</div>

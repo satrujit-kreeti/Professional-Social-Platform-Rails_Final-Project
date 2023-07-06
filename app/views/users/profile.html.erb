@@ -14,7 +14,7 @@
           <% if current_user.linkedin_profile=="" %>
             <button type="button" class="btn full-btn btn-secondary w-100" disabled>LinkedIn Profile</button>
           <% else %>
-            <a href="<%= current_user.linkedin_profile %>" class="btn full-btn btn-primary w-100">LinkedIn Profile</a>
+            <a href="<%= current_user.linkedin_profile %>" class="btn full-btn btn-primary w-100" target= '_blank' >LinkedIn Profile</a>
           <% end %>
         </div>
         <div class="profile-2 w-100">
@@ -98,7 +98,7 @@
                 <% end %>
               </div>
               <% if current_user.cv.attached? %>
-                <%= link_to 'Download CV' , rails_blob_url(current_user.cv), class: 'btn full-btn btn-outline-primary mt-4' ,
+                <%= link_to 'Download CV' , rails_blob_url(current_user.cv), class: 'btn full-btn btn-outline-primary mt-4' , method: :get,
                 target: '_blank' %>
               <% else %>
                 <%= "Please upload your CV" %>

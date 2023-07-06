@@ -14,15 +14,15 @@
                 </div>
               <% end %>
               <div class="secondary-details-container">
-                <%= link_to f.username, user_profile_path(f), class: 'title-text' %>
+                <%= link_to f.username, user_profile_path(f), class: 'title-text' , method: :get%>
                 <span class="description-text">
                   <%= f.current_organization %>
                 </span>
               </div>
             </div>
             <div class="details-container">
-              <%= link_to 'View profile', user_profile_path(f), class: "btn secondary-btn btn-primary" %>
-              <%= link_to 'Message', user_profile_path(f), class: "btn secondary-btn btn-primary btn-success" %>
+              <%= link_to 'View profile', user_profile_path(f), class: "btn secondary-btn btn-primary" , method: :get%>
+              <%= link_to 'Message', user_profile_path(f), class: "btn secondary-btn btn-primary btn-success" , method: :get%>
               <%= link_to 'Disconnect', disconnect_user_path(f), method: :post, class: "btn secondary-btn btn-primary btn-danger" %>
             </div>
           </div>
