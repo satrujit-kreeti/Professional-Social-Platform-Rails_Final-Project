@@ -62,3 +62,4 @@ gem 'omniauth-linkedin-oauth2'
 
 
 gem 'htmlbeautifier'
+

@@ -1,4 +1,4 @@
-<div class="posts mb-3 profile1" id="post-container-<%= p.id %>">
+<div class="posts mb-2 profile1" id="post-container-<%= p.id %>">
   <div class="details-container">
     <% if p.user.profile_photo.attached? %>
       <%= image_tag p.user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
@@ -22,7 +22,8 @@
     <%= link_to post_path(p), class: 'post-link w-100' , method: :get do %>
       <p class="post-content pt-3"><%= p.content %></p>
     <% end %>
-    <div class="post-buttons comments">
+    <div class="line"></div>
+    <div class="post-buttons comments align-items-center">
       <div class="post-buttons">
         <div class="post-button">
           <span class="material-symbols-outlined">
