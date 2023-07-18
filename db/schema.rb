@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_05_030458) do
+ActiveRecord::Schema.define(version: 2023_07_18_054900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,20 @@ ActiveRecord::Schema.define(version: 2023_07_05_030458) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "create_job_roles", force: :cascade do |t|
+    t.string "name"
+    t.bigint "job_sector_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["job_sector_id"], name: "index_create_job_roles_on_job_sector_id"
+  end
+
+  create_table "create_job_sectors", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "friendships", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "friend_id", null: false
@@ -75,6 +89,46 @@ ActiveRecord::Schema.define(version: 2023_07_05_030458) do
     t.index ["user_id"], name: "index_friendships_on_user_id"
   end
 
+  create_table "job_comments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "job_requirement_id", null: false
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["job_requirement_id"], name: "index_job_comments_on_job_requirement_id"
+    t.index ["user_id"], name: "index_job_comments_on_user_id"
+  end
+
+  create_table "job_requirements", force: :cascade do |t|
+    t.string "job_title"
+    t.text "job_description"
+    t.integer "vacancies"
+    t.string "skills_required"
+    t.bigint "job_sector_id", null: false
+    t.bigint "job_role_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "pending"
+    t.bigint "user_id", null: false
+    t.index ["job_role_id"], name: "index_job_requirements_on_job_role_id"
+    t.index ["job_sector_id"], name: "index_job_requirements_on_job_sector_id"
+    t.index ["user_id"], name: "index_job_requirements_on_user_id"
+  end
+
+  create_table "job_roles", force: :cascade do |t|
+    t.string "name"
+    t.bigint "job_sector_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["job_sector_id"], name: "index_job_roles_on_job_sector_id"
+  end
+
+  create_table "job_sectors", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "post_id", null: false
@@ -82,6 +136,14 @@ ActiveRecord::Schema.define(version: 2023_07_05_030458) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "sender_id"
+    t.text "body"
+    t.integer "recipient_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "posts", force: :cascade do |t|
@@ -107,6 +169,7 @@ ActiveRecord::Schema.define(version: 2023_07_05_030458) do
     t.string "cv_download_permission", default: "connections", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "user"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -114,8 +177,15 @@ ActiveRecord::Schema.define(version: 2023_07_05_030458) do
   add_foreign_key "certificates", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "create_job_roles", "job_sectors"
   add_foreign_key "friendships", "users"
   add_foreign_key "friendships", "users", column: "friend_id"
+  add_foreign_key "job_comments", "job_requirements"
+  add_foreign_key "job_comments", "users"
+  add_foreign_key "job_requirements", "job_roles"
+  add_foreign_key "job_requirements", "job_sectors"
+  add_foreign_key "job_requirements", "users"
+  add_foreign_key "job_roles", "job_sectors"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"

@@ -73,7 +73,7 @@
 }
 
 .description-text{
-    color: #858591;
+    color: #858591 !important;
     font-size: 1rem;
     font-weight: 400;
 }

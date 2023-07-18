@@ -100,3 +100,77 @@ button>a {
   color: black;
 
 }
+
+.table-bg{
+  background-color: white;
+  border-radius: 12;
+  -webkit-border-radius: 12;
+  -moz-border-radius: 12;
+  -ms-border-radius: 12;
+  -o-border-radius: 12;
+}
+
+
+.search-field{
+  background-color: #F3F3F3 !important;
+  border: none !important;
+  padding-top: 0.3rem !important;
+  padding-bottom: 0.3rem !important;
+  border-radius: 2rem;
+  -webkit-border-radius: 2rem;
+  -moz-border-radius: 2rem;
+  -ms-border-radius: 2rem;
+  -o-border-radius: 2rem;
+}
+
+.Heading{
+  color: #858591;
+  margin-bottom: 1rem !important
+}
+
+
+.no-focus:focus {
+  outline: none !important; /* Remove the default focus outline */
+  box-shadow: none !important; /* Remove any focus box shadow */
+}
+
+.search{
+  color: #858591;
+}
+
+.search-field::placeholder{
+  color: #858591;
+
+}
+
+
+.notification{
+  margin-bottom: 0.5rem;
+  text-align: start;
+}
+
+.notification:hover{
+  background-color: #F3F3F3;
+  border-radius: 0.15rem;
+  -webkit-border-radius: 0.15rem;
+  -moz-border-radius: 0.15rem;
+  -ms-border-radius: 0.15rem;
+  -o-border-radius: 0.15rem;
+}
+
+.notification-container {
+  width: 15rem;
+  max-height: 20rem;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scrollbar-width: 0;
+}
+
+.notification-container::-webkit-scrollbar {
+  width: 0px;
+}
+
+
+.blue{
+  background-color: #0d6efd !important;
+}

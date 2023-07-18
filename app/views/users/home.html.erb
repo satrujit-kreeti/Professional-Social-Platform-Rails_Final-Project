@@ -1,12 +1,14 @@
 <%= render 'shared/navbar' %>
 <div class="container">
-  <div class="d-flex flex-row gap-3">
-    <%= link_to "Create Post", "/users/#{current_user.id}/posts/new", class: "btn full-btn btn-primary w-100 mb-4" %>
-    <%= link_to "Create Job", "/users/#{current_user.id}/posts/new", class: "btn full-btn btn-success w-100 mb-4" %>
-  </div>
+  <% if current_user&.admin? == false %>
+    <div class="d-flex flex-row gap-3">
+      <%= link_to "Create Post", "/users/#{current_user.id}/posts/new", class: "btn full-btn btn-primary w-100 mb-4" %>
+      <%= link_to "Create Job", new_job_requirement_path, class: "btn full-btn btn-success w-100 mb-4" %>
+    </div>
+  <%end%>
   <% Post.order(created_at: :desc).each do |p| %>
     <% friendship = Friendship.find_by(user_id: current_user.id, friend_id: p.user_id, connected: true) %>
-    <% if friendship || p.user == current_user %>
+    <% if current_user.admin? || friendship || p.user == current_user %>
       <%= render partial: "posts/post", locals: { p: p } %>
     <% end %>
   <% end %>

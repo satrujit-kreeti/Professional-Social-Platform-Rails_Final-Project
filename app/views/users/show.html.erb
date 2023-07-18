@@ -1,0 +1,47 @@
+<%= render 'shared/navbar'%>
+<div class="container">
+  <h2 class = "Heading"> Search Result</h2>
+  <div class="d-flex flex-column gap-1 profile1 pt-3">
+    <div class="list-container">
+      <% @users.each do |user| %>
+        <div class="list-item">
+          <div class="details-container">
+            <% if user.profile_photo.attached? %>
+              <%= image_tag user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+            <% else %>
+              <div class="default-profile-picture">
+                <i class="fas fa-user fa-lg"></i>
+              </div>
+            <% end %>
+            <div class="secondary-details-container">
+              <%= link_to user.username, user_profile_path(user), class: 'title-text' , method: :get%>
+              <span class="description-text">
+                <%= user.current_organization %>
+              </span>
+            </div>
+          </div>
+          <div class="details-container">
+            <% if current_user.admin? %>
+              <%= link_to 'View profile', user_profile_path(user), class: "btn secondary-btn btn-primary" , method: :get%>
+            <% else%>
+              <%= link_to 'View profile', user_profile_path(user), class: "btn secondary-btn btn-primary" , method: :get%>
+              <% unless current_user == user %>
+                <% if  current_user.friends.include?(user)%>
+                  <% friendship = current_user.friendships.find_by(friend_id: user.id) %>
+                  <% if friendship.connected? %>
+                    <%= link_to 'Message', user_profile_path(user), class: "btn secondary-btn btn-primary btn-success" , method: :get%>
+                    <%= link_to 'Disconnect', disconnect_user_path(user), method: :post, class: "btn secondary-btn btn-primary btn-danger" %>
+                  <% elsif friendship.requested_by_user_id == current_user.id %>
+                    <%= link_to 'Connection Pending', '#', class: "btn secondary-btn btn-secondary", disabled: true %>
+                  <%end%>
+                <% else%>
+                  <%= link_to 'Connect', connect_user_path(user), method: :post, class: "btn secondary-btn btn-success" %>
+                <% end%>
+              <% end%>
+            <% end%>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

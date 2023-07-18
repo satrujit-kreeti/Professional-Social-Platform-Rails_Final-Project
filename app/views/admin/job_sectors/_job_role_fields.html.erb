@@ -1,0 +1,6 @@
+<%= form.fields_for "job_roles[]", job_role do |role_form| %>
+  <div class="mb-3">
+    <%= role_form.label :name, "Job Role #{index + 1}" , class: 'form-label'%>
+    <%= role_form.text_field :name , class: 'form-control' %>
+  </div>
+<% end %>

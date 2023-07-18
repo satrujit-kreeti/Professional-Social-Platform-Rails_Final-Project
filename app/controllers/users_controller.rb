@@ -1,9 +1,21 @@
 class UsersController < ApplicationController
-  before_action :require_login, only: [:home, :profile, :delete_account]
+  before_action :require_login, only: [:home, :profile, :delete_account, :search]
+  before_action :require_admin, only: [:users_list, :delete_account, :search]
+
+
+  def show
+    if params[:query].present?
+      @users = User.search_items(params[:query]).records.where.not(role: 'admin')
+    else
+      @users = User.where.not(role: 'admin')
+    end
+  end
+  
 
   def new
     @user = User.new
   end
+
 
   def create
     @user = User.new(user_params)
@@ -46,7 +58,7 @@ class UsersController < ApplicationController
   def home
     @posts = Post.all
 
-    @users = User.all
+    @users = User.where(role: 'user')
     if current_user.nil?
       redirect_to root_path, notice: 'Please login to access this page'
     end
@@ -56,6 +68,11 @@ class UsersController < ApplicationController
     if current_user.nil?
       redirect_to root_path, notice: 'Please login to access this page'
     end
+  end
+
+  def users_list
+    @users = User.where(role: 'user')
+    render 'users/users_list'
   end
 
   def delete_account
@@ -77,7 +94,11 @@ class UsersController < ApplicationController
         # Destroy the user
         @user.destroy
   
-        redirect_to root_path, notice: 'Your account has been deleted. Create a new account to use our app.', status: :see_other
+        if current_user.admin?
+          redirect_to users_list_path, notice: 'User account deleted successfully.'
+        else
+          redirect_to root_path, notice: 'Your account has been deleted. Create a new account to use our app.', status: :see_other
+        end
       rescue => e
         redirect_to root_path, alert: 'An error occurred while deleting your account. Please try again.', status: :see_other
         raise e
@@ -85,14 +106,16 @@ class UsersController < ApplicationController
     end
   end
   
-
-
+  
   def connect
     @user = User.find(params[:id])
     
     unless current_user.friends.include?(@user)
       friendship = current_user.friendships.find_or_initialize_by(friend_id: @user.id)
       friendship.update(connected: false, requested_by_user_id: current_user.id)
+
+      send_connect_notification(@user)
+
       flash[:notice] = 'Friendship request sent!'
     else
       flash[:notice] = 'Already connected!'
@@ -100,7 +123,7 @@ class UsersController < ApplicationController
     
     render :profiles
   end
-  
+
   
   
   def disconnect
@@ -108,6 +131,8 @@ class UsersController < ApplicationController
     friendship = current_user.friendships.find_by(friend_id: @user.id)
     friendship.destroy
     flash[:notice] = 'Successfully disconnected!'
+    send_disconnect_notification(@user)
+    
     if request.referer.include?('profiles')
       render :profiles
     else
@@ -119,6 +144,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @friends = @user.friends.where(friendships: { connected: true })
     @pending_requests = Friendship.where(friend_id: @user.id, connected: false)
+    @requests = @user.friends.where(friendships: { connected: false })
+
   end
   
 
@@ -137,6 +164,12 @@ class UsersController < ApplicationController
   def require_login
     unless current_user
       redirect_to root_path, notice: 'Please login to access this page'
+    end
+  end
+
+  def require_admin
+    unless current_user&.admin?
+      redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
     end
   end
 

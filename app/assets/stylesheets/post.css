@@ -30,7 +30,7 @@
 
 .text_area{
     resize: none;
-    height: 30rem;
+    height: 6rem;
 }
 
 .content{
@@ -129,7 +129,7 @@ a{
 .photo-container {
     margin-right: -10px;
 }
-  
+
 .more-photos {
 margin-left: 20px;
 /* Add additional styles as needed */
@@ -148,4 +148,13 @@ margin-left: 20px;
 .small-default-profile{
     width: 2rem !important;
     height: 2rem !important;
+}
+
+
+tbody, td, tfoot, tr {
+    border-color: white !important;
+}
+
+.text-size-1_2{
+    font-size: 1.2rem;
 }

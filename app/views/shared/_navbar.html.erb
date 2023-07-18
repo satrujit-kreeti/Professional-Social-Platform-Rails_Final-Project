@@ -1,16 +1,28 @@
 <nav class="container-fluid border-hint">
   <div class="d-flex justify-content-between align-items-center container pt-3 pb-3">
-    <%= link_to home_path do %>
-      <%= image_tag 'Logo.png', class: 'rounded-circle avatar-image', alt: 'Logo' %>
-    <% end %>
-    <div class="nav-menu">
-      <%= link_to "Dashboard", home_path, class: current_page?(home_path) ? "current" : "others", method: :get %>
-      <%= link_to "Connections", user_connections_path(current_user), class: current_page?(user_connections_path(current_user)) ? "current" : "others" , method: :get%>
-      <%= link_to "Add Network", pending_requests_path, class: current_page?(pending_requests_path) ? "current" : "others" , method: :get%>
-      <%= link_to "Jobs", root_path, class: current_page?(root_path) ? "current" : "others" ,method: :get %>
-      <%= link_to "Messages", root_path, class: current_page?(root_path) ? "current" : "others" , method: :get%>
+    <div class = "d-flex flex-row align-items-center gap-5">
+      <%= link_to home_path do %>
+        <%= image_tag 'Logo.png', class: 'rounded-circle avatar-image', alt: 'Logo' %>
+      <% end %>
+      <div class="nav-menu">
+        <%= link_to "Dashboard", home_path, class: current_page?(home_path) ? "current" : "others", method: :get %>
+        <% if current_user&.admin? == false %>
+          <%= link_to "Connections", user_connections_path(current_user), class: current_page?(user_connections_path(current_user)) ? "current" : "others" , method: :get%>
+          <%= link_to "Add Network", pending_requests_path, class: current_page?(pending_requests_path) ? "current" : "others" , method: :get%>
+          <%= link_to "Messages", root_path, class: current_page?(root_path) ? "current" : "others" , method: :get%>
+        <%end%>
+        <% if current_user&.admin? %>
+          <%= link_to "Users", users_list_path, class: current_page?(users_list_path) ? "current" : "others", method: :get %>
+          <%= link_to "Job Sectors", admin_job_sectors_path, class: current_page?(admin_job_sectors_path) ? "current" : "others", method: :get %>
+        <% end %>
+        <%= link_to "Jobs", job_requirements_path, class: current_page?(job_requirements_path) ? "current" : "others" ,method: :get %>
+      </div>
     </div>
-    <%= render 'shared/profilemenu-dropdown' %>
+    <div class="d-flex flex-row gap-3 align-items-center">
+      <%= render partial: 'shared/search_field' %>
+      <%= render partial: 'shared/notification_dropdown', locals: {notifications: Notification.where(recipient_id: current_user.id).all.order(created_at: :desc)} %>
+      <%= render 'shared/profilemenu-dropdown' %>
+    </div>
   </div>
 </nav>
 <div class= "mt-4"> </div>

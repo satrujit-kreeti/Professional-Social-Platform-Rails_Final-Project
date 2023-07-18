@@ -1,0 +1,26 @@
+<% if job_comment.present? %>
+  <div class="d-flex flex-row align-items-center w-50">
+    <% job_comment.first(3).each do |comment| %>
+      <% if comment.user.profile_photo.attached? %>
+        <div class="photo-container">
+          <%= image_tag comment.user.compressed_profile_photo, class: 'rounded-circle avatar-image comment-avatar post-comment' %>
+        </div>
+      <% else %>
+        <div class="default-profile-picture small-default-profile post-comment">
+          <i class="fas fa-user"></i>
+        </div>
+      <% end %>
+    <% end %>
+    <% if job_comment.size > 3 %>
+      <div class="more-photos align-self-center">
+        <% if job_comment.size == 4%>
+          <span class="align-items-center extra"><%= "+ 1 Comment" %></span>
+        <%else%>
+          <span class="align-items-center extra"><%= "+ #{job_comment.size - 3} Comments "%></span>
+        <%end%>
+      </div>
+    <% end %>
+  </div>
+<%else%>
+  <span class="align-items-center extra pt-1 pb-1"><%= "No Comment" %></span>
+<% end %>

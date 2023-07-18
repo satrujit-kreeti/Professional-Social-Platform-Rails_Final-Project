@@ -24,6 +24,11 @@
     <li class="dropdown-item">
       <%= link_to "Profile" , profile_path , method: :get%>
     </li>
+    <%if current_user&.admin? ==false%>
+      <li class="dropdown-item">
+        <%= link_to "Created Jobs" , my_jobs_path , method: :get%>
+      </li>
+    <%end%>
     <li class="dropdown-item mt-1">
       <%= link_to "Change password" , profile_path , method: :get%>
     </li>

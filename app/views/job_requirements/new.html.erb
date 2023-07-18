@@ -1,0 +1,34 @@
+<div class="container">
+  <div class=" d-flex justify-content-center align-items-center mt-5">
+    <div class="card p-4 card_css">
+      <h1 class="mb-4 mx-auto">Create New Job</h1>
+      <%= form_with(model: @job_requirement, url: job_requirements_path, local: true) do |form| %>
+        <div class="mb-3">
+          <%= form.label :job_title  ,"Job Title", class: 'form-label'%>
+          <%= form.text_field :job_title , class: 'form-control' %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :job_description, class: 'form-label' %>
+          <%= form.text_area :job_description, class: 'form-control', style: 'resize: none;' %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :vacancies ,"Vacancies", class: 'form-label'%>
+          <%= form.number_field :vacancies , class: 'form-control' %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :skills_required , class: 'form-label'%>
+          <%= form.text_field :skills_required, class: 'form-control' %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :job_sector_id, 'Job Sector', class: 'form-label' %>
+          <%= form.collection_select :job_sector_id, JobSector.all, :id, :name, { prompt: 'Select Job Sector' }, class: 'form-select' %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :job_role_id, 'Job Role', class: 'form-label' %>
+          <%= form.collection_select :job_role_id, JobRole.all, :id, :name, { prompt: 'Select Job Role' }, class: 'form-select' %>
+        </div>
+        <%= form.submit"Submit", class: 'btn full-btn btn-primary btn-lg w-100' %>
+      <% end %>
+    </div>
+  </div>
+</div>

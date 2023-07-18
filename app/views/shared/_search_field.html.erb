@@ -1,0 +1,8 @@
+<%= form_tag search_users_path, method: :get, class:"search-form p-0 " do %>
+  <div class= "d-flex flex-row align-items-center search-form search-field ps-3">
+    <span class="material-symbols-outlined search ">
+      search
+    </span>
+    <%= text_field_tag :query, params[:query], placeholder: "Search users...", class: "form-control search-field no-focus ps-2" %>
+  </div>
+<% end %>

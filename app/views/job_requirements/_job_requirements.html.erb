@@ -1,0 +1,79 @@
+<div class="d-flex flex-column w-100 job profile1 posts">
+  <div class="d-flex flex-row stretch">
+    <p class="job-title"><%= job_requirement.job_title %></p>
+    <% if current_page?(controller.my_jobs_path) %>
+      <% if job_requirement.status == "pending"%>
+        <span class="skill-chip-status pending">
+          <%= job_requirement.status.capitalize %>
+        </span>
+      <% elsif job_requirement.status == "approved"%>
+        <span class="skill-chip-status success">
+          <%= job_requirement.status.capitalize %>
+        </span>
+      <% else %>
+        <span class="skill-chip-status rejected">
+          <%= job_requirement.status.capitalize %>
+        </span>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="d-flex flex-direction-row">
+    <% email = User.find(job_requirement.user_id).email%>
+    <span class="job-info">Role: <%= job_requirement.job_role.name %></span>
+    <span class="job-info">Sector: <%= job_requirement.job_sector.name %></span>
+    <span class="job-info">Vacancies: <%= job_requirement.vacancies %></span>
+  </div>
+  <% if !current_user&.admin? && current_page?(job_requirements_path) %>
+    <%= link_to job_requirement_path(job_requirement), class: 'post-link w-100', method: :get do %>
+      <p class="title mb-1 mt-3">Description</p>
+      <p class="text"><%= job_requirement.job_description %></p>
+      <p class="title mb-1">Skills Required</p>
+      <div class="d-flex flex-row gap-2">
+        <% job_requirement.skills_required.split(',').each do |skill| %>
+          <span class="skill-chip">
+            <%= skill.strip %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="title mb-1 mt-3">Description</p>
+    <p class="text"><%= job_requirement.job_description %></p>
+    <p class="title mb-1">Skills Required</p>
+    <div class="d-flex flex-row gap-2">
+      <% job_requirement.skills_required.split(',').each do |skill| %>
+        <span class="skill-chip">
+          <%= skill.strip %>
+        </span>
+      <% end %>
+    </div>
+  <% end %>
+  <% if current_page?(controller.my_jobs_path)==false &&  current_user&.admin? == false%>
+    <%= form_tag apply_job_requirements_path(job_requirement), method: :post, multipart: true, class:"w-100" do %>
+      <%= link_to job_requirement_path(job_requirement), class: 'post-link w-100', method: :get do %>
+        <div class="line mt-3"></div>
+        <div class="post-buttons comments align-items-center">
+          <div class="post-buttons">
+            <div class="post-button">
+              <span class="material-symbols-outlined">chat_bubble</span>
+              <span class="post-button-title">Comment</span>
+            </div>
+          </div>
+          <%= render(partial: 'job_comments/job_comment', locals: {job_comment: job_requirement.job_comments}) %>
+        </div>
+        <div class="line mt-2"></div>
+      <%end%>
+      <p class="title mb-1 mt-3">Upload CV and Apply for the Job</p>
+      <div class="d-flex flex-row mb-2">
+        <input type="file" name="cv" id="cv" accept="application/pdf" class="form-control me-3">
+        <input type="submit" name="commit" value="Apply" data-disable-with="Apply" class="btn secondary-btn btn-primary">
+      </div>
+    <% end %>
+  <%end%>
+  <%if current_user&.admin?%>
+    <div class="d-flex flex-row gap-3 mt-3 w-100">
+      <%= link_to 'Approve', approve_job_requirement_path(job_requirement), method: :patch , class: "btn secondary-btn btn-success w-100"%>
+      <%= link_to 'Reject', reject_job_requirement_path(job_requirement), method: :patch, class: "btn secondary-btn btn-danger w-100" %>
+    </div>
+  <%end%>
+</div>

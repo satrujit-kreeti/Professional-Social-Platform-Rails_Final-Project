@@ -1,0 +1,22 @@
+<div class="container">
+  <div class=" d-flex justify-content-center align-items-center mt-5">
+    <div class="card p-4 card_css">
+      <h1 class="mb-4 mx-auto">New Job Sector & Job Roles</h1>
+      <%= form_with(model: @job_sector, url: admin_job_sectors_path, method: :post, id: 'job_sectors_form') do |form| %>
+        <%# Render job sector fields %>
+        <div class="mb-3">
+          <%= form.label :name, "Job Sector", class: 'form-label'%>
+          <%= form.text_field :name , class: 'form-control' %>
+        </div>
+        <%# Render job role fields %>
+        <div id="job_roles_fields">
+          <% @job_roles.each_with_index do |job_role, index| %>
+            <%= render 'job_role_fields', form: form, job_role: job_role, index: index %>
+          <% end %>
+        </div>
+        <%= link_to 'Add New Role', "#", id: 'add_role_button', class: "btn full-btn btn-outline-secondary btn-lg w-100 mb-3" %>
+        <%= form.submit "Create Job Sector and Roles" , class: 'btn full-btn btn-primary btn-lg w-100' %>
+      <% end %>
+    </div>
+  </div>
+</div>

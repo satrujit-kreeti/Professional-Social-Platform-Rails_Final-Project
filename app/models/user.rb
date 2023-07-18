@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liking_posts, through: :likes, source: :post
 
+  has_many :job_requirements
+
 
   def password_required?
     return false if password.present?
@@ -34,5 +36,50 @@ class User < ApplicationRecord
     profile_photo.variant(resize: '248x248>').processed
   end
 
+  def admin?
+    role == 'admin'
+  end
 
+
+  # Elastic Search
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'true' do
+      indexes :username, type: :text
+    end
+  end
+
+  def as_indexed_json(_options = {})
+    {
+      id: id,
+      username: username
+    }
+  end
+
+  def self.index_data
+    __elasticsearch__.create_index! force: true
+    __elasticsearch__.import
+  end
+
+  def self.search_items(query)
+    search_definition = {
+      query: {
+        bool: {
+          must: []
+        }
+      }
+    }
+
+    if query.present?
+      search_definition[:query][:bool][:must] << {
+        query_string: {
+          query: "*#{query}*"
+        }
+      }
+    end
+
+    __elasticsearch__.search(search_definition)
+  end
 end

@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get '/auth/linkedin/callback', to: 'sessions#linkedin', as: 'linkedin'
 
+
   root 'sessions#new'
 
 
@@ -41,7 +42,7 @@ Rails.application.routes.draw do
   end
 
   resources :posts do
-    resources :likes, only: :create
+    resources :likes, only: [:create, :index]
   end
 
   get '/users/:id/connections', to: 'users#connections', as: 'user_connections'
@@ -54,6 +55,41 @@ Rails.application.routes.draw do
   
   get '/signup', to:'users#new'
   post '/signup', to:'users#create'
+
+  get 'users_list', to: 'users#users_list', as: 'users_list'
+
+  namespace :admin do
+    resources :job_sectors
+    resources :job_roles
+  end
+
+  post '/admin/job_sectors/increment_number', to: 'admin/job_sectors#increment_number', as: 'increment_number' 
+
+
+
+  resources :job_requirements do
+    member do
+      patch :approve
+      patch :reject
+    end
+  end
+
+  get '/my_jobs', to: 'job_requirements#my_jobs', as: 'my_jobs' 
+  post 'job_requirements/:id/apply', to: 'job_requirements#apply', as: 'apply_job_requirements'
+
+  
+  resources :job_requirements do
+    resources :job_comments, only: [:new, :create]
+  end
+
+
+  resources :users do
+    collection do
+      get 'search', to: 'users#search'
+    end
+  end
+
+  mount ActionCable.server => '/cable'
 
 
 

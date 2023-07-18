@@ -14,21 +14,25 @@
           <a href="<%= @user.linkedin_profile %>" class="btn full-btn btn-primary w-100">LinkedIn Profile</a>
         </div>
         <div class="profile-2 w-100">
-          <% if current_user.friends.include?(@user) %>
-            <% friendship = current_user.friendships.find_by(friend_id: @user.id) %>
-            <% if friendship.connected? %>
-              <%= link_to 'Disconnect', disconnect_user_path(@user), method: :delete, class: "btn  full-btn btn-danger w-100" %>
-            <% else %>
-              <% if friendship.requested_by_user_id == current_user.id %>
-                <%= link_to 'Connection Pending', '#', class: "btn full-btn btn-secondary w-100", disabled: true %>
+          <% if current_user&.admin? %>
+            <%= link_to 'Delete', connect_user_path(@user), method: :post, class: "btn full-btn btn-danger w-100" %>
+          <%else%>
+            <% if current_user.friends.include?(@user) %>
+              <% friendship = current_user.friendships.find_by(friend_id: @user.id) %>
+              <% if friendship.connected? %>
+                <%= link_to 'Disconnect', disconnect_user_path(@user), method: :delete, class: "btn  full-btn btn-danger w-100" %>
               <% else %>
-                <%= link_to 'Approve Request', approve_friendship_path(friendship), method: :patch, class: "btn full-btn btn-success w-100" %>
-                <%= link_to 'Reject Request', reject_friendship_path(friendship), method: :delete, class: "btn full-btn btn-danger w-100" %>
+                <% if friendship.requested_by_user_id == current_user.id %>
+                  <%= link_to 'Connection Pending', '#', class: "btn full-btn btn-secondary w-100", disabled: true %>
+                <% else %>
+                  <%= link_to 'Approve Request', approve_friendship_path(friendship), method: :patch, class: "btn full-btn btn-success w-100" %>
+                  <%= link_to 'Reject Request', reject_friendship_path(friendship), method: :delete, class: "btn full-btn btn-danger w-100" %>
+                <% end %>
               <% end %>
+            <% else %>
+              <%= link_to 'Connect', connect_user_path(@user), method: :post, class: "btn full-btn btn-success w-100" %>
             <% end %>
-          <% else %>
-            <%= link_to 'Connect', connect_user_path(@user), method: :post, class: "btn full-btn btn-success w-100" %>
-          <% end %>
+          <%end%>
         </div>
       </div>
     </div>

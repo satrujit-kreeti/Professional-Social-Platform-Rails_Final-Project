@@ -1,0 +1,16 @@
+<%=  render 'shared/navbar'%>
+<div class="container">
+  <div class="d-flex flex-column gap-1 ">
+    <div class= "list-container align-items-start m-0 p-0 gap-2">
+      <% if current_user&.admin? %>
+        <% @job_requirements.where(status: 'pending').order(created_at: :desc).each do |job_requirement| %>
+          <%= render 'job_requirements', job_requirement: job_requirement %>
+        <% end %>
+      <%else%>
+        <% @job_requirements.where(status: 'approved').order(created_at: :desc).each do |job_requirement| %>
+          <%= render 'job_requirements', job_requirement: job_requirement %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

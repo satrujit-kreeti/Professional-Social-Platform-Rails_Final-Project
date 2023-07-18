@@ -1,0 +1,66 @@
+.job-title{
+    color: #000;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.job-info {
+    position: relative;
+    padding-right: 1rem;
+    color: #858591;
+    font-size: 1rem;
+}
+
+.job-info:not(:first-child){
+    padding-left: 1rem;
+}
+  
+.job-info:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 1px;
+    background-color: #858591;
+}
+
+.skill-chip-status{
+    display: flex;
+    padding: 0.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+
+    border-radius: 1.5rem;
+    
+    color: white;
+    font-weight: bolder;
+    
+    
+}
+
+.pending{
+    background: #C5C50A;
+}
+
+.success{
+    background: green;
+}
+
+.rejected{
+    background: red;
+}
+.stretch{
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self:
+     stretch;
+}
+
+.text{
+    color: black;
+}

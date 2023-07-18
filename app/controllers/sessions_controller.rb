@@ -21,22 +21,34 @@ class SessionsController < ApplicationController
     redirect_to root_path, notice: 'Logged out Successfully'
   end
 
-def linkedin
-  auth = request.env['omniauth.auth']
-  @user = User.find_by(email: auth.info.email)
-
-  if @user.nil?
-    @user = User.new(user_params(auth))
-    if @user.save
-      session[:user_id] = @user.id
-      redirect_to home_path, notice: 'User created and logged in with LinkedIn successfully'
+  def linkedin
+    auth = request.env['omniauth.auth']
+    #   redirect_to root_path, alert: 'LinkedIn authentication failed.'
+    #   return
+    # end
+  
+    user = User.find_by(email: auth.info.email)
+    if user
+      session[:user_id] = user.id
+      redirect_to root_path, notice: 'Logged in successfully.'
     else
-      render :new, alert: 'Failed to create user. Please sign up.'
+      user = User.create(
+        email: auth.info.email,
+        username: auth.info.first_name + " " + auth.info.last_name
+      )
+      if user.save
+        session[:user_id] = user.id
+        redirect_to root_path, notice: 'Account created and logged in successfully.'
+      else
+        redirect_to root_path, alert: 'Failed to create account.'
+      end
     end
-  else
-    session[:user_id] = @user.id
-    redirect_to home_path, notice: 'Logged in with LinkedIn successfully'
   end
+  
+
+def failure
+  flash[:alert] = "There was an error while trying to authenticate your account."
+  redirect_to root_path
 end
 
 

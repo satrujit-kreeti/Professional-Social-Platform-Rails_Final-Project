@@ -1,0 +1,7 @@
+<div class="container mt-4">
+  <h1 class= "mb-3"> Share your comment</h1>
+  <%= form_with(model: [@job_requirement, JobComment.new]) do |form| %>
+    <%= form.text_area :content, class: 'form-control pt-4 text_area', placeholder: 'Enter your Comment' %>
+    <%= form.submit 'Add Comment', class: "btn  full-btn btn-primary w-100 mt-3" %>
+  <% end %>
+</div>

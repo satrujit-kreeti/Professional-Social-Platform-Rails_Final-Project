@@ -1,5 +1,5 @@
 <% if comment.present? %>
-  <div class="d-flex flex-row align-items-center w-50">
+  <div class="d-flex flex-row align-items-center">
     <% comment.first(3).each do |comment| %>
       <% if comment.user.profile_photo.attached? %>
         <div class="photo-container">
@@ -14,9 +14,9 @@
     <% if comment.size > 3 %>
       <div class="more-photos align-self-center">
         <% if comment.size == 4%>
-          <span class="align-items-center extra"><%= "+ 1 Comment" %></span>
+          <span class="align-items-center extra me-1"><%= "+ 1 Comment" %></span>
         <%else%>
-          <span class="align-items-center extra"><%= "+ #{comment.size - 3} Comments "%></span>
+          <span class="align-items-center extra me-1"><%= "+ #{comment.size - 3} Comments"%></span>
         <%end%>
       </div>
     <% end %>
