@@ -13,3 +13,10 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
+document.addEventListener("DOMContentLoaded", function() {
+    const notificationContainer = document.querySelector(".notification-container-flash");
+
+    setTimeout(() => {
+      notificationContainer.style.display = "none";
+    }, 2000);
+});

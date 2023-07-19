@@ -9,7 +9,7 @@
         <% if current_user&.admin? == false %>
           <%= link_to "Connections", user_connections_path(current_user), class: current_page?(user_connections_path(current_user)) ? "current" : "others" , method: :get%>
           <%= link_to "Add Network", pending_requests_path, class: current_page?(pending_requests_path) ? "current" : "others" , method: :get%>
-          <%= link_to "Messages", root_path, class: current_page?(root_path) ? "current" : "others" , method: :get%>
+          <%= link_to "Messages", conversations_path, class: current_page?(conversations_path) ? "current" : "others" , method: :get%>
         <%end%>
         <% if current_user&.admin? %>
           <%= link_to "Users", users_list_path, class: current_page?(users_list_path) ? "current" : "others", method: :get %>

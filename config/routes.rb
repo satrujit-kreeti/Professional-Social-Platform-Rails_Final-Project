@@ -89,6 +89,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :conversations, only: %i[index show create new] do
+    resources :messages, only: [:create]
+  end
+
   mount ActionCable.server => '/cable'
 
 

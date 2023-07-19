@@ -22,6 +22,9 @@ class User < ApplicationRecord
 
   has_many :job_requirements
 
+  has_many :sent_conversations, class_name: 'Conversation', foreign_key: 'sender_id'
+  has_many :received_conversations, class_name: 'Conversation', foreign_key: 'recipient_id'
+
 
   def password_required?
     return false if password.present?

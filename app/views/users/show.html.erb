@@ -29,7 +29,7 @@
                 <% if  current_user.friends.include?(user)%>
                   <% friendship = current_user.friendships.find_by(friend_id: user.id) %>
                   <% if friendship.connected? %>
-                    <%= link_to 'Message', user_profile_path(user), class: "btn secondary-btn btn-primary btn-success" , method: :get%>
+                    <%= link_to 'Message', new_conversation_path(recipient_id: user.id), class: "btn secondary-btn btn-primary btn-success" , method: :get%>
                     <%= link_to 'Disconnect', disconnect_user_path(user), method: :post, class: "btn secondary-btn btn-primary btn-danger" %>
                   <% elsif friendship.requested_by_user_id == current_user.id %>
                     <%= link_to 'Connection Pending', '#', class: "btn secondary-btn btn-secondary", disabled: true %>
