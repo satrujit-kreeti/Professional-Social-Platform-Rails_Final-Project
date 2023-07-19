@@ -9,9 +9,18 @@
     </div>
   </div>
   <ul class="dropdown-menu dropdown-menu-end p-2 notification-container">
-    <div id="notification-container" data-currentuserid="<%= current_user.id %>"></div>
-    <% notifications.each do |notification| %>
-      <div class= "notification text-dark"> <%= notification.body %></div>
+    <div class = "d-flex flex-row align-items-center list-item mb-2">
+      <span class = "title-header">Notification</span>
+      <% if notifications.where(read: false).count == 0 %>
+        <button id="mark-all-read-button" class = "btn btn-primary btn-sm secondary-btn p-1 px-2 "  disabled>Read All</button>
+      <% else %>
+        <button id="mark-all-read-button" class = "btn btn-primary btn-sm secondary-btn p-1 px-2" >Read All</button>
+      <% end %>
+    </div>
+    <div class= "line"></div>
+    <div class ="notification text-dark mt-2" id="notification-container" data-currentuserid="<%= current_user.id %>"></div>
+    <% notifications.where(read: false).each do |notification| %>
+      <div class= "notification text-dark mt-2"> <%= notification.body %></div>
     <% end %>
   </ul>
 </div>

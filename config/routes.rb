@@ -92,6 +92,7 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 
 
+  patch '/mark_all_as_read', to: 'notifications#mark_all_as_read', as: 'mark_all_as_read'
 
 
 

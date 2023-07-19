@@ -59,3 +59,36 @@ function updateLikeCount(postId, likeCountElement) {
   });
 }
 
+// document.addEventListener('turbolinks:load', function() {
+//   const deleteNotificationLinks = document.querySelectorAll('.delete-notification');
+  
+//   deleteNotificationLinks.forEach(function(link) {
+//     link.addEventListener('click', function(event) {
+//       event.preventDefault(); // Prevent the default link behavior
+  
+//       const url = this.getAttribute('href');
+//       const notificationElement = this.closest('.notification');
+  
+//       fetch(url, {
+//         method: 'DELETE',
+//         headers: {
+//           'Content-Type': 'application/json',
+//           'X-Requested-With': 'XMLHttpRequest'
+//         }
+//       })
+//       .then(function(response) {
+//         if (response.ok) {
+//           // If deletion is successful, remove the notification element from the UI
+//           notificationElement.remove();
+//         } else if (response.status === 404) {
+//           console.log('Notification not found');
+//         } else {
+//           throw new Error('Error deleting notification: ' + response.status);
+//         }
+//       })
+//       .catch(function(error) {
+//         console.error('Error deleting notification:', error);
+//       });
+//     });
+//   });
+// });

@@ -69,7 +69,7 @@ gem 'omniauth-linkedin-oauth2'
 gem 'htmlbeautifier'
 
 
-gem 'elasticsearch-model'
+gem 'elasticsearch-model' 
 gem 'elasticsearch-rails'
 gem 'faraday'
 

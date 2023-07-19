@@ -7,6 +7,8 @@ document.addEventListener('turbolinks:load', function() {
   const notificationContainer = document.getElementById('notification-container');
   const notificationIconBackground = document.getElementById('not-icon-back');
   const notificationIcon = document.getElementById('not-icon');
+  const markAllReadButton = document.getElementById("mark-all-read-button");
+
 
 
   const currentUserId = notificationContainer.dataset.currentuserid;
@@ -38,8 +40,10 @@ document.addEventListener('turbolinks:load', function() {
         notificationIcon.classList.replace('text-light', 'text-dark');
       });
 
+      markAllReadButton.disabled = false;
+
       // Add the notificationElement to your notification container in the DOM
-      notificationContainer.appendChild(notificationElement);
+      notificationContainer.insertBefore(notificationElement, notificationContainer.firstChild);
     }
   });
 

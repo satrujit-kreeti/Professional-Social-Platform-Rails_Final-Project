@@ -1,6 +1,6 @@
 
 
-.notification-container {
+.notification-container-flash {
   position: fixed;
   bottom: 0px;
   left: 0px;
@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.notification {
+.notification-flash {
   width: 100% !important;
   padding: 0.5rem 1rem;
   text-align: center;
