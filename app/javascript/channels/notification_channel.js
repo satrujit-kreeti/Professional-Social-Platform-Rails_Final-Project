@@ -27,7 +27,8 @@ document.addEventListener('turbolinks:load', function() {
       console.log("Notification received:", data);
       const notificationElement = document.createElement('div');
       notificationElement.innerText = data.message;
-      notificationElement.classList.add('notification', 'text-dark');
+      notificationElement.classList.add('notification', 'text-dark' , 'p-2');
+      // notificationContainer.classList.add(p-2);
 
 
 
