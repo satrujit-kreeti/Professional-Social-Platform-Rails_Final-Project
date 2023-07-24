@@ -9,13 +9,22 @@ document.addEventListener('turbolinks:load', () => {
   const messageInput = document.getElementById('chat_message');
   const messagesContainer = document.getElementById('messages');
   const messageForm = document.getElementById('form');
+
   const currentUserUsername = document.getElementById('current-user-username').dataset.username;
+
+
+  function scrollToBottom() {
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+
 
   if (messageForm) {
     console.log('form');
 
     messageForm.addEventListener('submit', (event) => {
       event.preventDefault(); // Prevent the default form submission
+
 
       const formData = new FormData(messageForm);
 
@@ -38,6 +47,8 @@ document.addEventListener('turbolinks:load', () => {
     {
       connected() {
         console.log("Connected to server");
+        scrollToBottom();
+
       },
       received: function (data) {
         const messageClass = data.sender === currentUserUsername ? 'message current-user' : 'message';
@@ -48,10 +59,16 @@ document.addEventListener('turbolinks:load', () => {
 
         const submitButton = document.querySelector("#message_submit");
         submitButton.disabled = false;
+
+        scrollToBottom();
+
+
       },
       speak: function (message) {
         return this.perform('receive', { conversation_id: conversationId, message: message });
       }
     }
   );
+
+
 });

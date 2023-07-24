@@ -54,6 +54,32 @@
       <%if current_user&.admin? == false%>
         <div class="profile-3 pb-4">
           <div class=" col profile-details">
+            <p class="mb-0"><strong class="title">Job Profiles</strong> </p>
+            <% if current_user.job_profiles.any? %>
+              <% current_user.job_profiles.each do |job_profile| %>
+                <div class="profile-4 pt-2">
+                  <%= job_profile.title %>
+                  <div class="d-flex flex-row gap-3">
+                    <%= link_to edit_job_profile_path(job_profile)  do %>
+                      <span class="material-symbols-outlined text-dark">
+                        edit
+                      </span>
+                    <% end%>
+                    <%= link_to job_profile_path(job_profile), method: :delete, data: { confirm: 'Are you sure you want to delete this job profile?' } do %>
+                      <span class="material-symbols-outlined text-dark">
+                        delete
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="pt-2">No job profiles added yet.</p>
+            <% end %>
+          </div>
+        </div>
+        <div class="profile-3 pb-4">
+          <div class=" col profile-details">
             <p class="title-skill">
               <strong class="title">Skills</strong>
               <div class="skill-chips">
@@ -89,41 +115,60 @@
         <% if current_user.cv.attached? %>
           <div class="profile-3 pb-4">
             <div class=" col profile-details">
-              <p class="mb-0"><strong class="title">CV</strong>
-                <div class="profile-4 pt-1">
-                  Who can download your CV?
-                  <% if current_user.cv_download_permission=="everyone" %>
-                    <span class="chip-everyone"> Everyone</span>
-                  <% elsif current_user.cv_download_permission=="connections" %>
-                    <span class="chip-connections"> Connections</span>
-                  <% else %>
-                    <span class="chip-noone"> Only Me </span>
-                  <% end %>
-                </div>
-                <% if current_user.cv.attached? %>
-                  <%= link_to 'Download CV' , rails_blob_url(current_user.cv), class: 'btn full-btn btn-outline-primary mt-4' , method: :get,
-                target: '_blank' %>
+              <p class="mb-0"><strong class="title">CV</strong> </p>
+              <div class="profile-4 pt-1">
+                Who can download your CV?
+                <% if current_user.cv_download_permission=="everyone" %>
+                  <span class="chip-everyone"> Everyone</span>
+                <% elsif current_user.cv_download_permission=="connections" %>
+                  <span class="chip-connections"> Connections</span>
                 <% else %>
-                  <%= "Please upload your CV" %>
+                  <span class="chip-noone"> Only Me </span>
                 <% end %>
-              </p>
+              </div>
+              <% if current_user.cv.attached? %>
+                <%= link_to 'Download CV' , rails_blob_url(current_user.cv , disposition: "attachment"), class: 'btn full-btn btn-outline-primary mt-4' , method: :get,
+                target: '_blank' %>
+              <% else %>
+                <%= "Please upload your CV" %>
+              <% end %>
             </div>
           </div>
         <% end %>
-        <% if current_user.certificates.any? %>
-          <h2>Certificates</h2>
-          <div class="row">
-            <% current_user.certificates.each do |certificate| %>
-              <div class="col-md-4">
-                <div class="thumbnail">
-                  <%= image_tag certificate.variant(resize: '200x200' ), class: 'img-thumbnail' if certificate.image? %>
-                  <%= link_to certificate.filename, rails_blob_path(certificate, disposition: 'attachment' ) %>
-                </div>
+        <div class="profile-3 pb-4">
+          <div class=" col profile-details">
+            <% if current_user.certificates.any? %>
+              <p class="mb-3"><strong class="title">Certificates</strong> </p>
+              <div class="certificate-thumbnails d-flex flex-row gap-3">
+                <% current_user.certificates.each do |certificate| %>
+                  <div class="certificate-thumbnail d-flex flex-column-reverse align-items-center justify-content-end">
+                    <p class="certificate-title"><%= certificate.name %></p>
+                    <% if certificate.document.attached? %>
+                      <% if certificate.document.content_type == 'application/pdf' %>
+                        <a href="<%= rails_blob_path(certificate.document, disposition: 'attachment') %>" target="_blank">
+                          <canvas class="pdf-thumbnail" data-url="<%= rails_blob_path(certificate.document) %>"></canvas>
+                        </a>
+                      <% elsif certificate.document.content_type =~ /image\// %>
+                        <a href="<%= rails_blob_path(certificate.document, disposition: 'attachment') %>" target="_blank">
+                          <%= image_tag certificate.document.variant(resize: '200x200') %>
+                        </a>
+                      <% else %>
+                        <%= link_to "Download", rails_blob_path(certificate.document, disposition: "attachment") %>
+                      <% end %>
+                    <% end %>
+                    <%= link_to certificate_path(certificate), method: :delete, data: { confirm: 'Are you sure you want to delete this certificate?' }, class: "delete_button" do %>
+                      <span class="material-symbols-outlined">cancel</span>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
+            <% else %>
+              <p class="mb-3"><strong class="title">Certificates</strong> </p>
+              <p>No certificates added.</p>
             <% end %>
-          </div>
-        <% end %>
-      <%end%>
+          <%end%>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_19_172749) do
+ActiveRecord::Schema.define(version: 2023_07_24_123837) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,14 @@ ActiveRecord::Schema.define(version: 2023_07_19_172749) do
     t.index ["user_id"], name: "index_job_comments_on_user_id"
   end
 
+  create_table "job_profiles", force: :cascade do |t|
+    t.string "title"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_job_profiles_on_user_id"
+  end
+
   create_table "job_requirements", force: :cascade do |t|
     t.string "job_title"
     t.text "job_description"
@@ -188,6 +196,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_172749) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", default: "user"
+    t.integer "report", default: 0
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -202,6 +211,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_172749) do
   add_foreign_key "friendships", "users", column: "friend_id"
   add_foreign_key "job_comments", "job_requirements"
   add_foreign_key "job_comments", "users"
+  add_foreign_key "job_profiles", "users"
   add_foreign_key "job_requirements", "job_roles"
   add_foreign_key "job_requirements", "job_sectors"
   add_foreign_key "job_requirements", "users"

@@ -31,10 +31,6 @@
             <span class="post-button-title">Delete</span>
           <% end %>
         <% else %>
-          <div class="post-button">
-            <span class="material-symbols-outlined">report</span>
-            <span class="post-button-title">Report</span>
-          </div>
           <%= link_to post_path(p), method: :get do %>
             <div class="post-button">
               <span class="material-symbols-outlined">chat_bubble</span>

@@ -1,0 +1,25 @@
+<div class="contain d-flex justify-content-center align-items-center">
+  <div class="card p-4 card_css">
+    <h1 class="mb-3 mx-auto" >Edit Job Profile</h1>
+    <%= form_with(model: @job_profile, url: job_profile_path(@job_profile), method: :patch) do |form| %>
+      <% if @job_profile.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@job_profile.errors.count, "error") %> prohibited this job profile from being saved:</h2>
+          <ul>
+            <% @job_profile.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <div class="field mb-3">
+        <%= form.label :title , class: 'form-label' %>
+        <%= form.text_field :title  , class: 'form-control'%>
+      </div>
+      <%= form.hidden_field :user_id, value: current_user.id %>
+      <div class="actions">
+        <%= form.submit 'Update Job Profile' , class: 'btn full-btn btn-primary btn-lg w-100 mb-3' %>
+      </div>
+    <% end %>
+  </div>
+</div>

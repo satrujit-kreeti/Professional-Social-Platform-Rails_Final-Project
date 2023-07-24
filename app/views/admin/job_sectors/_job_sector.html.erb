@@ -3,7 +3,8 @@
     <div class="connection-request-header list-item me-4">
       <span class="title-text"><%= job_sector.name %></span>
       <div class="d-flex gap-2">
-        <%= link_to 'Edit', admin_job_sector_path(job_sector), method: :delete, data: { confirm: 'Are you sure you want to delete this job sector and its roles?' }, class: "btn secondary-btn btn-success" %>
+        <%#= link_to 'Add New Role',edit_admin_job_sector_path(job_sector), method: :get,  class: "btn secondary-btn btn-primary" %>
+        <%= link_to 'Add New Role',edit_admin_job_sector_path(job_sector), method: :get,  class: "btn secondary-btn btn-success" %>
         <%= link_to 'Delete', admin_job_sector_path(job_sector), method: :delete, data: { confirm: 'Are you sure you want to delete this job sector and its roles?' }, class: "btn secondary-btn btn-danger" %>
       </div>
     </div>

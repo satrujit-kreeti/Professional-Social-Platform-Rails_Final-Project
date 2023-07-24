@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
       if @comment.save
         redirect_to post_path(@post), notice: 'Comment created successfully.'
       else
-        render post_path(@post), alert: 'Not able to create comment. Try again later'
+        redirect_to post_path(@post), alert: 'Not able to create comment. Try again later'
       end
     end
   

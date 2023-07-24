@@ -26,6 +26,7 @@
     -moz-border-radius: 0rem 1rem 1rem 1rem;
     -ms-border-radius: 0rem 1rem 1rem 1rem;
     -o-border-radius: 0rem 1rem 1rem 1rem;
+    margin-bottom: 0.6rem;
 }
 
 .your-message{
@@ -47,4 +48,26 @@
     -moz-border-radius: 0 0 12px 12px !important;
     -ms-border-radius: 0 0 12px 12px !important;
     -o-border-radius: 0 0 12px 12px !important;
+}
+
+.conversation-container{
+    max-height: 75vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.conversation-container::-webkit-scrollbar {
+    width: 0;
+}
+
+html{
+    overflow: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+
+html::-webkit-scrollbar {
+    width: 0;
 }

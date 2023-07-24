@@ -7,8 +7,15 @@
           <%= render 'job_requirements', job_requirement: job_requirement %>
         <% end %>
       <%else%>
+        <div class="d-flex flex-row gap-3 w-100 ">
+          <%= link_to "Create Job", new_job_requirement_path, class: "btn full-btn btn-success w-100 mb-3" %>
+        </div>
+        <% user_skills = current_user.skills.split(',').map(&:strip) %>
         <% @job_requirements.where(status: 'approved').order(created_at: :desc).each do |job_requirement| %>
-          <%= render 'job_requirements', job_requirement: job_requirement %>
+          <% requirement_skills = job_requirement.skills_required.split(',').map(&:strip) %>
+          <% if (user_skills & requirement_skills).any? %>
+            <%= render 'job_requirements', job_requirement: job_requirement %>
+          <% end %>
         <% end %>
       <% end %>
     </div>

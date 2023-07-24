@@ -1,67 +1,93 @@
-# app/controllers/admin/job_sectors_controller.rb
 class Admin::JobSectorsController < ApplicationController
-    before_action :require_admin
-  
-    def index
-      @job_sectors = JobSector.all
-    end
-  
-    def new
-      @job_sector = JobSector.new
-      @number = 3
-      @job_roles = []
-      @number.times { @job_roles << JobRole.new }
-    end
-    
-    
-    
-    
-    def create
-      @job_sector = JobSector.new(job_sector_params)
-      @job_roles = job_roles_params.map { |role_params| JobRole.new(role_params) }
-    
-      if @job_sector.save
-        @job_roles.each { |role| role.job_sector_id = @job_sector.id }
-        @job_roles.each { |role| @job_sector.job_roles.create(name: role.name) }
-        redirect_to admin_job_sectors_path, notice: 'Job sector and roles created successfully.'
-      else
-        render :new
-      end
-    end
+  before_action :require_admin, except: [:job_roles]
 
-    def destroy
-      @job_sector = JobSector.find(params[:id])
-      @job_roles = @job_sector.job_roles
+  def index
+    @job_sectors = JobSector.all
+  end
 
-      if @job_role.nil?
-        @job_sector.destroy
+  def new
+    @job_sector = JobSector.new
+    @job_sector.job_roles.build
+  end
+
+  def create
+    @job_sector = JobSector.new(job_sector_params)
+    if @job_sector.save
+      redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles added successfully!'
+    else
+      flash[:alert] = @job_sector.errors.full_messages.join(', ')
+
+      render :new
+    end
+  end
+
+  def edit
+    @job_sector = JobSector.find(params[:id])
+  end
+
+  def update
+    @job_sector = JobSector.find(params[:id])
+    if @job_sector.update(job_sector_params)
+      redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles updated successfully!'
+    else
+      flash[:alert] = @job_sector.errors.full_messages.join(', ')
+
+      render :edit
+    end
+  end
+
+  def destroy
+    @job_sector = JobSector.find(params[:id])
+    @job_roles = @job_sector.job_roles
+
+    if @job_role.nil?
+      @job_sector.destroy
+      redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
+    else
+      if @job_role.destroy && @job_sector.destroy
         redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
       else
-        if @job_role.destroy && @job_sector.destroy
-          redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
-        else
-          redirect_to admin_job_sectors_path, alert: 'Failed to delete job sector and roles.'
-        end
+        redirect_to admin_job_sectors_path, alert: 'Failed to delete job sector and roles.'
       end
     end
-    
-    private
-  
-    def require_admin
-      unless current_user&.admin?
-        redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
-      end
-    end
-
-    def job_sector_params 
-      params.require(:job_sector).permit(:name)
-    end
-    
-    def job_roles_params
-      params.require(:job_sector).permit(job_roles: [:name])[:job_roles]
-    end
-
   end
   
 
+  def job_roles
+    job_sector = JobSector.find(params[:id])
+    job_roles = job_sector.job_roles
+
+    # if current_user.admin?==  false
+    render json: job_roles, only: [:id, :name]
+  end
   
+  private
+
+  def require_admin
+    unless current_user&.admin?
+      redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
+    end
+  end
+
+  def job_sector_params
+    params.require(:job_sector).permit(:name, job_roles_attributes: [:id, :name]).tap do |whitelisted|
+      whitelisted[:job_roles_attributes].reject! { |_, attributes| attributes[:name].blank? }
+    end
+  end
+
+  def job_sector_params
+    params.require(:job_sector).permit(:name, job_roles_attributes: [:id, :name]).tap do |whitelisted|
+      if whitelisted.key?(:job_roles_attributes)
+        job_roles_array = whitelisted[:job_roles_attributes].values
+        job_roles_array = job_roles_array.reject { |attributes| attributes[:name].blank? && attributes[:id].blank? }
+        whitelisted[:job_roles_attributes] = job_roles_array
+      end
+    end
+  end
+  
+  
+  
+
+end
+
+

@@ -1,10 +1,14 @@
 class User < ApplicationRecord
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
   has_secure_password
   has_one_attached :profile_photo
   has_one_attached :cv
 
   has_many :certificates, dependent: :destroy
   accepts_nested_attributes_for :certificates, allow_destroy: true
+  before_save :mark_blank_certificates_for_destruction
 
   has_many :friendships
   has_many :friends, through: :friendships
@@ -12,19 +16,62 @@ class User < ApplicationRecord
 
   validates :email, presence:true, uniqueness:true
   validates :username, presence:true
-  validates :password, presence: true, length: { minimum: 6 }, if: :password_required?
+  validates :password, presence: true, if: :password_required?
 
   has_many :posts
   has_many :comments
+  before_save :mark_blank_comments_for_destruction
+  before_save :mark_blank_posts_for_destruction
+
+  
+
 
   has_many :likes
   has_many :liking_posts, through: :likes, source: :post
 
   has_many :job_requirements
 
-  has_many :sent_conversations, class_name: 'Conversation', foreign_key: 'sender_id'
-  has_many :received_conversations, class_name: 'Conversation', foreign_key: 'recipient_id'
+  has_many :sent_conversations, class_name: 'Conversation', foreign_key: 'sender_id', dependent: :destroy
+  has_many :received_conversations, class_name: 'Conversation', foreign_key: 'recipient_id', dependent: :destroy
 
+  has_many :job_profiles,  dependent: :destroy
+  accepts_nested_attributes_for :job_profiles, allow_destroy: true
+  before_save :mark_blank_job_profiles_for_destruction
+
+
+
+
+  def mark_blank_certificates_for_destruction
+    certificates.each do |certificate|
+      if certificate.name.blank? && certificate.document.blank?
+        certificate.mark_for_destruction
+      end
+    end
+  end
+
+  def mark_blank_comments_for_destruction
+    comments.each do |comment|
+      if comment.content.blank?
+        comment.mark_for_destruction
+      end
+    end
+  end
+
+  def mark_blank_posts_for_destruction
+    posts.each do |post|
+      if post.content.blank?
+        post.mark_for_destruction
+      end
+    end
+  end
+
+  def mark_blank_job_profiles_for_destruction
+    job_profiles.each do |job_profile|
+      if job_profile.title.blank?
+        job_profile.mark_for_destruction
+      end
+    end
+  end
 
   def password_required?
     return false if password.present?
@@ -44,9 +91,7 @@ class User < ApplicationRecord
   end
 
 
-  # Elastic Search
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+
 
   settings index: { number_of_shards: 1 } do
     mappings dynamic: 'true' do
@@ -61,10 +106,7 @@ class User < ApplicationRecord
     }
   end
 
-  def self.index_data
-    __elasticsearch__.create_index! force: true
-    __elasticsearch__.import
-  end
+
 
   def self.search_items(query)
     search_definition = {

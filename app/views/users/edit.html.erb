@@ -40,24 +40,26 @@
         <%= f.select :qualification,['B.Tech','B.A', 'B.Sc' ,'B.Com' ], {}, class: 'form-select' %>
       </div>
       <div class="mb-3">
-        <%= f.label :experience, 'Experience' , class: 'form-label d-block' %>
+        <%= f.label :experience, 'Experience', class: 'form-label d-block' %>
         <div class="d-flex gap-4">
-          <div class="form-check w-100 ">
-            <%= f.radio_button :experience, 'experienced' , class: 'form-check-input' %>
-            <%= f.label :experience_experienced, 'Experienced' , class: 'form-check-label' %>
+          <div class="form-check w-100">
+            <%= f.radio_button :experience, 'experienced', class: 'form-check-input', data: { target: '#yearsRangeField' },
+        checked: f.object.experience != 'fresher' %>
+            <%= f.label :experience_experienced, 'Experienced', class: 'form-check-label' %>
           </div>
           <div class="form-check w-100">
-            <%= f.radio_button :experience, 'fresher' , class: 'form-check-input' %>
-            <%= f.label :experience_fresher, 'Fresher' , class: 'form-check-label' %>
+            <%= f.radio_button :experience, 'fresher', class: 'form-check-input', data: { target: '#yearsRangeField' },
+        checked: f.object.experience == 'fresher' %>
+            <%= f.label :experience_fresher, 'Fresher', class: 'form-check-label' %>
           </div>
         </div>
       </div>
-      <!-- <div class="mb-3">
-              <%= f.label :experience, 'Years Range' , class: 'form-label' %>
-                <%= f.select :experience, ['0-1 Years', '1-5 Years' , '5-10 Years' , 'More than 10 Years' ], {}, {
-                  class: 'form-select' , disabled: @disabled_value } %>
-            </div> -->
-      <div class="mb-3">
+      <div class="mb-3" id="yearsRangeField">
+        <%= f.label :experience, 'Years Range', class: 'form-label' %>
+        <%= f.select :experience, ['0-1 Years', '1-5 Years', '5-10 Years', 'More than 10 Years'], {}, {
+    class: 'form-select', disabled: @disabled_value } %>
+      </div>
+      <div class="mb-3" id="organization">
         <%= f.label :current_organization, 'Current Organization' , class: 'form-label' %>
         <%= f.text_field :current_organization, class: 'form-control' %>
       </div>
@@ -70,6 +72,17 @@
         <%= f.check_box :relevant_skill_notification, class: 'form-check-input' %>
         <%= f.label :relevant_skill_notification, 'Click here to receive relevant notification for job posting' , class: 'form-check-label' %>
       </div>
+      <div id="certificates-fields">
+      </div>
+      <button type="button" id="add-certificate" class="btn full-btn btn-secondary w-100 mb-3">Add Certificate</button>
+      <div class="line mb-3"></div>
+      <div id="job_profiles-fields">
+      </div>
+      <div class="mb-3">
+        <input type="checkbox" id="enable-job-profiles" class="form-check-input">
+        <label class="form-check-label" for="enable-job-profiles">Add New Job Profiles</label>
+      </div>
+      <button type="button" id="add-job-profile" class="btn full-btn btn-secondary w-100 mb-3">Add Job Profile</button>
       <%= f.submit 'Save Details' , class: 'btn full-btn btn-primary btn-lg w-100 mb-3' %>
     <% end %>
     <% if @errors %>

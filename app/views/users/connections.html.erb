@@ -47,26 +47,35 @@
     </div>
     <hr class= "line-break">
     <div class="list-container">
-      <% @requests.each do |p| %>
-        <div class="list-item">
-          <div class="details-container">
-            <% if p.profile_photo.attached? %>
-              <%= image_tag p.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
-            <% else %>
-              <div class="default-profile-picture">
-                <i class="fas fa-user fa-lg"></i>
+      <% if @requests.any?%>
+        <% @requests.each do |p| %>
+          <div class="list-item">
+            <div class="details-container">
+              <% if p.profile_photo.attached? %>
+                <%= image_tag p.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+              <% else %>
+                <div class="default-profile-picture">
+                  <i class="fas fa-user fa-lg"></i>
+                </div>
+              <% end %>
+              <div class="secondary-details-container">
+                <%= link_to p.username, user_profile_path(p), class: 'title-text' , method: :get%>
+                <span class="description-text">
+                  <%= p.current_organization %>
+                </span>
               </div>
-            <% end %>
-            <div class="secondary-details-container">
-              <%= link_to p.username, user_profile_path(p), class: 'title-text' , method: :get%>
-              <span class="description-text">
-                <%= p.current_organization %>
-              </span>
+            </div>
+            <div class="details-container">
+              <%= link_to 'Connection Pending', '#', class: "btn secondary-btn btn-secondary", disabled: true %>
             </div>
           </div>
-          <div class="details-container">
-            <%= link_to 'Connection Pending', '#', class: "btn secondary-btn btn-secondary", disabled: true %>
+        <% end %>
+      <% else%>
+        <div class="list-container gap-0">
+          <div class="icon">
+            <i class="material-icons no-connection">diversity_2</i>
           </div>
+          <p class="text-no-connection">You don't have any new request.</p>
         </div>
       <% end %>
     </div>

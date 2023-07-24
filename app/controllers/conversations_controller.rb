@@ -17,6 +17,7 @@ class ConversationsController < ApplicationController
         recipient = User.find(params[:conversation][:recipient_id])
         conversation = Conversation.between(current_user, recipient).first
         conversation ||= Conversation.create(sender: current_user, recipient: recipient)
+        
       
         redirect_to conversation
       end

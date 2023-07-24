@@ -1,6 +1,12 @@
 class UsersController < ApplicationController
+
+  require 'elasticsearch'
   before_action :require_login, only: [:home, :profile, :delete_account, :search]
-  before_action :require_admin, only: [:users_list, :delete_account, :search]
+  before_action :require_admin, only: [:users_list, :search]
+
+  def index
+    @users = User.all
+  end
 
 
   def show
@@ -14,6 +20,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.certificates.build
   end
 
 
@@ -25,9 +32,16 @@ class UsersController < ApplicationController
       end
     end
 
+    # @user.job_profiles.build(title: "Title")
+
+    User.__elasticsearch__.create_index! force: true
+    User.import
+
     if @user.save
       redirect_to login_path, notice: 'User created successfully. Please log in'
     else
+      flash[:alert] = @user.errors.full_messages.join(', ')
+
       render :new
     end
   end
@@ -44,14 +58,19 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def update 
-    @user = current_user
+  def update
+    @user = User.find(params[:id])
+
+    User.__elasticsearch__.create_index! force: true
+    User.import
+    # sleep 1
 
     if @user.update(update_params)
-      redirect_to profile_path, notice: 'User details saved successfully.'
+      redirect_to profile_path, notice: "User was successfully updated."
     else
-      @errors = @user.errors.full_messages
-    render :edit
+      flash[:alert] = @user.errors.full_messages.join(', ')
+
+      render :edit
     end
   end
 
@@ -80,18 +99,13 @@ class UsersController < ApplicationController
   
     User.transaction do
       begin
-        # Delete the user's friendships
         @user.friendships.destroy_all
-  
-        # Remove the user from other people's friendships
         Friendship.where(friend: @user).destroy_all
   
-        # Delete associated attachments and certificates
         @user.profile_photo.purge if @user.profile_photo.attached?
         @user.cv.purge if @user.cv.attached?
         @user.certificates.destroy_all
   
-        # Destroy the user
         @user.destroy
   
         if current_user.admin?
@@ -105,6 +119,7 @@ class UsersController < ApplicationController
       end
     end
   end
+  
   
   
   def connect
@@ -147,19 +162,46 @@ class UsersController < ApplicationController
     @requests = @user.friends.where(friendships: { connected: false })
 
   end
+
+  def report
+    @user = User.find(params[:id])
+    @user.increment(:report)
+    @user.save
+    flash[:notice] = "User reported successfully."
+    redirect_to @user
+  end
   
+
+  def edit_password
+    @user = current_user
+  end
+
+  def update_password
+    if current_user.update(password_params)
+      # Successful password update
+      flash[:notice] = "Password updated successfully."
+      redirect_to root_path
+    else
+      # If there are validation errors, render the password change form again
+      render :edit_password
+    end
+  end
 
 
   private
 
   def user_params
-    params.require(:user).permit(:username, :email, :password, :linkedin_profile, :qualification, :experience, :current_organization, :skills, :relevant_skill_notification, :profile_photo, :cv, :cv_download_permission, certificates_attributes: [:id, { document: [] }, :_destroy])
+    params.require(:user).permit(:username, :email, :password, :linkedin_profile, :qualification, :experience, :current_organization, :skills, :relevant_skill_notification, :profile_photo, :cv, :cv_download_permission, certificates_attributes: [:id, :name, :document], job_profiles_attributes: [:id, :title, :_destroy])
   end
 
   def update_params
-    params.require(:user).permit(:username, :linkedin_profile, :qualification, :experience, :current_organization, :skills, :relevant_skill_notification, :profile_photo, :cv, :cv_download_permission, certificates_attributes: [:id, :name, { document: [] }, :_destroy])
+     params.require(:user).permit(:username, :linkedin_profile, :qualification, :current_organization, :skills, :experience ,:relevant_skill_notification, :profile_photo, :cv, :cv_download_permission, certificates_attributes: [:id, :name, :document], job_profiles_attributes: [:id, :title, :_destroy])
+
   end
   
+  def password_params
+    params.require(:user).permit(:password, :password_confirmation)
+  end
   
   def require_login
     unless current_user

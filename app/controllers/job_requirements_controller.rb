@@ -1,7 +1,5 @@
 class JobRequirementsController < ApplicationController
 
-    
-
     def index
         @job_requirements = JobRequirement.all
     end
@@ -29,6 +27,7 @@ class JobRequirementsController < ApplicationController
         @job_requirement.user_id = current_user.id
       
         if @job_requirement.save
+          send_job_post_creation_notification()
           redirect_to job_requirements_path, notice: "Job requirement created successfully."
         else
           render :new
@@ -38,6 +37,10 @@ class JobRequirementsController < ApplicationController
     def approve
         job_requirement = JobRequirement.find(params[:id])
         job_requirement.update(status: 'approved')
+
+        send_job_post_approve_notification(job_requirement.user_id)
+        send_new_post_notification(job_requirement.skills_required, job_requirement.user_id)
+        
         redirect_to job_requirements_path, notice: 'Job requirement approved.'
       end
     

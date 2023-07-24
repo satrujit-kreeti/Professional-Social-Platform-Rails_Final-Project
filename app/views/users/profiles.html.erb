@@ -10,22 +10,34 @@
             <i class="fas fa-user fa-5x"></i>
           </div>
         <% end %>
-        <div class="profile-actions w-100">
+        <% unless !current_user.admin?%>
+          <div class="d-flex flex-row gap-2 skill-chip align-items-center border border-warning text-warning">
+            <span class="material-symbols-outlined">
+              report
+            </span>
+            <span ><%=@user.report%> times reported</span>
+          </div>
+        <% end%>
+        <div class="profile-2 w-100">
           <a href="<%= @user.linkedin_profile %>" class="btn full-btn btn-primary w-100">LinkedIn Profile</a>
+          <% unless current_user&.admin? %>
+            <%= link_to "Report User", report_user_path(@user), method: :post ,class: "btn full-btn btn-secondary w-100" %>
+          <% end%>
         </div>
         <div class="profile-2 w-100">
           <% if current_user&.admin? %>
-            <%= link_to 'Delete', connect_user_path(@user), method: :post, class: "btn full-btn btn-danger w-100" %>
+            <%= link_to 'Delete', delete_account_path(@user), method: :delete, data: { confirm: 'Are you sure you want to delete your account?' } ,class: "btn full-btn btn-danger w-100" %>
           <%else%>
             <% if current_user.friends.include?(@user) %>
               <% friendship = current_user.friendships.find_by(friend_id: @user.id) %>
               <% if friendship.connected? %>
+                <%= link_to 'Message', new_conversation_path(recipient_id: @user.id), class: "btn full-btn btn-primary btn-success w-100" , method: :get%>
                 <%= link_to 'Disconnect', disconnect_user_path(@user), method: :delete, class: "btn  full-btn btn-danger w-100" %>
               <% else %>
                 <% if friendship.requested_by_user_id == current_user.id %>
                   <%= link_to 'Connection Pending', '#', class: "btn full-btn btn-secondary w-100", disabled: true %>
                 <% else %>
-                  <%= link_to 'Approve Request', approve_friendship_path(friendship), method: :patch, class: "btn full-btn btn-success w-100" %>
+                  <%= link_to 'Approve Request', approve_friendship_path(friendship), method: :get, class: "btn full-btn btn-success w-100" %>
                   <%= link_to 'Reject Request', reject_friendship_path(friendship), method: :delete, class: "btn full-btn btn-danger w-100" %>
                 <% end %>
               <% end %>
@@ -98,6 +110,35 @@
             </div>
           <% end %>
         <%end%>
+      <%end%>
+      <% if @user.certificates.any? %>
+        <div class="profile-3 pb-4">
+          <div class=" col profile-details">
+            <p class="mb-3"><strong class="title">Certificates</strong> </p>
+            <div class="certificate-thumbnails d-flex flex-row gap-3">
+              <% @user.certificates.each do |certificate| %>
+                <div class="certificate-thumbnail d-flex flex-column-reverse align-items-center justify-content-end">
+                  <p class="certificate-title"><%= certificate.name %></p>
+                  <% if certificate.document.attached? %>
+                    <% if certificate.document.content_type == 'application/pdf' %>
+                      <a href="<%= rails_blob_path(certificate.document, disposition: 'attachment') %>" target="_blank">
+                        <canvas class="pdf-thumbnail" data-url="<%= rails_blob_path(certificate.document) %>"></canvas>
+                      </a>
+                    <% elsif certificate.document.content_type =~ /image\// %>
+                      <a href="<%= rails_blob_path(certificate.document, disposition: 'attachment') %>" target="_blank">
+                        <%= image_tag certificate.document.variant(resize: '200x200') %>
+                      </a>
+                    <% else %>
+                      <%= link_to "Download", rails_blob_path(certificate.document, disposition: "attachment") %>
+                    <% end %>
+                  <% else %>
+                    No document attached.
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
       <%end%>
     </div>
   </div>

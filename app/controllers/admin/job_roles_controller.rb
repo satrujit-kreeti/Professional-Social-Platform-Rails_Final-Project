@@ -24,7 +24,7 @@ class Admin::JobRolesController < ApplicationController
         redirect_to admin_job_sectors_path, alert: 'Failed to delete job role.'
       end
     end
-    
+
     
   
     private
@@ -38,4 +38,5 @@ class Admin::JobRolesController < ApplicationController
     def job_role_params
       params.require(:job_role).permit(:name)
     end
+
   end

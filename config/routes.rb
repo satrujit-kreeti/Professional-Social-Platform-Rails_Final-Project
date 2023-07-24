@@ -26,6 +26,9 @@ Rails.application.routes.draw do
 
   resources :users do
     member do
+      post 'report'
+      get 'edit_password'  
+      patch 'update_password'  
       get 'connect', to: 'users#connect'
       post 'connect', to: 'users#connect'
       match 'disconnect', to: 'users#disconnect', via: [:delete, :get, :post]
@@ -59,13 +62,13 @@ Rails.application.routes.draw do
   get 'users_list', to: 'users#users_list', as: 'users_list'
 
   namespace :admin do
-    resources :job_sectors
+    resources :job_sectors do
+      get 'job_roles', on: :member, defaults: { format: :json }
+    end
     resources :job_roles
   end
 
   post '/admin/job_sectors/increment_number', to: 'admin/job_sectors#increment_number', as: 'increment_number' 
-
-
 
   resources :job_requirements do
     member do
@@ -97,7 +100,13 @@ Rails.application.routes.draw do
 
 
   patch '/mark_all_as_read', to: 'notifications#mark_all_as_read', as: 'mark_all_as_read'
+  resources :certificates, only: [:destroy]
 
+  resources :job_profiles do
+    member do
+      get 'toggle_edit'
+    end
+  end
 
 
 

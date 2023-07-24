@@ -19,8 +19,8 @@
 </nav>
 <div class= "mt-0.5"> </div>
 <div class="container">
-  <div class="d-flex flex-column gap-1 profile1 conversation-container px-4 py-4 chat-messages" id="current-user-username" data-username="<%= current_user.username %>">
-    <div id="messages">
+  <div class="d-flex flex-column gap-1 profile1 chat-messages " id="current-user-username" data-username="<%= current_user.username %>">
+    <div id="messages" class = "conversation-container px-4 pt-4">
       <% @conversation.messages.each do |message| %>
         <div class="<%= 'your-message ' if message.sender == current_user %>">
           <p class="message <%= 'current-user' if message.sender == current_user %>"> <%= message.body %></p>
@@ -30,7 +30,7 @@
     <%= form_with(model: [@conversation, @message], url: conversation_messages_path(@conversation), remote: true, id: 'form' ) do |form| %>
       <div class="bottom d-flex flex-row justify-content-center p-4 ">
         <div class="container d-flex flex-row gap-3">
-          <%= form.text_field :body, id: 'chat_message', class: 'w-100 form-control', placeholder: 'Enter a message' %>
+          <%= form.text_field :body, id: 'chat_message', class: 'w-100 form-control search-field py-2', placeholder: 'Enter a message' %>
           <%= form.submit 'Send', id: 'message_submit', class: 'btn secondary-btn btn-primary' %>
         </div>
       </div>
