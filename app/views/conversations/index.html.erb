@@ -1,31 +1,40 @@
 <%= render 'shared/navbar' %>
 <div class="container">
   <div class="d-flex flex-column gap-1 profile1 posts">
-    <% @conversations.each do |conversation| %>
-      <% chat_user_list = conversation.opposed_user(current_user)%>
-      <% unless chat_user_list == current_user %>
-        <div class="list-item mb-3">
-          <div class="details-container">
-            <% if chat_user_list.profile_photo.attached? %>
-              <%= image_tag chat_user_list.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
-            <% else %>
-              <div class="default-profile-picture">
-                <i class="fas fa-user fa-lg"></i>
-              </div>
-            <% end %>
-            <div class="secondary-details-container">
-              <%= link_to chat_user_list.username, user_profile_path(chat_user_list), class: 'title-text' , method: :get%>
-            </div>
-            <% if conversation.messages.unread_from_sender(current_user).count !=0 %>
-              <span class="pending-requests-count">
-                <span class="count-text"><%= conversation.messages.unread_from_sender(current_user).count.to_s %></span>
-              </span>
-            <% end %>
-          </div>
-          <div class="details-container">
-            <%= link_to 'Message', conversation, class: "btn secondary-btn btn-primary" , method: :get%>
-          </div>
+    <% if @conversations.empty?%>
+      <div class="list-container gap-0">
+        <div class="icon">
+          <i class="material-icons no-connection">sentiment_dissatisfied</i>
         </div>
+        <p class="text-no-connection">No conversation till now</p>
+      </div>
+    <% else%>
+      <% @conversations.each do |conversation| %>
+        <% chat_user_list = conversation.opposed_user(current_user)%>
+        <% unless chat_user_list == current_user %>
+          <div class="list-item mb-3">
+            <div class="details-container">
+              <% if chat_user_list.profile_photo.attached? %>
+                <%= image_tag chat_user_list.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
+              <% else %>
+                <div class="default-profile-picture">
+                  <i class="fas fa-user fa-lg"></i>
+                </div>
+              <% end %>
+              <div class="secondary-details-container">
+                <%= link_to chat_user_list.username, user_profile_path(chat_user_list), class: 'title-text' , method: :get%>
+              </div>
+              <% if conversation.messages.unread_from_sender(current_user).count !=0 %>
+                <span class="pending-requests-count">
+                  <span class="count-text"><%= conversation.messages.unread_from_sender(current_user).count.to_s %></span>
+                </span>
+              <% end %>
+            </div>
+            <div class="details-container">
+              <%= link_to 'Message', conversation, class: "btn secondary-btn btn-primary" , method: :get%>
+            </div>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   </div>
