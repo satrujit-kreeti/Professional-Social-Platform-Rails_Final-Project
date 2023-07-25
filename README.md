@@ -43,7 +43,13 @@ Follow these steps to set up the application:
    rails db:migrate
    ```
 
-6. Seed the database with sample data:
+6. Start Elasticsearch:
+
+   ```bash
+   systemctl restart elasticsearch
+   ```
+
+7. Seed the database with sample data:
 
    ```bash
    rails db:seed
@@ -56,3 +62,14 @@ To start the Rails server, use the following command:
 ```bash
 rails s
 ```
+
+## Authentication Credentials
+
+| Role  | Email             | Password |
+| ----- | ----------------- | -------- |
+| Admin | admin@example.com | password |
+| User  | user1@example.com | password |
+| User  | user2@example.com | password |
+| User  | user3@example.com | password |
+
+For other data follow seeds.rb file

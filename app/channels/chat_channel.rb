@@ -1,5 +1,3 @@
-# app/channels/chat_channel.rb
-
 # frozen_string_literal: true
 
 class ChatChannel < ApplicationCable::Channel

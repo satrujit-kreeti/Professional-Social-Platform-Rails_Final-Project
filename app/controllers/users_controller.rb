@@ -57,6 +57,7 @@ class UsersController < ApplicationController
       delete_friendships
       purge_attachments
       destroy_certificates
+      delete_posts
       @user.destroy
       redirect_after_deletion
     rescue StandardError => e

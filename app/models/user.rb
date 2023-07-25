@@ -19,15 +19,15 @@ class User < ApplicationRecord
   validates :username, presence: true
   validates :password, presence: true, if: :password_required?
 
-  has_many :posts
-  has_many :comments
+  has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
   before_save :mark_blank_comments_for_destruction
   before_save :mark_blank_posts_for_destruction
 
-  has_many :likes
+  has_many :likes, dependent: :destroy
   has_many :liking_posts, through: :likes, source: :post
 
-  has_many :job_requirements
+  has_many :job_requirements, dependent: :destroy
 
   has_many :sent_conversations, class_name: 'Conversation', foreign_key: 'sender_id', dependent: :destroy
   has_many :received_conversations, class_name: 'Conversation', foreign_key: 'recipient_id', dependent: :destroy

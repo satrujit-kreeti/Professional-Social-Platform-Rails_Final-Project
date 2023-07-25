@@ -31,6 +31,10 @@ module UsersHelper
     Friendship.where(friend: @user).destroy_all
   end
 
+  def delete_posts
+    @user.posts.destroy_all
+  end
+
   def purge_attachments
     @user.profile_photo.purge if @user.profile_photo.attached?
     @user.cv.purge if @user.cv.attached?
