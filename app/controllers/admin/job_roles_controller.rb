@@ -1,39 +1,43 @@
-class Admin::JobRolesController < ApplicationController
-  before_action :require_admin
+# frozen_string_literal: true
 
-  def index
-    @job_roles = JobRole.all
-  end
+module Admin
+  class JobRolesController < ApplicationController
+    before_action :require_admin
 
-  def create
-    @job_role = JobRole.new(job_role_params)
-
-    if @job_role.save
-      redirect_to admin_job_roles_path, notice: 'Job role created successfully.'
-    else
-      render :new
+    def index
+      @job_roles = JobRole.all
     end
-  end
 
-  def destroy
-    @job_role = JobRole.find(params[:id])
+    def create
+      @job_role = JobRole.new(job_role_params)
 
-    if @job_role.destroy
-      redirect_to admin_job_sectors_path, notice: 'Job role deleted successfully.'
-    else
-      redirect_to admin_job_sectors_path, alert: 'Failed to delete job role.'
+      if @job_role.save
+        redirect_to admin_job_roles_path, notice: 'Job role created successfully.'
+      else
+        render :new
+      end
     end
-  end
 
-  private
+    def destroy
+      @job_role = JobRole.find(params[:id])
 
-  def require_admin
-    return if current_user&.admin?
+      if @job_role.destroy
+        redirect_to admin_job_sectors_path, notice: 'Job role deleted successfully.'
+      else
+        redirect_to admin_job_sectors_path, alert: 'Failed to delete job role.'
+      end
+    end
 
-    redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
-  end
+    private
 
-  def job_role_params
-    params.require(:job_role).permit(:name)
+    def require_admin
+      return if current_user&.admin?
+
+      redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
+    end
+
+    def job_role_params
+      params.require(:job_role).permit(:name)
+    end
   end
 end

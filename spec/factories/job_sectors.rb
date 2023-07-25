@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :job_sector do
     sequence(:name) { |n| "Job Sector #{n}" }

@@ -1,24 +1,36 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do
-    subject { build(:user) }
+    let(:user) { User.new }
 
     it 'validates presence of email' do
-      expect(subject).to validate_presence_of(:email)
+      user.email = ''
+      user.valid?
+      errors = user.errors[:email]
+      assert(errors.include?("can't be blank"), 'Expected presence of email validation')
     end
 
     it 'validates uniqueness of email' do
-      expect(subject).to validate_uniqueness_of(:email)
+      existing_user = create(:user)
+      user.email = existing_user.email
+      user.valid?
+      errors = user.errors[:email]
+      assert(errors.include?('has already been taken'), 'Expected uniqueness of email validation')
     end
 
     it 'validates presence of username' do
-      expect(subject).to validate_presence_of(:username)
+      user.username = ''
+      user.valid?
+      errors = user.errors[:username]
+      assert(errors.include?("can't be blank"), 'Expected presence of username validation')
     end
   end
 
   it 'creates a user instance using FactoryBot' do
     user = create(:user)
-    expect(user).to be_valid
+    assert(user.valid?, 'Expected the user instance to be valid')
   end
 end

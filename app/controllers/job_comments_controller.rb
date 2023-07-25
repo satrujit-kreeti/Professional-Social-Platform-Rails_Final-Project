@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobCommentsController < ApplicationController
   before_action :require_login
 

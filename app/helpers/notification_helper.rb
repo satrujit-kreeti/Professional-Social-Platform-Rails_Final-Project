@@ -1,130 +1,61 @@
-module NotificationHelper
-  def send_connect_notification(user)
-    notification = Notification.create(
-      sender_id: current_user.id,
-      recipient_id: user.id,
-      body: "#{current_user.username} wants to connect with you"
-    )
+# frozen_string_literal: true
 
-    ActionCable.server.broadcast("notification_#{user.id}", {
-                                   sender_id: current_user.id,
-                                   message: "#{current_user.username} wants to connect with you",
-                                   recipient_id: user.id
+module NotificationHelper
+  def send_notification(senders_id, recipients_id, bodys)
+    Notification.create(sender_id: senders_id, recipient_id: recipients_id, body: bodys)
+    ActionCable.server.broadcast("notification_#{recipient_id}", {
+                                   sender_id: senders_id,
+                                   message: bodys,
+                                   recipient_id: recipients_id
                                  })
   end
 
-  def send_disconnect_notification(user)
-    notification = Notification.create(
-      sender_id: current_user.id,
-      recipient_id: user.id,
-      body: "#{current_user.username} disconnected from you"
-    )
+  def send_connect_notification(user)
+    send_notification(current_user.id, user.id, "#{current_user.username} wants to connect with you")
+  end
 
-    ActionCable.server.broadcast("notification_#{user.id}", {
-                                   sender_id: current_user.id,
-                                   message: "#{current_user.username} disconnected from you",
-                                   recipient_id: user.id
-                                 })
+  def send_disconnect_notification(user)
+    send_notification(current_user.id, user.id, "#{current_user.username} disconnected from you")
   end
 
   def send_reject_request_notification(user_id)
     user = User.find(user_id)
-
-    notification = Notification.create(
-      sender_id: current_user.id,
-      recipient_id: user.id,
-      body: "#{current_user.username} rejected your connection request"
-    )
-
-    ActionCable.server.broadcast("notification_#{user.id}", {
-                                   sender_id: current_user.id,
-                                   message: "#{current_user.username} rejected your connection request",
-                                   recipient_id: user.id
-                                 })
+    send_notification(current_user.id, user.id, "#{current_user.username} rejected your connection request")
   end
 
   def send_accept_request_notification(user_id)
     user = User.find(user_id)
-
-    notification = Notification.create(
-      sender_id: current_user.id,
-      recipient_id: user.id,
-      body: "#{current_user.username} accepted your connection request"
-    )
-
-    ActionCable.server.broadcast("notification_#{user.id}", {
-                                   sender_id: current_user.id,
-                                   message: "#{current_user.username} accepted your connection request",
-                                   recipient_id: user.id
-                                 })
+    send_notification(current_user.id, user.id, "#{current_user.username} accepted your connection request")
   end
 
   def send_job_post_creation_notification
     user = User.find_by(role: 'admin')
-
-    notification = Notification.create(
-      sender_id: current_user.id,
-      recipient_id: user.id,
-      body: "Please review #{current_user.username} new job post"
-    )
-
-    ActionCable.server.broadcast("notification_#{user.id}", {
-                                   sender_id: current_user.id,
-                                   message: "Please review #{current_user.username} new job post",
-                                   recipient_id: user.id
-                                 })
+    send_notification(current_user.id, user.id, "Please review #{current_user.username} new job post")
   end
 
   def send_job_post_approve_notification(user_id)
-    notification = Notification.create(
-      sender_id: current_user.id,
-      recipient_id: user_id,
-      body: 'Your job post is approved'
-    )
-
-    ActionCable.server.broadcast("notification_#{user_id}", {
-                                   sender_id: current_user.id,
-                                   message: 'Your job post is approved',
-                                   recipient_id: user_id
-                                 })
+    send_notification(current_user.id, user_id, 'Your job post is approved')
   end
 
   def send_new_chat_notification(user)
-    notification = Notification.create(
-      sender_id: user.id,
-      recipient_id: current_user.id,
-      body: "#{user.username} started a conversation"
-    )
-
-    ActionCable.server.broadcast("notification_#{current_user.id}", {
-                                   sender_id: user.id,
-                                   message: "#{user.username} started a conversation",
-                                   recipient_id: current_user.id
-                                 })
+    send_notification(user.id, current_user.id, "#{user.username} started a conversation")
   end
 
   def send_new_post_notification(skills_required, job_provider_id)
     all_users_except_admins = User.where.not(role: 'admin').where.not(id: job_provider_id)
-
     requirement_skills = skills_required.split(',').map(&:strip)
-
-    users_with_matching_skills = all_users_except_admins.select do |user|
-      user_skills = user.skills.split(',').map(&:strip)
-      (user_skills & requirement_skills).any?
-    end
-
+    users_with_matching_skills = find_users_with_matching_skills(all_users_except_admins, requirement_skills)
     users_with_matching_skills.each do |user|
-      notification = Notification.create(
-        sender_id: current_user.id,
-        recipient_id: user.id,
-        body: 'There is a job requirement post that matches your skills.'
-      )
+      send_notification(current_user.id, user.id, 'There is a job requirement post that matches your skills.')
+    end
+  end
 
-      ActionCable.server.broadcast("notification_#{user.id}", {
-                                     sender_id: current_user.id,
-                                     message: 'There is a job requirement post that matches your skills.',
-                                     recipient_id: user.id
-                                   })
+  private
+
+  def find_users_with_matching_skills(users, required_skills)
+    users.select do |user|
+      user_skills = user.skills.split(',').map(&:strip)
+      (user_skills & required_skills).any?
     end
   end
 end

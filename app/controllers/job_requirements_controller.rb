@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobRequirementsController < ApplicationController
   def index
     @job_requirements = JobRequirement.all
@@ -49,32 +51,44 @@ class JobRequirementsController < ApplicationController
 
   def apply
     job_requirement = JobRequirement.find(params[:id])
-
-    # Retrieve user details
-    id = job_requirement.user_id
-    user_email = User.find(id).email
-    user_name = User.find(id).username
-
-    applicant_name = current_user.username
-    applicant_email = current_user.email
-
-    # Retrieve uploaded CV file
+    user = User.find(job_requirement.user_id)
     cv_file = params[:cv]
-
-    # Send email with user details and attached CV
     if cv_file.nil?
-      redirect_to job_requirements_path, alert: 'No CV attached. Attch cv to submit the Application'
+      redirect_with_alert('No CV attached. Attach CV to submit the Application')
     else
-      JobRequirementsMailer.apply_job(user_email, user_name, applicant_name, applicant_email, cv_file).deliver_now
-
-      redirect_to job_requirements_path, notice: 'Application submitted successfully.'
+      send_application_email(user, cv_file)
+      redirect_with_notice('Application submitted successfully.')
     end
   end
 
   private
 
+  def redirect_with_alert(alert_message)
+    redirect_to job_requirements_path, alert: alert_message
+  end
+
+  def redirect_with_notice(notice_message)
+    redirect_to job_requirements_path, notice: notice_message
+  end
+
+  def send_application_email(user, cv_file)
+    JobRequirementsMailer.apply_job(
+      user.email,
+      user.username,
+      current_user.username,
+      current_user.email,
+      cv_file
+    ).deliver_now
+  end
+
   def job_requirement_params
-    params.require(:job_requirement).permit(:job_title, :job_description, :vacancies, :skills_required,
-                                            :job_sector_id, :job_role_id)
+    params.require(:job_requirement).permit(
+      :job_title,
+      :job_description,
+      :vacancies,
+      :skills_required,
+      :job_sector_id,
+      :job_role_id
+    )
   end
 end

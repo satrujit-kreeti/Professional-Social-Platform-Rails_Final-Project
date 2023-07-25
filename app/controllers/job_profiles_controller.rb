@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobProfilesController < ApplicationController
   before_action :set_job_profile, only: %i[edit update destroy]
 

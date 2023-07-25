@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobRequirementsMailer < ApplicationMailer
   def apply_job(user_email, user_name, applicant_name, applicant_email, cv_file)
     attachments['cv.pdf'] = { mime_type: 'application/pdf', content: cv_file.read }

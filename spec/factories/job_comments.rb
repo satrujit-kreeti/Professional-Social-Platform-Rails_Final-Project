@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :job_comment do
     content { 'Sample job comment content' }

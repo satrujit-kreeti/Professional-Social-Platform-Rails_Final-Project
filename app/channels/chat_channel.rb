@@ -1,3 +1,7 @@
+# app/channels/chat_channel.rb
+
+# frozen_string_literal: true
+
 class ChatChannel < ApplicationCable::Channel
   def subscribed
     stream_from "chat_#{params[:conversation_id]}"

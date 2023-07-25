@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
@@ -91,18 +93,10 @@ class User < ApplicationRecord
     search_definition = {
       query: {
         bool: {
-          must: []
+          must: query.present? ? [{ query_string: { query: "*#{query}*" } }] : []
         }
       }
     }
-
-    if query.present?
-      search_definition[:query][:bool][:must] << {
-        query_string: {
-          query: "*#{query}*"
-        }
-      }
-    end
 
     __elasticsearch__.search(search_definition)
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CertificatesController < ApplicationController
   before_action :find_certificate, only: [:destroy]
 

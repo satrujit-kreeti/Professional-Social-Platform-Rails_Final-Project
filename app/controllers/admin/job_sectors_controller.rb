@@ -1,83 +1,77 @@
-class Admin::JobSectorsController < ApplicationController
-  before_action :require_admin, except: [:job_roles]
+# frozen_string_literal: true
 
-  def index
-    @job_sectors = JobSector.all
-  end
+module Admin
+  class JobSectorsController < ApplicationController
+    before_action :require_admin, except: [:job_roles]
 
-  def new
-    @job_sector = JobSector.new
-    @job_sector.job_roles.build
-  end
-
-  def create
-    @job_sector = JobSector.new(job_sector_params)
-    if @job_sector.save
-      redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles added successfully!'
-    else
-      flash[:alert] = @job_sector.errors.full_messages.join(', ')
-
-      render :new
+    def index
+      @job_sectors = JobSector.all
     end
-  end
 
-  def edit
-    @job_sector = JobSector.find(params[:id])
-  end
-
-  def update
-    @job_sector = JobSector.find(params[:id])
-    if @job_sector.update(job_sector_params)
-      redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles updated successfully!'
-    else
-      flash[:alert] = @job_sector.errors.full_messages.join(', ')
-
-      render :edit
+    def new
+      @job_sector = JobSector.new
+      @job_sector.job_roles.build
     end
-  end
 
-  def destroy
-    @job_sector = JobSector.find(params[:id])
-    @job_roles = @job_sector.job_roles
+    def create
+      @job_sector = JobSector.new(job_sector_params)
+      if @job_sector.save
+        redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles added successfully!'
+      else
+        flash[:alert] = @job_sector.errors.full_messages.join(', ')
 
-    if @job_role.nil?
-      @job_sector.destroy
-      redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
-    elsif @job_role.destroy && @job_sector.destroy
-      redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
-    else
-      redirect_to admin_job_sectors_path, alert: 'Failed to delete job sector and roles.'
+        render :new
+      end
     end
-  end
 
-  def job_roles
-    job_sector = JobSector.find(params[:id])
-    job_roles = job_sector.job_roles
-
-    # if current_user.admin?==  false
-    render json: job_roles, only: %i[id name]
-  end
-
-  private
-
-  def require_admin
-    return if current_user&.admin?
-
-    redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
-  end
-
-  def job_sector_params
-    params.require(:job_sector).permit(:name, job_roles_attributes: %i[id name]).tap do |whitelisted|
-      whitelisted[:job_roles_attributes].reject! { |_, attributes| attributes[:name].blank? }
+    def edit
+      @job_sector = JobSector.find(params[:id])
     end
-  end
 
-  def job_sector_params
-    params.require(:job_sector).permit(:name, job_roles_attributes: %i[id name]).tap do |whitelisted|
-      if whitelisted.key?(:job_roles_attributes)
-        job_roles_array = whitelisted[:job_roles_attributes].values
-        job_roles_array = job_roles_array.reject { |attributes| attributes[:name].blank? && attributes[:id].blank? }
-        whitelisted[:job_roles_attributes] = job_roles_array
+    def update
+      @job_sector = JobSector.find(params[:id])
+      if @job_sector.update(job_sector_params)
+        redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles updated successfully!'
+      else
+        flash[:alert] = @job_sector.errors.full_messages.join(', ')
+
+        render :edit
+      end
+    end
+
+    def destroy
+      @job_sector = JobSector.find(params[:id])
+      @job_roles = @job_sector.job_roles
+
+      if @job_role.nil?
+        @job_sector.destroy
+        redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
+      elsif @job_role.destroy && @job_sector.destroy
+        redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
+      else
+        redirect_to admin_job_sectors_path, alert: 'Failed to delete job sector and roles.'
+      end
+    end
+
+    def job_roles
+      job_sector = JobSector.find(params[:id])
+      job_roles = job_sector.job_roles
+
+      # if current_user.admin?==  false
+      render json: job_roles, only: %i[id name]
+    end
+
+    private
+
+    def require_admin
+      return if current_user&.admin?
+
+      redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
+    end
+
+    def job_sector_params
+      params.require(:job_sector).permit(:name, job_roles_attributes: %i[id name]).tap do |whitelisted|
+        whitelisted[:job_roles_attributes].reject! { |_, attributes| attributes[:name].blank? }
       end
     end
   end

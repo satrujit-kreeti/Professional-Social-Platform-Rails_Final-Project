@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PostsController < ApplicationController
   before_action :require_admin, only: %i[index destroy]
   before_action :require_login, except: %i[index show]

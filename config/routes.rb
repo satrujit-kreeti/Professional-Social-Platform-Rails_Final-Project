@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   get '/auth/linkedin/callback', to: 'sessions#linkedin', as: 'linkedin'
 

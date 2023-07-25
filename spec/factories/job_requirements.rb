@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :job_requirement do
     job_title { 'Sample Job Title' }

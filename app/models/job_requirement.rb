@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobRequirement < ApplicationRecord
   belongs_to :job_sector
   belongs_to :job_role

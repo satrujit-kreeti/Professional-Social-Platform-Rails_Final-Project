@@ -1,61 +1,16 @@
-# # This file should contain all the record creation needed to seed the database with its default values.
-# # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-# #
-# # Examples:
-# #
-# #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-# #   Character.create(name: 'Luke', movie: movies.first)
-
-# # admin = User.create!(
-# #     username: 'Admin',
-# #     email: 'admin@gmail.com',
-# #     password: 'password',
-# #     role: 'admin'
-# # )
-
-# # puts 'Admin user created successfully.'
-
-# job_sectors = [
-#     { name: 'Manufacturing' },
-#     { name: 'IT' },
-#     { name: 'Banking' },
-#     { name: 'Medical' }
-#   ]
-
-#   job_sectors.each do |sector|
-#     JobSector.create(sector)
-#   end
-
-#   # Create job roles
-#   job_roles = [
-#     { name: 'Designer', job_sector_id: JobSector.find_by(name: 'IT').id },
-#     { name: 'Developer', job_sector_id: JobSector.find_by(name: 'IT').id },
-#     { name: 'Receptionist', job_sector_id: JobSector.find_by(name: 'Medical').id },
-#     { name: 'Medical Representative', job_sector_id: JobSector.find_by(name: 'Medical').id },
-#     { name: 'Manager', job_sector_id: JobSector.find_by(name: 'Banking').id }
-#   ]
-
-#   job_roles.each do |role|
-#     JobRole.create(role)
-#   end
-
-# db/seeds.rb
-
-# Helper method to create a random user with a unique username and email\
+# frozen_string_literal: true
 
 def create_user(attributes)
   User.create!(attributes)
 end
 
-# Create an admin user
-admin = create_user(
+create_user(
   username: 'admin',
   email: 'admin@example.com',
   password: 'password',
   role: 'admin'
 )
 
-# User attributes and skills as comma-separated strings
 users_data = [
   {
     username: 'user1',
@@ -107,7 +62,7 @@ def create_post(user, content)
   user.posts.create!(content:)
 end
 
-users = User.all
+users = User.where.not(role: 'admin')
 
 users.each do |user|
   5.times do
@@ -127,8 +82,6 @@ posts.each do |post|
     create_comment(user, post, "This is a comment by #{user.username} on post ##{post.id}")
   end
 end
-
-users = User.all
 
 users.each do |user|
   friend_ids = users.pluck(:id) - [user.id] - user.friends.pluck(:id)
@@ -152,8 +105,6 @@ job_roles = JobRole.all
 
 # Define an array of job statuses
 job_statuses = %w[pending approved rejected]
-
-users = User.all
 
 job_sectors_data = [
   {

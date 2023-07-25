@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateMessages < ActiveRecord::Migration[6.1]
   def change
     add_foreign_key :conversations, :users, column: :sender_id

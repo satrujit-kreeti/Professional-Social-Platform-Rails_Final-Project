@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobSector < ApplicationRecord
   has_many :job_roles, dependent: :destroy
   accepts_nested_attributes_for :job_roles, allow_destroy: true
