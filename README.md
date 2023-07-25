@@ -1,24 +1,58 @@
-# README
+# Professional Social Platform
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Requirements
 
-Things you may want to cover:
+Make sure your system meets the following requirements:
 
-* Ruby version
+- Ruby version: 3.2.2
+- Database: PostgreSQL (or the database specified in `config/database.yml`)
+- Node.js and Yarn (for JavaScript dependencies)
 
-* System dependencies
+## Installation
 
-* Configuration
+Follow these steps to set up the application:
 
-* Database creation
+1. Clone the repository to your local machine:
 
-* Database initialization
+   ```bash
+   https://github.com/satrujit-kreeti/Professional-Social-Platform-Rails_Final-Project.git
+   cd Professional-Social-Platform-Rails_Final-Project
+   ```
 
-* How to run the test suite
+2. Install required dependency
 
-* Services (job queues, cache servers, search engines, etc.)
+   ```bash
+   bundle install
+   ```
 
-* Deployment instructions
+3. Install JavaScript dependencies:
 
-* ...
+   ```bash
+   bundle install
+   ```
+
+4. Create the database:
+
+   ```bash
+   rails db:create
+   ```
+
+5. Run database migration:
+
+   ```bash
+   rails db:migrate
+   ```
+
+6. Seed the database with sample data:
+
+   ```bash
+   rails db:seed
+   ```
+
+## Running the Application
+
+To start the Rails server, use the following command:
+
+```bash
+rails s
+```
