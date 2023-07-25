@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
-  def new
-  end
+  def new; end
 
   def create
     user = User.find_by(email: params[:email])
@@ -9,7 +8,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
 
       redirect_to home_path, notice: 'Logged in sucesssfully'
-    
+
     else
       flash.now[:alert] = 'Invalid email or password'
       render :new
@@ -26,7 +25,7 @@ class SessionsController < ApplicationController
     #   redirect_to root_path, alert: 'LinkedIn authentication failed.'
     #   return
     # end
-  
+
     user = User.find_by(email: auth.info.email)
     if user
       session[:user_id] = user.id
@@ -34,7 +33,7 @@ class SessionsController < ApplicationController
     else
       user = User.create(
         email: auth.info.email,
-        username: auth.info.first_name + " " + auth.info.last_name
+        username: auth.info.first_name + ' ' + auth.info.last_name
       )
       if user.save
         session[:user_id] = user.id
@@ -44,13 +43,11 @@ class SessionsController < ApplicationController
       end
     end
   end
-  
 
-def failure
-  flash[:alert] = "There was an error while trying to authenticate your account."
-  redirect_to root_path
-end
-
+  def failure
+    flash[:alert] = 'There was an error while trying to authenticate your account.'
+    redirect_to root_path
+  end
 
   private
 

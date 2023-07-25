@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do
-    subject { build(:user) } 
+    subject { build(:user) }
 
     it 'validates presence of email' do
       expect(subject).to validate_presence_of(:email)
@@ -18,7 +18,7 @@ RSpec.describe User, type: :model do
   end
 
   it 'creates a user instance using FactoryBot' do
-    user = create(:user) 
+    user = create(:user)
     expect(user).to be_valid
   end
 end

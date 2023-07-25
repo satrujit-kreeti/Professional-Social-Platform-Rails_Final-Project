@@ -28,5 +28,4 @@ class ApplicationController < ActionController::Base
   # def render_internal_server_error
   #   render file: "#{Rails.root}/public/500.html", layout: false, status: :internal_server_error
   # end
-  
 end

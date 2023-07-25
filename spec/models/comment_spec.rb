@@ -4,13 +4,13 @@ RSpec.describe Comment, type: :model do
   describe 'associations' do
     it 'belongs to a user' do
       user = create(:user)
-      comment = create(:comment, user: user)
+      comment = create(:comment, user:)
       expect(comment.user).to eq(user)
     end
 
     it 'belongs to a post' do
       post = create(:post)
-      comment = create(:comment, post: post)
+      comment = create(:comment, post:)
       expect(comment.post).to eq(post)
     end
   end

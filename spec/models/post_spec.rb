@@ -31,7 +31,7 @@ RSpec.describe Post, type: :model do
     context 'when the user has liked the post' do
       it 'should return true' do
         user = create(:user)
-        Like.create(post: post, user: user)
+        Like.create(post:, user:)
         expect(post.liked_by?(user)).to be true
       end
     end

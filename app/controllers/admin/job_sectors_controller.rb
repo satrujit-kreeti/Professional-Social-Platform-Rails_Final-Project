@@ -43,40 +43,37 @@ class Admin::JobSectorsController < ApplicationController
     if @job_role.nil?
       @job_sector.destroy
       redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
+    elsif @job_role.destroy && @job_sector.destroy
+      redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
     else
-      if @job_role.destroy && @job_sector.destroy
-        redirect_to admin_job_sectors_path, notice: 'Job sector and roles deleted successfully.'
-      else
-        redirect_to admin_job_sectors_path, alert: 'Failed to delete job sector and roles.'
-      end
+      redirect_to admin_job_sectors_path, alert: 'Failed to delete job sector and roles.'
     end
   end
-  
 
   def job_roles
     job_sector = JobSector.find(params[:id])
     job_roles = job_sector.job_roles
 
     # if current_user.admin?==  false
-    render json: job_roles, only: [:id, :name]
+    render json: job_roles, only: %i[id name]
   end
-  
+
   private
 
   def require_admin
-    unless current_user&.admin?
-      redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
-    end
+    return if current_user&.admin?
+
+    redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
   end
 
   def job_sector_params
-    params.require(:job_sector).permit(:name, job_roles_attributes: [:id, :name]).tap do |whitelisted|
+    params.require(:job_sector).permit(:name, job_roles_attributes: %i[id name]).tap do |whitelisted|
       whitelisted[:job_roles_attributes].reject! { |_, attributes| attributes[:name].blank? }
     end
   end
 
   def job_sector_params
-    params.require(:job_sector).permit(:name, job_roles_attributes: [:id, :name]).tap do |whitelisted|
+    params.require(:job_sector).permit(:name, job_roles_attributes: %i[id name]).tap do |whitelisted|
       if whitelisted.key?(:job_roles_attributes)
         job_roles_array = whitelisted[:job_roles_attributes].values
         job_roles_array = job_roles_array.reject { |attributes| attributes[:name].blank? && attributes[:id].blank? }
@@ -84,10 +81,4 @@ class Admin::JobSectorsController < ApplicationController
       end
     end
   end
-  
-  
-  
-
 end
-
-

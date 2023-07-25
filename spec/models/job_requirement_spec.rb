@@ -20,8 +20,8 @@ RSpec.describe JobRequirement, type: :model do
 
   describe 'enums' do
     it 'defines the status enum with expected values' do
-      expect(JobRequirement.statuses).to eq({ 'pending' => "pending", 'approved' => "approved", 'rejected' => "rejected" })
+      expect(JobRequirement.statuses).to eq({ 'pending' => 'pending', 'approved' => 'approved',
+                                              'rejected' => 'rejected' })
     end
   end
-
 end

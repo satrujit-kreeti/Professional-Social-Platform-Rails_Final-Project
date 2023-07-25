@@ -7,7 +7,6 @@ class CreateMessages < ActiveRecord::Migration[6.1]
       t.text :body
       t.boolean :read, default: false
 
-
       t.timestamps
     end
   end

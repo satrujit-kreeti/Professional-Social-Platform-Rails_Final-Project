@@ -6,7 +6,6 @@
 # #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 # #   Character.create(name: 'Luke', movie: movies.first)
 
-
 # # admin = User.create!(
 # #     username: 'Admin',
 # #     email: 'admin@gmail.com',
@@ -16,19 +15,17 @@
 
 # # puts 'Admin user created successfully.'
 
-
-
 # job_sectors = [
 #     { name: 'Manufacturing' },
 #     { name: 'IT' },
 #     { name: 'Banking' },
 #     { name: 'Medical' }
 #   ]
-  
+
 #   job_sectors.each do |sector|
 #     JobSector.create(sector)
 #   end
-  
+
 #   # Create job roles
 #   job_roles = [
 #     { name: 'Designer', job_sector_id: JobSector.find_by(name: 'IT').id },
@@ -37,20 +34,14 @@
 #     { name: 'Medical Representative', job_sector_id: JobSector.find_by(name: 'Medical').id },
 #     { name: 'Manager', job_sector_id: JobSector.find_by(name: 'Banking').id }
 #   ]
-  
+
 #   job_roles.each do |role|
 #     JobRole.create(role)
 #   end
 
-
-
-
 # db/seeds.rb
 
 # Helper method to create a random user with a unique username and email\
-
-
-
 
 def create_user(attributes)
   User.create!(attributes)
@@ -104,7 +95,7 @@ users_data = [
     relevant_skill_notification: true,
     cv_download_permission: 'connections',
     report: 4
-  },
+  }
 
 ]
 
@@ -112,9 +103,8 @@ users_data.each do |user_data|
   create_user(user_data)
 end
 
-
 def create_post(user, content)
-  user.posts.create!(content: content)
+  user.posts.create!(content:)
 end
 
 users = User.all
@@ -125,10 +115,8 @@ users.each do |user|
   end
 end
 
-
-
 def create_comment(user, post, content)
-  user.comments.create!(post: post, content: content)
+  user.comments.create!(post:, content:)
 end
 
 # Create comments for posts
@@ -140,10 +128,6 @@ posts.each do |post|
   end
 end
 
-
-
-
-
 users = User.all
 
 users.each do |user|
@@ -152,14 +136,14 @@ users.each do |user|
   friend_ids = friend_ids.sample(3)
 
   friend_ids.each do |friend_id|
-    unless User.find(friend_id).admin?
-      Friendship.create!(
-        user_id: user.id,
-        friend_id: friend_id,
-        connected: rand(2).zero?,
-        requested_by_user_id: user.id
-      )
-  end
+    next if User.find(friend_id).admin?
+
+    Friendship.create!(
+      user_id: user.id,
+      friend_id:,
+      connected: rand(2).zero?,
+      requested_by_user_id: user.id
+    )
   end
 end
 
@@ -167,11 +151,10 @@ job_sectors = JobSector.all
 job_roles = JobRole.all
 
 # Define an array of job statuses
-job_statuses = ["pending", "approved", "rejected"]
+job_statuses = %w[pending approved rejected]
 
 users = User.all
 
-  
 job_sectors_data = [
   {
     name: 'Information Technology',
@@ -184,7 +167,7 @@ job_sectors_data = [
   {
     name: 'Finance',
     job_roles: ['Accountant', 'Financial Analyst', 'Investment Banker']
-  },
+  }
   # Add more job sectors and their job roles as needed
 ]
 
@@ -195,8 +178,6 @@ job_sectors_data.each do |sector_data|
   end
   job_sector.save!
 end
-
-
 
 def all_user_ids
   User.pluck(:id)
@@ -210,15 +191,9 @@ end
 # Seed data for likes
 all_post_ids.each do |post_id|
   all_user_ids.each do |user_id|
-    unless User.find(user_id).admin?
-      Like.create(user_id: user_id, post_id: post_id)
-    end
+    Like.create(user_id:, post_id:) unless User.find(user_id).admin?
   end
 end
-
-
-
-
 
 all_user_ids.each do |user_id|
   num_requirements = rand(1..5)
@@ -239,19 +214,17 @@ all_user_ids.each do |user_id|
     status = job_statuses.sample
 
     JobRequirement.create!(
-      job_title: job_title,
-      job_description: job_description,
-      vacancies: vacancies,
-      skills_required: skills_required,
-      job_sector: job_sector,
-      job_role: job_role,
-      user_id: user_id,
-      status: status
+      job_title:,
+      job_description:,
+      vacancies:,
+      skills_required:,
+      job_sector:,
+      job_role:,
+      user_id:,
+      status:
     )
   end
 end
-
-
 
 users_data = [
   {
@@ -292,13 +265,12 @@ users_data = [
     relevant_skill_notification: true,
     cv_download_permission: 'connections',
     report: 4
-  },
+  }
 
 ]
 
 users_data.each do |user_data|
   create_user(user_data)
 end
-  
-  
-  puts 'Seeding completed!'
+
+puts 'Seeding completed!'

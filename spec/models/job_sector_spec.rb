@@ -24,6 +24,4 @@ RSpec.describe JobSector, type: :model do
       expect(subject.errors[:job_roles]).to include('must have at least one job role')
     end
   end
-
-
 end

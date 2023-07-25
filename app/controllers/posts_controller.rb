@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  before_action :require_admin, only: [:index, :destroy]
-  before_action :require_login, except: [:index, :show]
+  before_action :require_admin, only: %i[index destroy]
+  before_action :require_login, except: %i[index show]
 
   def new
     @user = User.find(params[:user_id])
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
-    @user = @post.user 
+    @user = @post.user
     @friends = @user.friends.where(friendships: { connected: true })
     @comment = Comment.new
   end
@@ -44,14 +44,14 @@ class PostsController < ApplicationController
   end
 
   def require_login
-    unless current_user
-      redirect_to root_path, notice: 'Please login to access this page'
-    end
+    return if current_user
+
+    redirect_to root_path, notice: 'Please login to access this page'
   end
 
   def require_admin
-    unless current_user&.admin?
-      redirect_to root_path, notice: 'You are not authorized to access this page'
-    end
+    return if current_user&.admin?
+
+    redirect_to root_path, notice: 'You are not authorized to access this page'
   end
 end

@@ -24,7 +24,7 @@ RSpec.describe Conversation, type: :model do
   describe '#opposed_user' do
     let(:sender) { create(:user) }
     let(:recipient) { create(:user) }
-    let(:conversation) { create(:conversation, sender: sender, recipient: recipient) }
+    let(:conversation) { create(:conversation, sender:, recipient:) }
 
     it 'returns the opposed user' do
       expect(conversation.opposed_user(sender)).to eq(recipient)

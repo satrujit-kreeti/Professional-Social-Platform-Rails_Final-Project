@@ -8,6 +8,6 @@ class CreateCertificates < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_reference :users, :certificate, foreign_key: true 
+    add_reference :users, :certificate, foreign_key: true
   end
 end

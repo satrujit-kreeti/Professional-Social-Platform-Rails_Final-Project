@@ -1,4 +1,4 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -80,17 +80,16 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
-    port:                 587,
-    domain:               'example.com',
-    user_name:            'satrucreation@gmail.com',
-    password:             'fajydvwiwohhtjfn',
-    authentication:       'plain',
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'example.com',
+    user_name: 'satrucreation@gmail.com',
+    password: 'fajydvwiwohhtjfn',
+    authentication: 'plain',
     enable_starttls_auto: true,
-    open_timeout:         5,
-    read_timeout:         5 }
+    open_timeout: 5,
+    read_timeout: 5
+  }
 
   config.action_cable.mount_path = '/cable'
-
-
 end
