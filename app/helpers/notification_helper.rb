@@ -3,7 +3,7 @@
 module NotificationHelper
   def send_notification(senders_id, recipients_id, bodys)
     Notification.create(sender_id: senders_id, recipient_id: recipients_id, body: bodys)
-    ActionCable.server.broadcast("notification_#{recipient_id}", {
+    ActionCable.server.broadcast("notification_#{recipients_id}", {
                                    sender_id: senders_id,
                                    message: bodys,
                                    recipient_id: recipients_id
