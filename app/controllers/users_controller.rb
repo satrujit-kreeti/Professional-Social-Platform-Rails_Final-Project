@@ -54,10 +54,7 @@ class UsersController < ApplicationController
   def delete_account
     @user = User.find(params[:id])
     User.transaction do
-      delete_friendships
-      purge_attachments
-      destroy_certificates
-      delete_posts
+      delete_attributes
       @user.destroy
       redirect_after_deletion
     rescue StandardError => e
@@ -75,6 +72,13 @@ class UsersController < ApplicationController
       certificates_attributes: %i[id name document],
       job_profiles_attributes: %i[id title _destroy]
     )
+  end
+
+  def delete_attributes
+    delete_friendships
+    purge_attachments
+    destroy_certificates
+    delete_posts
   end
 
   def update_params

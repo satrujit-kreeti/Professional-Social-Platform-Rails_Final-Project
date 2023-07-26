@@ -48,6 +48,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'debug'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'letter_opener'
@@ -67,9 +68,10 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'bcrypt'
 
-gem 'omniauth'
-
 gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-rails_csrf_protection'
+
+gem 'oauth2', '~> 1.0'
 
 gem 'htmlbeautifier'
 
@@ -80,3 +82,5 @@ gem 'faraday'
 gem 'actioncable'
 
 gem 'rubocop'
+
+gem 'down'

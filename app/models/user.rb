@@ -36,6 +36,13 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :job_profiles, allow_destroy: true
   before_save :mark_blank_job_profiles_for_destruction
 
+  def self.from_omniauth(auth)
+    find_or_create_by(email: auth.info.email) do |new_user|
+      new_user.username = "#{auth.info.first_name} #{auth.info.last_name}",
+                          new_user.email = auth.info.email
+    end
+  end
+
   def mark_blank_certificates_for_destruction
     certificates.each do |certificate|
       certificate.mark_for_destruction if certificate.name.blank? && certificate.document.blank?
@@ -61,7 +68,7 @@ class User < ApplicationRecord
   end
 
   def password_required?
-    return false if password.present?
+    return false unless password.present?
   end
 
   def compressed_profile_photo

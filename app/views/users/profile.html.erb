@@ -36,13 +36,17 @@
           </p>
           <%if current_user&.admin? == false%>
             <p><strong class="title">Qualification</strong>
-              <%= current_user.qualification %>
+              <% if current_user.qualification?%>
+                <%= current_user.qualification %>
+              <% else%>
+                <%= "No qualification is added" %>
+              <% end%>
             </p>
             <p><strong class="title">Experience</strong>
               <%= current_user.experience %>
             </p>
             <p class="mb-0"><strong class="title">Current Organization</strong>
-              <% if current_user.current_organization=="" %>
+              <% if current_user.current_organization==""  %>
                 <%= "Not working right now" %>
               <%else%>
                 <%= current_user.current_organization %>

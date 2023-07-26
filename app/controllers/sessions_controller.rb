@@ -22,44 +22,38 @@ class SessionsController < ApplicationController
     redirect_to root_path, notice: 'Logged out Successfully'
   end
 
-  # def linkedin
-  #   auth = request.env['omniauth.auth']
+  def linkedin
+    auth = request.env['omniauth.auth']
+    user = find_or_create_user_from_linkedin(auth)
+    if user
+      session[:user_id] = user.id
+      # redirect_to edit_user_path(current_user), notice: 'Logged in successfully.'
+      redirect_to home_path, notice: 'Logged in successfully.'
 
-  #   user = User.find_by(email: auth.info.email)
-  #   if user
-  #     session[:user_id] = user.id
-  #     redirect_to root_path, notice: 'Logged in successfully.'
-  #   else
-  #     user = User.create(
-  #       email: auth.info.email,
-  #       username: "#{auth.info.first_name} #{auth.info.last_name}"
-  #     )
-  #     if user.save
-  #       session[:user_id] = user.id
-  #       redirect_to root_path, notice: 'Account created and logged in successfully.'
-  #     else
-  #       redirect_to root_path, alert: 'Failed to create account.'
-  #     end
-  #   end
-  # end
+    else
+      redirect_to root_path, alert: 'Failed to create an account.'
+    end
+  end
 
   def failure
     flash[:alert] = 'There was an error while trying to authenticate your account.'
     redirect_to root_path
   end
 
-  # private
+  private
 
-  # def user_params(auth)
-  #   {
-  #     username: auth.info.name,
-  #     email: auth.info.email,
-  #     password: SecureRandom.hex(10),
-  #     linkedin_profile: auth.info.urls.public_profile,
-  #     current_organization: auth.extra.raw_info.positions.first.company.name,
-  #     skills: auth.extra.raw_info.skills.values.map { |skill| skill.skill.name }.join(','),
-  #     relevant_skill_notification: false,
-  #     profile_photo: auth.info.image
-  #   }
-  # end
+  def find_or_create_user_from_linkedin(auth)
+    User.where(email: auth.info.email).first_or_create do |new_user|
+      set_user_attributtes(auth, new_user)
+    end
+  end
+
+  def set_user_attributtes(auth, new_user)
+    new_user.username = "#{auth.info.first_name} #{auth.info.last_name}"
+    if auth.info.picture_url?
+      temp_file = Down.download(auth.info.picture_url)
+      new_user.profile_photo.attach(io: temp_file, filename: 'profile_photo.jpg')
+    end
+    new_user.password = SecureRandom.hex(10)
+  end
 end
