@@ -20,7 +20,6 @@ module Admin
 
     def destroy
       @job_role = JobRole.find(params[:id])
-
       if @job_role.destroy
         redirect_to admin_job_sectors_path, notice: 'Job role deleted successfully.'
       else
