@@ -28,7 +28,7 @@ Follow these steps to set up the application:
 3. Install JavaScript dependencies:
 
    ```bash
-   bundle install
+   yarn install
    ```
 
 4. Create the database:
