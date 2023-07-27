@@ -5,6 +5,10 @@
 Make sure your system meets the following requirements:
 
 - Ruby version: 3.2.2
+- Rails version: 6.1.7.4
+- Node version:16.20.1
+- Yarn version: 1.22.19
+- PostgresSQL version: 15.1
 - Database: PostgreSQL (or the database specified in `config/database.yml`)
 - Node.js and Yarn (for JavaScript dependencies)
 
