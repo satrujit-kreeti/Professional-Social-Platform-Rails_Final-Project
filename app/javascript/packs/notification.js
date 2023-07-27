@@ -1,32 +1,27 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const markAllReadButton = document.getElementById("mark-all-read-button");
+document.addEventListener("DOMContentLoaded", function () {
+  const markAllReadButton = document.getElementById("mark-all-read-button");
 
-    if (markAllReadButton){
-  
-    markAllReadButton.addEventListener('click', function() {
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-  
-      fetch('/mark_all_as_read', {
-        method: 'PATCH',
+  if (markAllReadButton) {
+    markAllReadButton.addEventListener("click", function () {
+      const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+
+      fetch("/mark_all_as_read", {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
         },
-        body: JSON.stringify({})
+        body: JSON.stringify({}),
       })
-      .then(response => {
-        if (response.ok) {
-
-            
-            location.reload()
-            
-        } else {
-        }
-      })
-      .catch(error => {
-      });
+        .then((response) => {
+          if (response.ok) {
+            location.reload();
+          } else {
+          }
+        })
+        .catch((error) => {});
     });
-    }
-
-  });
-  
+  }
+});

@@ -1,46 +1,44 @@
-import consumer from './consumer';
+import consumer from "./consumer";
 
-document.addEventListener('turbolinks:load', function() {
-  const notificationContainer = document.getElementById('notification-container');
-  const notificationIconBackground = document.getElementById('not-icon-back');
-  const notificationIcon = document.getElementById('not-icon');
+document.addEventListener("turbolinks:load", function () {
+  const notificationContainer = document.getElementById(
+    "notification-container"
+  );
+  const notificationIconBackground = document.getElementById("not-icon-back");
+  const notificationIcon = document.getElementById("not-icon");
   const markAllReadButton = document.getElementById("mark-all-read-button");
 
+  if (notificationContainer) {
+    const currentUserId = notificationContainer.dataset.currentuserid;
 
-  if (notificationContainer){
-  const currentUserId = notificationContainer.dataset.currentuserid;
+    consumer.subscriptions.create(
+      { channel: "NotificationChannel", sender_id: currentUserId },
+      {
+        connected() {},
 
-  consumer.subscriptions.create({ channel: 'NotificationChannel', sender_id: currentUserId }, {
-    connected() {
-      // Called when the subscription is ready for use on the server
-    },
+        disconnected() {},
 
-    disconnected() {
-      // Called when the subscription has been terminated by the server
-    },
+        received(data) {
+          const notificationElement = document.createElement("div");
+          notificationElement.innerText = data.message;
+          notificationElement.classList.add("notification", "text-dark", "p-2");
 
-    received(data) {
-      const notificationElement = document.createElement('div');
-      notificationElement.innerText = data.message;
-      notificationElement.classList.add('notification', 'text-dark' , 'p-2');
-      // notificationContainer.classList.add(p-2);
+          notificationIconBackground.classList.add("blue");
+          notificationIcon.classList.replace("text-dark", "text-light");
 
+          notificationIconBackground.addEventListener("click", function () {
+            notificationIconBackground.classList.remove("blue");
+            notificationIcon.classList.replace("text-light", "text-dark");
+          });
 
+          markAllReadButton.disabled = false;
 
-      notificationIconBackground.classList.add('blue');
-      notificationIcon.classList.replace('text-dark', 'text-light');
-      
-
-      notificationIconBackground.addEventListener('click', function() {
-        notificationIconBackground.classList.remove('blue');
-        notificationIcon.classList.replace('text-light', 'text-dark');
-      });
-
-      markAllReadButton.disabled = false;
-
-      // Add the notificationElement to your notification container in the DOM
-      notificationContainer.insertBefore(notificationElement, notificationContainer.firstChild);
-    }
-  });}
-
+          notificationContainer.insertBefore(
+            notificationElement,
+            notificationContainer.firstChild
+          );
+        },
+      }
+    );
+  }
 });

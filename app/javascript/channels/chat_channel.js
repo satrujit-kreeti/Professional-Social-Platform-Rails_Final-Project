@@ -19,7 +19,7 @@ document.addEventListener("turbolinks:load", () => {
       console.log("form");
 
       messageForm.addEventListener("submit", (event) => {
-        event.preventDefault(); // Prevent the default form submission
+        event.preventDefault(); 
 
         const formData = new FormData(messageForm);
 

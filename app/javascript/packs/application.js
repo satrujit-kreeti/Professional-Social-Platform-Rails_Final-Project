@@ -3,79 +3,76 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
-import * as ActiveStorage from "@rails/activestorage"
-import "channels"
-require("jquery")
+import Rails from "@rails/ujs";
+import Turbolinks from "turbolinks";
+import * as ActiveStorage from "@rails/activestorage";
+import "channels";
+require("jquery");
 
-Rails.start()
-Turbolinks.start()
-ActiveStorage.start()
-
-
+Rails.start();
+Turbolinks.start();
+ActiveStorage.start();
 
 document.addEventListener("turbolinks:load", () => {
-  const radioButtons = document.querySelectorAll("input[data-target='#yearsRangeField']");
+  const radioButtons = document.querySelectorAll(
+    "input[data-target='#yearsRangeField']"
+  );
   const organization = document.getElementById("organization");
 
-  if (radioButtons && organization){
+  if (radioButtons && organization) {
+    const fresherRadioButton = document.querySelector("input[value='fresher']");
+    const experiencedRadioButton = document.querySelector(
+      "input[value='experienced']"
+    );
+    const targetFieldId = fresherRadioButton.dataset.target;
+    const targetField = document.querySelector(targetFieldId);
 
-  const fresherRadioButton = document.querySelector("input[value='fresher']");
-  const experiencedRadioButton = document.querySelector("input[value='experienced']");
-  const targetFieldId = fresherRadioButton.dataset.target;
-  const targetField = document.querySelector(targetFieldId);
+    if (fresherRadioButton.checked) {
+      $(targetField).hide();
+      $(organization).hide();
+    } else {
+      $(targetField).slideDown();
+      $(organization).slideDown();
+    }
 
-  if (fresherRadioButton.checked) {
-    $(targetField).hide();
-    $(organization).hide();
-  } else {
-    $(targetField).slideDown();
-    $(organization).slideDown();
-  }
+    radioButtons.forEach(function (radioButton) {
+      radioButton.addEventListener("change", function () {
+        if (radioButton.value === "experienced" && radioButton.checked) {
+          $(targetField).slideDown();
+          $(organization).slideDown();
+        } else {
+          $(targetField).slideUp();
+          $(organization).slideUp();
+        }
 
-  // Add event listener for the radio buttons to handle visibility and experience value
-  radioButtons.forEach(function (radioButton) {
-    radioButton.addEventListener("change", function () {
-      // Toggle the visibility of the "Years Range" field based on the selected radio button
-      if (radioButton.value === "experienced" && radioButton.checked) {
-        $(targetField).slideDown();
-        $(organization).slideDown();
-      } else {
-        $(targetField).slideUp();
-        $(organization).slideUp();
-      }
-
-      // If "Fresher" is selected, remove the value of the "Years Range" dropdown
-      if (radioButton.value === "fresher" && radioButton.checked) {
-        const yearsRangeDropdown = document.getElementById("user_experience");
-        yearsRangeDropdown.value = "";
-      }
+        if (radioButton.value === "fresher" && radioButton.checked) {
+          const yearsRangeDropdown = document.getElementById("user_experience");
+          yearsRangeDropdown.value = "";
+        }
+      });
     });
-  });
-}
+  }
 });
 
 document.addEventListener("turbolinks:load", () => {
   const addJobProfileButton = document.getElementById("add-job-profile");
   const jobProfilesFields = document.getElementById("job_profiles-fields");
-  const enableJobProfilesCheckbox = document.getElementById("enable-job-profiles");
+  const enableJobProfilesCheckbox = document.getElementById(
+    "enable-job-profiles"
+  );
 
   if (addJobProfileButton && jobProfilesFields && enableJobProfilesCheckbox) {
-    // Function to enable/disable the "Add Job Profile" button
     const toggleAddJobProfileButton = () => {
       if (enableJobProfilesCheckbox.checked) {
         addJobProfileButton.removeAttribute("disabled");
       } else {
         addJobProfileButton.setAttribute("disabled", "disabled");
-        // Remove any dynamically added job profile fields
         while (jobProfilesFields.children.length > 1) {
           jobProfilesFields.lastElementChild.remove();
         }
       }
     };
 
-    // Listen for changes in the checkbox state
     enableJobProfilesCheckbox.addEventListener("change", () => {
       toggleAddJobProfileButton();
     });
@@ -84,11 +81,13 @@ document.addEventListener("turbolinks:load", () => {
       if (enableJobProfilesCheckbox.checked) {
         const timestamp = new Date().getTime();
         const regexp = new RegExp(timestamp, "g");
-        jobProfilesFields.insertAdjacentHTML("beforeend", jobProfileFields(timestamp));
+        jobProfilesFields.insertAdjacentHTML(
+          "beforeend",
+          jobProfileFields(timestamp)
+        );
       }
     });
 
-    // Check the initial state of the checkbox on page load
     toggleAddJobProfileButton();
   }
 
@@ -103,13 +102,6 @@ document.addEventListener("turbolinks:load", () => {
     `;
   }
 });
-
-
-
-
-
-
-
 
 document.addEventListener("turbolinks:load", () => {
   const jobProfilesList = document.getElementById("job-profiles-list");
@@ -126,7 +118,9 @@ document.addEventListener("turbolinks:load", () => {
   }
 
   function toggleEditForm(jobProfileId, jobProfileTitle) {
-    const jobProfileItem = document.querySelector(`.job-profile-item[data-job-profile-id="${jobProfileId}"]`);
+    const jobProfileItem = document.querySelector(
+      `.job-profile-item[data-job-profile-id="${jobProfileId}"]`
+    );
 
     if (jobProfileItem) {
       const editFormHtml = `
@@ -144,7 +138,9 @@ document.addEventListener("turbolinks:load", () => {
       const saveButton = jobProfileItem.querySelector(".save-job-profile");
       if (saveButton) {
         saveButton.addEventListener("click", () => {
-          const titleInput = jobProfileItem.querySelector(`#job_profile_title_${jobProfileId}`);
+          const titleInput = jobProfileItem.querySelector(
+            `#job_profile_title_${jobProfileId}`
+          );
           updateJobProfile(jobProfileId, titleInput.value);
         });
       }
@@ -165,7 +161,9 @@ document.addEventListener("turbolinks:load", () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          const jobProfileItem = document.querySelector(`.job-profile-item[data-job-profile-id="${jobProfileId}"]`);
+          const jobProfileItem = document.querySelector(
+            `.job-profile-item[data-job-profile-id="${jobProfileId}"]`
+          );
           jobProfileItem.innerHTML = `${data.job_profile.title} <button type="button" class="btn btn-primary btn-sm edit-job-profile">Edit</button> <a href="/job_profiles/${jobProfileId}" data-confirm="Are you sure you want to delete this job profile?" data-method="delete" class="btn btn-danger btn-sm">Delete</a>`;
         } else {
           alert("Failed to update job profile. Please try again.");
@@ -173,8 +171,9 @@ document.addEventListener("turbolinks:load", () => {
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("An error occurred while updating the job profile. Please try again.");
+        alert(
+          "An error occurred while updating the job profile. Please try again."
+        );
       });
   }
 });
-
