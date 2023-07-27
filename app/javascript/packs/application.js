@@ -13,20 +13,14 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
-// document.addEventListener("turbolinks:load", () => {
-//     const notificationContainer = document.querySelector(".notification-container-flash");
 
-//     setTimeout(() => {
-//       notificationContainer.style.display = "none";
-//     }, 2000);
-// });
 
 document.addEventListener("turbolinks:load", () => {
-  // Find the radio buttons with data-target attribute
   const radioButtons = document.querySelectorAll("input[data-target='#yearsRangeField']");
   const organization = document.getElementById("organization");
 
-  // Initially hide the "Years Range" field if the "Fresher" radio button is checked
+  if (radioButtons && organization){
+
   const fresherRadioButton = document.querySelector("input[value='fresher']");
   const experiencedRadioButton = document.querySelector("input[value='experienced']");
   const targetFieldId = fresherRadioButton.dataset.target;
@@ -59,6 +53,7 @@ document.addEventListener("turbolinks:load", () => {
       }
     });
   });
+}
 });
 
 document.addEventListener("turbolinks:load", () => {

@@ -1,21 +1,17 @@
 import consumer from './consumer';
-console.log("hi")
 
 document.addEventListener('turbolinks:load', function() {
-  console.log("hi again")
-
   const notificationContainer = document.getElementById('notification-container');
   const notificationIconBackground = document.getElementById('not-icon-back');
   const notificationIcon = document.getElementById('not-icon');
   const markAllReadButton = document.getElementById("mark-all-read-button");
 
 
-
+  if (notificationContainer){
   const currentUserId = notificationContainer.dataset.currentuserid;
 
   consumer.subscriptions.create({ channel: 'NotificationChannel', sender_id: currentUserId }, {
     connected() {
-      console.log("Connected")
       // Called when the subscription is ready for use on the server
     },
 
@@ -24,7 +20,6 @@ document.addEventListener('turbolinks:load', function() {
     },
 
     received(data) {
-      console.log("Notification received:", data);
       const notificationElement = document.createElement('div');
       notificationElement.innerText = data.message;
       notificationElement.classList.add('notification', 'text-dark' , 'p-2');
@@ -46,6 +41,6 @@ document.addEventListener('turbolinks:load', function() {
       // Add the notificationElement to your notification container in the DOM
       notificationContainer.insertBefore(notificationElement, notificationContainer.firstChild);
     }
-  });
+  });}
 
 });

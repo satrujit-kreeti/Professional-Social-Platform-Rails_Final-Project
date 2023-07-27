@@ -4,6 +4,8 @@ document.addEventListener("turbolinks:load", () => {
   
     let jobRoleIndex = 0;
   
+  
+    if (addJobRoleLink && jobRolesContainer){
     function addJobRoleFields() {
       const html = `<div class="job_role_fields mb-3">
                       <label for="job_sector_job_roles_attributes_${jobRoleIndex}_name" class= "form-label">
@@ -16,7 +18,9 @@ document.addEventListener("turbolinks:load", () => {
       console.log("clicked");
     }
     addJobRoleFields();
+
     addJobRoleLink.addEventListener("click", addJobRoleFields);
+    }
   });
   
 
@@ -65,6 +69,9 @@ if (jobSectorSelect && jobRoleSelect) { // Check if the elements exist on the pa
 document.addEventListener("turbolinks:load", () => {
   const addCertificateButton = document.getElementById('add-certificate');
   const certificatesFields = document.getElementById('certificates-fields');
+
+
+  if (addCertificateButton && certificatesFields){
   
 
   addCertificateButton.addEventListener('click', function () {
@@ -83,6 +90,7 @@ document.addEventListener("turbolinks:load", () => {
                       </div>`;
     certificatesFields.insertAdjacentHTML('beforeend', template);
   });
+}
 });
 
 

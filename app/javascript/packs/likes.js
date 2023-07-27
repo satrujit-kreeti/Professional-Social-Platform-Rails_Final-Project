@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const postContainers = document.getElementsByClassName("posts");
+  const likeButtons = document.querySelector(".like-button")
+
+  if (postContainers && likeButtons){
 
   for (let i = 0; i < postContainers.length; i++) {
     const likeButton = postContainers[i].querySelector(".like-button");
@@ -13,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(function() {
       updateLikeCount(postId, likeCountElement);
     }, 5000);
-  }
+  }}
 });
 
 function handleAjax(likeButton, icon, likeCountElement, postId){

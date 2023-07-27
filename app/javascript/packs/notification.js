@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const markAllReadButton = document.getElementById("mark-all-read-button");
+
+    if (markAllReadButton){
   
     markAllReadButton.addEventListener('click', function() {
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .catch(error => {
       });
     });
-  
+    }
 
   });
   
