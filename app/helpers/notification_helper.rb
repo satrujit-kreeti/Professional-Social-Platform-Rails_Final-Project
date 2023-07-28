@@ -54,7 +54,7 @@ module NotificationHelper
 
   def find_users_with_matching_skills(users, required_skills)
     users.select do |user|
-      user_skills = user.skills.split(',').map(&:strip)
+      user_skills = user.skills.nil? ? [] : user.skills.split(',').map(&:strip)
       (user_skills & required_skills).any?
     end
   end
