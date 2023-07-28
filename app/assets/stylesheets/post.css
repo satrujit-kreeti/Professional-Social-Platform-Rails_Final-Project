@@ -15,6 +15,24 @@
     background-color: white;
 }
 
+
+.posts-2{
+    display: flex;
+    padding: 1.5rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.4rem;
+    border-radius: 0.8rem;
+    /* border: 1px solid var(--secondary-text, #D2D2D2); */
+    -webkit-border-radius: 0.8rem;
+    -moz-border-radius: 0.8rem;
+    -ms-border-radius: 0.8rem;
+    -o-border-radius: 0.8rem;
+
+    background-color: white;
+}
+
 .post-content{
     color: #000;
     font-size: 1.2rem;

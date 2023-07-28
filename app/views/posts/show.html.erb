@@ -55,7 +55,7 @@
       </div>
     </div>
   </div>
-  <div class= "profile1 posts mt-2 gap-4">
+  <div class= "profile1 posts-2 mt-2 gap-4">
     <span class="title-header">Comments</span>
     <%= render partial: 'comments/comments_list', locals: { comment: @post.comments } %>
     <% if current_user&.admin? == false %>
