@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const postContainers = document.getElementsByClassName("posts");
   const likeButtons = document.querySelector(".like-button");
+  const deleteButtons = document.querySelector(".delete-button");
 
-  if (postContainers && likeButtons) {
+  if ((postContainers && likeButtons) || deleteButtons) {
     for (let i = 0; i < postContainers.length; i++) {
       const likeButton = postContainers[i].querySelector(".like-button");
       const icon = postContainers[i].querySelector(".icon");

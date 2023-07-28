@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class PostsController < ApplicationController
-  before_action :require_admin, only: %i[index destroy]
-  before_action :require_login, except: %i[index show]
+  before_action :require_login
 
   def new
     @user = User.find(params[:user_id])
@@ -49,11 +48,5 @@ class PostsController < ApplicationController
     return if current_user
 
     redirect_to root_path, notice: 'Please login to access this page'
-  end
-
-  def require_admin
-    return if current_user&.admin?
-
-    redirect_to root_path, notice: 'You are not authorized to access this page'
   end
 end
