@@ -59,6 +59,13 @@ Follow these steps to set up the application:
    rails db:seed
    ```
 
+8. Create Index for data in elastic search:
+
+   ```bash
+   rails c
+   User.import
+   ```
+
 ## Running the Application
 
 To start the Rails server, use the following command:

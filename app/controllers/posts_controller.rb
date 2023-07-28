@@ -15,6 +15,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to home_path, notice: 'Post created successfully.'
     else
+      flash.now[:alert] = 'Post field can\'t be empty'
       render :new
     end
   end
