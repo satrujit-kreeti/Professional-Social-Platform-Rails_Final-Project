@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ConversationsController < ApplicationController
+  before_action :check_admin
   before_action :restrict_messages, only: [:show]
 
   def index
@@ -36,5 +37,9 @@ class ConversationsController < ApplicationController
     return unless @id.sender_id != current_user.id && @id.recipient_id != current_user.id
 
     redirect_to '/', notice: 'Cannot show messages'
+  end
+
+  def check_admin
+    redirect_to home_path, notice: 'Access denied, admins can\'t perform this action.' if current_user&.admin?
   end
 end

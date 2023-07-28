@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   require 'elasticsearch'
   before_action :require_login, only: %i[home profile delete_account search]
-  before_action :require_admin, only: %i[users_list search]
+  before_action :require_admin, only: %i[users_list search], except: %i[connect disconnect connections]
 
   def index
     @users = User.all
@@ -116,6 +116,6 @@ class UsersController < ApplicationController
   def require_admin
     return if current_user&.admin?
 
-    redirect_to root_path, notice: 'Access denied. Only admins can perform this action.'
+    redirect_to home_path, notice: 'Access denied. Only admins can perform this action.'
   end
 end

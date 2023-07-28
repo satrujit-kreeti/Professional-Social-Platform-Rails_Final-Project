@@ -2,6 +2,7 @@
 
 class CommentsController < ApplicationController
   before_action :require_login
+  before_action :check_admin
 
   def new
     @post = Post.find(params[:post_id])
@@ -30,5 +31,11 @@ class CommentsController < ApplicationController
     return if current_user
 
     redirect_to root_path, notice: 'Please login to access this page'
+  end
+
+  def check_admin
+    return unless current_user&.admin?
+
+    redirect_to home_path, alert: 'Admins are not allowed to access this page.'
   end
 end

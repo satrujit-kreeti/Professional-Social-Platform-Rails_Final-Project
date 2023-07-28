@@ -6,7 +6,7 @@ module UsersControllerConcern
 
   included do
     before_action :require_login, only: %i[home profile delete_account search]
-    before_action :require_admin, only: %i[users_list search]
+    before_action :require_admin, only: %i[users_list search], except: %i[connect disconnect connections]
   end
 
   def profiles
@@ -60,6 +60,7 @@ module UsersControllerConcern
 
   def connections
     @user = User.find(params[:id])
+    redirect_to home_path, notice: 'Access denied. Admins can\'t perform this action.' if current_user&.admin?
     @friends = @user.friends.where(friendships: { connected: true })
     @pending_requests = Friendship.where(friend_id: @user.id, connected: false)
     @requests = @user.friends.where(friendships: { connected: false })

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class FriendshipsController < ApplicationController
+  before_action :check_admin
+
   def pending_requests
     @users = User.where(role: 'user')
     @user = current_user
@@ -20,5 +22,13 @@ class FriendshipsController < ApplicationController
     @friendship.destroy
 
     redirect_to pending_requests_path, notice: 'Friendship request rejected.'
+  end
+
+  private
+
+  def check_admin
+    return unless current_user&.admin?
+
+    redirect_to home_path, alert: 'Admins are not allowed to access this page.'
   end
 end
