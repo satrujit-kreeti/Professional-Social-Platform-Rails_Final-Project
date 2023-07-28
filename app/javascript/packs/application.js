@@ -14,6 +14,18 @@ Turbolinks.start();
 ActiveStorage.start();
 
 document.addEventListener("turbolinks:load", () => {
+  const notificationContainer = document.querySelector(
+    ".notification-container-flash"
+  );
+
+  if (notificationContainer) {
+    setTimeout(() => {
+      notificationContainer.style.display = "none";
+    }, 2000);
+  }
+});
+
+document.addEventListener("turbolinks:load", () => {
   const radioButtons = document.querySelectorAll(
     "input[data-target='#yearsRangeField']"
   );
