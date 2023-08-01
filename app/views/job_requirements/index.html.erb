@@ -11,9 +11,9 @@
           <%= link_to "Create Job", new_job_requirement_path, class: "btn full-btn btn-success w-100 mb-3" %>
         </div>
         <% if current_user.skills?%>
-          <% user_skills = current_user.skills.split(',').map(&:strip) %>
+          <% user_skills = current_user.skills.split(',').map(&:strip).map(&:downcase) %>
           <% @job_requirements.where(status: 'approved').order(created_at: :desc).each do |job_requirement| %>
-            <% requirement_skills = job_requirement.skills_required.split(',').map(&:strip) %>
+            <% requirement_skills = job_requirement.skills_required.split(',').map(&:strip).map(&:downcase) %>
             <% if (user_skills & requirement_skills).any? %>
               <%= render 'job_requirements', job_requirement: job_requirement %>
             <% end %>

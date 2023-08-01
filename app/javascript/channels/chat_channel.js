@@ -19,7 +19,7 @@ document.addEventListener("turbolinks:load", () => {
       console.log("form");
 
       messageForm.addEventListener("submit", (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const formData = new FormData(messageForm);
 
@@ -40,7 +40,6 @@ document.addEventListener("turbolinks:load", () => {
       { channel: "ChatChannel", conversation_id: conversationId },
       {
         connected() {
-          console.log("Connected to server");
           scrollToBottom();
         },
         received: function (data) {

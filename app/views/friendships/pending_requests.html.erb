@@ -53,11 +53,11 @@
     <hr class="line-break">
     <div class="list-container">
       <% if current_user.skills?%>
-        <% user_skills = current_user.skills.split(',').map(&:strip) %>
+        <% user_skills = current_user.skills.split(',').map(&:strip).map(&:downcase) %>
         <% @users.reverse.each do |u| %>
           <% unless @user.friends.include?(u) || u.id == current_user.id  %>
             <%if u.skills&.present?%>
-              <% suggested_user_skills = u.skills.split(',').map(&:strip) %>
+              <% suggested_user_skills = u.skills.split(',').map(&:strip).map(&:downcase) %>
               <% if (user_skills & suggested_user_skills).any? %>
                 <div class="list-item">
                   <div class="details-container">
@@ -83,7 +83,7 @@
             <% end %>
           <% end %>
         <% end %>
-        <% if @users.none? { |u| !(user_skills & u.skills.split(',').map(&:strip)).empty? && !@user.friends.include?(u) && u.id != current_user.id } %>
+        <% if @users.none? { |u| !(user_skills & u.skills.split(',').map(&:strip).map(&:downcase)).empty? && !@user.friends.include?(u) && u.id != current_user.id } %>
           <div class="list-container gap-0">
             <div class="icon">
               <i class="material-icons no-connection">sentiment_dissatisfied</i>
