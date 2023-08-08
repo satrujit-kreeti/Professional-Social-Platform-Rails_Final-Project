@@ -27,17 +27,11 @@ class SessionsController < ApplicationController
     user = find_or_create_user_from_linkedin(auth)
     if user
       session[:user_id] = user.id
-      # redirect_to edit_user_path(current_user), notice: 'Logged in successfully.'
       redirect_to home_path, notice: 'Logged in successfully.'
 
     else
       redirect_to root_path, alert: 'Failed to create an account.'
     end
-  end
-
-  def failure
-    flash[:alert] = 'There was an error while trying to authenticate your account.'
-    redirect_to root_path
   end
 
   private

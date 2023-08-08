@@ -12,7 +12,7 @@ RSpec.describe JobRole, type: :model do
 
   describe 'validations' do
     it 'is valid with a name and a job_sector' do
-      job_sector = create(:job_sector) # Assuming you have a valid job_sector factory defined
+      job_sector = create(:job_sector)
       job_role = JobRole.new(name: 'Software Engineer', job_sector:)
       expect(job_role).to be_valid
     end

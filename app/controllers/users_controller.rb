@@ -40,7 +40,6 @@ class UsersController < ApplicationController
 
     User.__elasticsearch__.create_index! force: true
     User.import
-    # sleep 1
 
     if @user.update(update_params)
       redirect_to profile_path, notice: 'User was successfully updated.'

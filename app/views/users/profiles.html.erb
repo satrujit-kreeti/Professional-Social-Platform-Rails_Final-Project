@@ -30,7 +30,7 @@
           <%else%>
             <% if current_user.friends.include?(@user) %>
               <% friendship = current_user.friendships.find_by(friend_id: @user.id) %>
-              <% if friendship.connected? %>
+              <% if friendship.connected? == true %>
                 <%= link_to 'Message', new_conversation_path(recipient_id: @user.id), class: "btn full-btn btn-primary btn-success w-100" , method: :get%>
                 <%= link_to 'Disconnect', disconnect_user_path(@user), method: :delete, class: "btn  full-btn btn-danger w-100" %>
               <% else %>

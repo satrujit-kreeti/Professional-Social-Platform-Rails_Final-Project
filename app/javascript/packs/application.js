@@ -138,7 +138,7 @@ document.addEventListener("turbolinks:load", () => {
       const editFormHtml = `
         <form class="edit-job-profile-form" data-job-profile-id="${jobProfileId}">
           <div class="mb-3">
-            <label class="form-label" for="job_profile_title_${jobProfileId}">Job Title</label>
+            <label class="form-label" for="job_profile_title_${jobProfileId}">Job Titles</label>
             <input class="form-control" type="text" name="job_profile[title]" id="job_profile_title_${jobProfileId}" value="${jobProfileTitle}">
           </div>
           <button type="button" class="btn btn-success btn-sm save-job-profile">Done</button>

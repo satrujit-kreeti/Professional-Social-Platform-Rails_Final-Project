@@ -1,14 +1,17 @@
 <% if comment.present? %>
   <% comment.reverse_each do |c|%>
-    <div class="d-flex flex-row gap-2 align-items-center w-100">
-      <% if c.user.profile_photo.attached? %>
-        <%= image_tag c.user.compressed_profile_photo, class: 'rounded-circle avatar-image comment-avatar' %>
-      <% else %>
-        <div class="default-profile-picture small-default-profile">
-          <i class="fas fa-user "></i>
-        </div>
-      <% end %>
-      <span><%= c.content %></span>
+    <div class="d-flex flex-column gap-2">
+      <div class="d-flex flex-row gap-2 align-items-center w-100">
+        <% if c.user.profile_photo.attached? %>
+          <%= image_tag c.user.compressed_profile_photo, class: 'rounded-circle avatar-image comment-avatar' %>
+        <% else %>
+          <div class="default-profile-picture small-default-profile">
+            <i class="fas fa-user "></i>
+          </div>
+        <% end %>
+        <strong class= "title-text"><%= c.user.username%></strong>
+        <span><%= c.content %></span>
+      </div>
     </div>
   <%end%>
 <% else%>

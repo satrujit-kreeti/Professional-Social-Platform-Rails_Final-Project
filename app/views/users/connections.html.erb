@@ -27,7 +27,7 @@
             <div class="details-container">
               <%= link_to 'View profile', user_profile_path(f), class: "btn secondary-btn btn-primary" , method: :get%>
               <%= link_to 'Message', new_conversation_path(recipient_id: f.id), class: "btn secondary-btn btn-primary btn-success" , method: :get%>
-              <%= link_to 'Disconnect', disconnect_user_path(f), method: :post, class: "btn secondary-btn btn-primary btn-danger" %>
+              <%= link_to 'Disconnect', disconnect_user_path(f), method: :post, data: { confirm: 'Are you sure you want to disconnect from this user?' }, class: "btn secondary-btn btn-primary btn-danger" %>
             </div>
           </div>
         <% end %>

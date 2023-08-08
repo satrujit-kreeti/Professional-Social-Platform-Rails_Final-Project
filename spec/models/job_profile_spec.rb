@@ -12,7 +12,7 @@ RSpec.describe JobProfile, type: :model do
 
   describe 'validations' do
     it 'is valid with a user' do
-      user = create(:user) # Assuming you have a valid user factory defined
+      user = create(:user)
       job_profile = JobProfile.new(user:)
       expect(job_profile).to be_valid
     end

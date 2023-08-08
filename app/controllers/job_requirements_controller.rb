@@ -29,6 +29,7 @@ class JobRequirementsController < ApplicationController
       send_job_post_creation_notification
       redirect_to job_requirements_path, notice: 'Job requirement created successfully.'
     else
+      flash[:alert] = @job_requirement.errors.full_messages.join(', ')
       render :new
     end
   end

@@ -24,7 +24,7 @@
                 </div>
               <% end %>
               <div class="secondary-details-container">
-                <%= link_to requested_user.username, user_path(requested_user), class:'title-text' , method: :get%>
+                <%= link_to requested_user.username, user_profile_path(requested_user), class:'title-text' , method: :get%>
                 <span class="description-text">
                   <%= requested_user.current_organization %>
                 </span>
@@ -32,7 +32,7 @@
             </div>
             <div class="details-container">
               <%= button_to "Approve", approve_friendship_path(request), method: :patch, class: "btn secondary-btn btn-primary btn-success" %>
-              <%= button_to "Reject", reject_friendship_path(request), method: :delete, class: "btn secondary-btn btn-primary btn-danger" %>
+              <%= button_to "Reject", reject_friendship_path(request), method: :delete, data: { confirm: 'Are you sure you want to reject connection request from this user?' }, class: "btn secondary-btn btn-primary btn-danger" %>
             </div>
           </div>
         <% end %>

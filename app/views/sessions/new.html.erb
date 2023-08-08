@@ -3,11 +3,17 @@
     <h2 class="mb-3 mx-auto">Login</h2>
     <%= form_tag login_path do %>
       <div class="mb-3">
-        <%= label_tag :email, "Email" , class: 'form-label' %>
+        <div class="d-flex flex-row align-items-center gap-1">
+          <%= label_tag :email, "Email" , class: 'form-label' %>
+          <span class="star">*</span>
+        </div>
         <%= email_field_tag :email,nil, class: 'form-control' %>
       </div>
       <div class="mb-3">
-        <%= label_tag :password, "Password" , class: 'form-label' %>
+        <div class="d-flex flex-row align-items-center gap-1">
+          <%= label_tag :password, "Password" , class: 'form-label' %>
+          <span class="star">*</span>
+        </div>
         <%= password_field_tag :password, nil, class: 'form-control' %>
       </div>
       <%= submit_tag "Login" , class: 'btn full-btn btn-primary btn-lg w-100 mb-3' %>

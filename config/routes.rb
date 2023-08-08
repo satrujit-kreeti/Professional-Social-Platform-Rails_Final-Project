@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# rubocop:disable all
 
 Rails.application.routes.draw do
   get '/auth/linkedin/callback', to: 'sessions#linkedin', as: 'linkedin'
@@ -20,14 +20,16 @@ Rails.application.routes.draw do
 
   get '/home/:id/profiles', to: 'users#profiles', as: 'user_profile'
 
+  get '/edit_password', to: 'users#edit_password', as: 'edit_password_user'
+
   resources :users do
     member do
       post 'report'
-      get 'edit_password'
       patch 'update_password'
       get 'connect', to: 'users#connect'
       post 'connect', to: 'users#connect'
       match 'disconnect', to: 'users#disconnect', via: %i[delete get post]
+      delete :remove_cv
     end
     get 'connections', on: :member
   end
@@ -44,7 +46,7 @@ Rails.application.routes.draw do
     resources :likes, only: %i[create index]
   end
 
-  get '/users/:id/connections', to: 'users#connections', as: 'user_connections'
+  get '/connections', to: 'users#connections', as: 'user_connections'
 
   get '/pending-requests', to: 'friendships#pending_requests', as: 'pending_requests'
   patch '/friendships/:id/approve', to: 'friendships#approve', as: 'approve_friendship'

@@ -59,7 +59,7 @@ module UsersControllerConcern
   end
 
   def connections
-    @user = User.find(params[:id])
+    @user = current_user
     redirect_to home_path, notice: 'Access denied. Admins can\'t perform this action.' if current_user&.admin?
     @friends = @user.friends.where(friendships: { connected: true })
     @pending_requests = Friendship.where(friend_id: @user.id, connected: false)
@@ -74,17 +74,20 @@ module UsersControllerConcern
     redirect_to @user
   end
 
+  def remove_cv
+    current_user.cv&.purge
+    redirect_to profile_path, notice: 'CV removed successfully!'
+  end
+
   def edit_password
     @user = current_user
   end
 
   def update_password
     if current_user.update(password_params)
-      # Successful password update
       flash[:notice] = 'Password updated successfully.'
       redirect_to root_path
     else
-      # If there are validation errors, render the password change form again
       render :edit_password
     end
   end

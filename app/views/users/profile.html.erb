@@ -131,8 +131,11 @@
                 <% end %>
               </div>
               <% if current_user.cv.attached? %>
-                <%= link_to 'Download CV' , rails_blob_url(current_user.cv , disposition: "attachment"), class: 'btn full-btn btn-outline-primary mt-4' , method: :get,
-                target: '_blank' %>
+                <div class="profile-4 gap-2">
+                  <%= link_to 'Remove CV' , remove_cv_user_path(current_user), class: 'btn full-btn btn-outline-danger mt-4' , method: :delete, data: { confirm: 'Are you sure you want to remove your CV?' } %>
+                  <%= link_to 'Download CV' , rails_blob_url(current_user.cv , disposition: "attachment"), class: 'btn full-btn btn-outline-primary mt-4' , method: :get,
+                  target: '_blank' %>
+                </div>
               <% else %>
                 <%= "Please upload your CV" %>
               <% end %>

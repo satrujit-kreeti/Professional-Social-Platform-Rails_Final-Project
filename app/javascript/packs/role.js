@@ -64,16 +64,15 @@ document.addEventListener("turbolinks:load", () => {
     addCertificateButton.addEventListener("click", function () {
       const time = new Date().getTime();
       const template = `<div class="certificate-fields">
-                        <hr>
-                        <div class="mb-3">
-                          <label class="form-label">Certificate Name</label>
-                          <input type="text" name="user[certificates_attributes][${time}][name]" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label">Upload Certificate</label>
-                          <input type="file" name="user[certificates_attributes][${time}][document]" accept="application/pdf,image/jpeg,image/png" class="form-control">
-                        </div>
-                        
+                          <hr>
+                          <div class="mb-3">
+                            <label class="form-label">Certificate Names</label>
+                            <input type="text" name="user[certificates_attributes][${time}][name]" class="form-control">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Upload Certificates</label>
+                            <input type="file" name="user[certificates_attributes][${time}][document]" accept="application/pdf,image/jpeg,image/png" class="form-control">
+                          </div>
                       </div>`;
       certificatesFields.insertAdjacentHTML("beforeend", template);
     });

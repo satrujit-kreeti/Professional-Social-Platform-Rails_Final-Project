@@ -52,7 +52,12 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'letter_opener'
+  gem 'rails-controller-testing'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
+
+  gem 'rspec'
+  gem 'rspec-support'
 end
 
 group :test do

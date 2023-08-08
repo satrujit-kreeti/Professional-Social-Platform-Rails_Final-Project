@@ -42,7 +42,7 @@
     <%if current_user&.admin?%>
       <div class="d-flex flex-row gap-3 mt-3 w-100">
         <%= link_to 'Approve', approve_job_requirement_path(@job_requirement), method: :patch , class: "btn secondary-btn btn-success w-100"%>
-        <%= link_to 'Reject', reject_job_requirement_path(@job_requirement), method: :patch, class: "btn secondary-btn btn-danger w-100" %>
+        <%= link_to 'Reject', reject_job_requirement_path(@job_requirement), method: :patch, data: { confirm: 'Are you sure you want to reject this connection request?' }, class: "btn secondary-btn btn-danger w-100" %>
       </div>
     <%end%>
   </div>
