@@ -71,9 +71,9 @@ rails s
 
 | Role  | Email             | Password |
 | ----- | ----------------- | -------- |
-| Admin | admin@example.com | Super@71 |
-| User  | user1@example.com | Super@71 |
-| User  | user2@example.com | Super@71 |
-| User  | user3@example.com | Super@71 |
+| Admin | ```admin@example.com``` | ```Super@71``` |
+| User  | ```user1@example.com``` | ```Super@71``` |
+| User  | ```user2@example.com``` | ```Super@71``` |
+| User  | ```user3@example.com``` | ```Super@71``` |
 
 For other data follow seeds.rb file
