@@ -22,10 +22,10 @@ document.addEventListener("turbolinks:load", function () {
           const notificationElement = document.createElement("div");
           notificationElement.innerText = data.message;
           notificationElement.classList.add("notification", "text-dark", "p-2");
-
-          notificationIconBackground.classList.add("blue");
-          notificationIcon.classList.replace("text-dark", "text-light");
-
+          if (!notificationIconBackground.classList.contains("blue")) {
+            notificationIconBackground.classList.add("blue");
+            notificationIcon.classList.replace("text-dark", "text-light");
+          }
           notificationIconBackground.addEventListener("click", function () {
             notificationIconBackground.classList.remove("blue");
             notificationIcon.classList.replace("text-light", "text-dark");

@@ -88,6 +88,7 @@ module UsersControllerConcern
       flash[:notice] = 'Password updated successfully.'
       redirect_to root_path
     else
+      flash[:alert] = current_user.errors.full_messages.join(', ')
       render :edit_password
     end
   end

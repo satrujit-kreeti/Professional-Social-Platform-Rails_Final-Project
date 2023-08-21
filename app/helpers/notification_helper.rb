@@ -33,8 +33,17 @@ module NotificationHelper
     send_notification(current_user.id, user.id, "Please review #{current_user.username} new job post")
   end
 
+  def send_post_creation_notification
+    user = User.find_by(role: 'admin')
+    send_notification(current_user.id, user.id, "Please review #{current_user.username} new post")
+  end
+
   def send_job_post_approve_notification(user_id)
     send_notification(current_user.id, user_id, 'Your job post is approved')
+  end
+
+  def send_post_approve_notification(user_id)
+    send_notification(current_user.id, user_id, 'Your post is approved')
   end
 
   def send_new_chat_notification(user)

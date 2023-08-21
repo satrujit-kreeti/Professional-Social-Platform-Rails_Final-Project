@@ -7,15 +7,15 @@ end
 create_user(
   username: 'admin',
   email: 'admin@example.com',
-  password: 'password',
+  password: 'Super@71',
   role: 'admin'
 )
 
 users_data = [
   {
-    username: 'user1',
+    username: 'userone',
     email: 'user1@example.com',
-    password: 'password',
+    password: 'Super@71',
     linkedin_profile: 'https://www.linkedin.com/in/user1',
     qualification: 'Computer Science Graduate',
     experience: '2 years',
@@ -26,9 +26,9 @@ users_data = [
     report: 0
   },
   {
-    username: 'user2',
+    username: 'usertwo',
     email: 'user2@example.com',
-    password: 'password',
+    password: 'Super@71',
     linkedin_profile: 'https://www.linkedin.com/in/user2',
     qualification: 'Software Engineer',
     experience: '3 years',
@@ -39,9 +39,9 @@ users_data = [
     report: 0
   },
   {
-    username: 'user3',
+    username: 'userthree',
     email: 'user3@example.com',
-    password: 'password',
+    password: 'Super@71',
     linkedin_profile: 'https://www.linkedin.com/in/user3',
     qualification: 'Web Developer',
     experience: '1 year',
@@ -59,7 +59,7 @@ users_data.each do |user_data|
 end
 
 def create_post(user, content)
-  user.posts.create!(content:)
+  user.posts.create!(content:, status: %w[pending approved rejected].sample)
 end
 
 users = User.where.not(role: 'admin')
@@ -71,6 +71,8 @@ users.each do |user|
 end
 
 def create_comment(user, post, content)
+  return unless post.approved?
+
   user.comments.create!(post:, content:)
 end
 
@@ -179,9 +181,9 @@ end
 
 users_data = [
   {
-    username: 'user4',
+    username: 'userfour',
     email: 'user4@example.com',
-    password: 'password',
+    password: 'Super@71',
     linkedin_profile: 'https://www.linkedin.com/in/user1',
     qualification: 'Computer Science Graduate',
     experience: '2 years',
@@ -192,9 +194,9 @@ users_data = [
     report: 0
   },
   {
-    username: 'user5',
+    username: 'userfive',
     email: 'user5@example.com',
-    password: 'password',
+    password: 'Super@71',
     linkedin_profile: 'https://www.linkedin.com/in/user2',
     qualification: 'Software Engineer',
     experience: '3 years',
@@ -205,9 +207,9 @@ users_data = [
     report: 0
   },
   {
-    username: 'user6',
+    username: 'usersix',
     email: 'user6@example.com',
-    password: 'password',
+    password: 'Super@71',
     linkedin_profile: 'https://www.linkedin.com/in/user3',
     qualification: 'Web Developer',
     experience: '1 year',

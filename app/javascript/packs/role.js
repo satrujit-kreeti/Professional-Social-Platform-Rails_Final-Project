@@ -107,3 +107,53 @@ document.addEventListener("turbolinks:load", () => {
       });
   });
 });
+
+document.addEventListener("turbolinks:load", () => {
+  const profilePhotoField = document.getElementById("profile_photo_field");
+  const removeProfilePhotoButton = document.getElementById(
+    "remove_profile_photo"
+  );
+  const cvField = document.getElementById("cv_field");
+  const removeCvButton = document.getElementById("remove_cv");
+
+  if (
+    profilePhotoField &&
+    removeProfilePhotoButton &&
+    cvField &&
+    removeCvButton
+  ) {
+    removeProfilePhotoButton.style.display = "none";
+    toggleRemoveButtonVisibility(profilePhotoField, removeProfilePhotoButton);
+
+    profilePhotoField.addEventListener("change", function () {
+      toggleRemoveButtonVisibility(profilePhotoField, removeProfilePhotoButton);
+    });
+
+    removeProfilePhotoButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      profilePhotoField.value = ""; // Clear the file input
+      toggleRemoveButtonVisibility(profilePhotoField, removeProfilePhotoButton);
+    });
+
+    removeCvButton.style.display = "none";
+    toggleRemoveButtonVisibility(cvField, removeCvButton);
+
+    cvField.addEventListener("change", function () {
+      toggleRemoveButtonVisibility(cvField, removeCvButton);
+    });
+
+    removeCvButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      cvField.value = ""; // Clear the file input
+      toggleRemoveButtonVisibility(cvField, removeCvButton);
+    });
+
+    function toggleRemoveButtonVisibility(fileInput, button) {
+      if (fileInput.value === "") {
+        button.style.visibility = "hidden";
+      } else {
+        button.style.visibility = "";
+      }
+    }
+  }
+});

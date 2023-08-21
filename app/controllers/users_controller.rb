@@ -68,6 +68,7 @@ class UsersController < ApplicationController
       common_attributes,
       :username,
       :password,
+      :password_confirmation,
       certificates_attributes: %i[id name document],
       job_profiles_attributes: %i[id title _destroy]
     )

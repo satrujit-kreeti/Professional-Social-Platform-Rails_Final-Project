@@ -43,8 +43,14 @@ Rails.application.routes.draw do
   end
 
   resources :posts do
+    member do
+      post :approve
+      post :reject
+    end
     resources :likes, only: %i[create index]
   end
+
+  get '/my_posts', to: 'posts#my_posts', as: 'my_posts'
 
   get '/connections', to: 'users#connections', as: 'user_connections'
 

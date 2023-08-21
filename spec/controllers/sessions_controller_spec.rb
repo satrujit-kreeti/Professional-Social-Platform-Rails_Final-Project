@@ -4,11 +4,11 @@ require 'rails_helper'
 
 RSpec.describe SessionsController, type: :controller do
   describe 'POST #create' do
-    let(:user) { create(:user, email: 'test@example.com', password: 'password123') }
+    let(:user) { create(:user, email: 'test@example.com', password: 'Super@71') }
 
     context 'with valid email and password' do
       it 'sets the user_id in the session and redirects to home_path' do
-        post :create, params: { email: user.email, password: 'password123' }
+        post :create, params: { email: user.email, password: 'Super@71' }
         expect(session[:user_id]).to eq(user.id)
         expect(response).to redirect_to(home_path)
         expect(flash[:notice]).to eq('Logged in sucesssfully')

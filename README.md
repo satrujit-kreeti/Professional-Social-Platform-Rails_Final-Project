@@ -22,43 +22,36 @@ Follow these steps to set up the application:
    https://github.com/satrujit-kreeti/Professional-Social-Platform-Rails_Final-Project.git
    cd Professional-Social-Platform-Rails_Final-Project
    ```
-
 2. Install required dependency
 
    ```bash
    bundle install
    ```
-
 3. Install JavaScript dependencies:
 
    ```bash
    yarn install
    ```
-
 4. Create the database:
 
    ```bash
    rails db:create
    ```
-
 5. Run database migration:
 
    ```bash
    rails db:migrate
    ```
-
 6. Start Elasticsearch:
 
    ```bash
    systemctl restart elasticsearch
    ```
-
 7. Seed the database with sample data:
 
    ```bash
    rails db:seed
    ```
-
 8. Create Index for data in elastic search:
 
    ```bash
@@ -78,9 +71,9 @@ rails s
 
 | Role  | Email             | Password |
 | ----- | ----------------- | -------- |
-| Admin | admin@example.com | password |
-| User  | user1@example.com | password |
-| User  | user2@example.com | password |
-| User  | user3@example.com | password |
+| Admin | admin@example.com | Super@71 |
+| User  | user1@example.com | Super@71 |
+| User  | user2@example.com | Super@71 |
+| User  | user3@example.com | Super@71 |
 
 For other data follow seeds.rb file

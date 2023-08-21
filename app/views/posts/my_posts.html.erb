@@ -1,0 +1,21 @@
+<%=  render 'shared/navbar'%>
+<div class="container">
+  <div class="d-flex flex-column gap-1 profile1">
+    <div class="connection-request-header">
+      <span class="title-header">Posts you created</span>
+      <% if @posts.any? %>
+        <span class="pending-requests-count">
+          <span class="count-text"><%= @posts.count %></span>
+        </span>
+      <% end %>
+    </div>
+    <hr class= "line-break">
+    <div class= "list-container align-items-start ">
+      <% if @posts.any? %>
+        <% @posts.reverse_each do |post| %>
+          <%= render 'post', p: post %>
+        <%end%>
+      <%end%>
+    </div>
+  </div>
+</div>

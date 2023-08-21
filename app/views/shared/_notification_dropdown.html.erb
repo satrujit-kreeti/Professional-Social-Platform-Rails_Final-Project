@@ -1,8 +1,8 @@
 <div class="position-relative">
   <div data-bs-toggle="dropdown" aria-expanded="false" class=" d-flex dropdown-toggler">
     <div class="overflow-hidden d-flex justify-content-center align-items-center gap-1">
-      <div class="default-profile-picture" id="not-icon-back" >
-        <span class="material-symbols-outlined text-dark" id= "not-icon">
+      <div class="default-profile-picture <%= Notification.where(read: false, recipient_id: current_user.id).count.positive? ? 'blue' : '' %>" id="not-icon-back">
+        <span class="material-symbols-outlined <%= Notification.where(read: false, recipient_id: current_user.id).count.positive? ? 'text-light' : 'text-dark' %>" id="not-icon">
           notifications
         </span>
       </div>

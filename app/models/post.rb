@@ -8,6 +8,7 @@ class Post < ApplicationRecord
 
   has_many :likes, dependent: :destroy
   has_many :liking_users, through: :likes, source: :user
+  enum status: { pending: 'pending', approved: 'approved', rejected: 'rejected' }
 
   def liked_by?(user)
     liking_users.include?(user)

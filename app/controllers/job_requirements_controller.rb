@@ -36,18 +36,25 @@ class JobRequirementsController < ApplicationController
 
   def approve
     job_requirement = JobRequirement.find(params[:id])
-    job_requirement.update(status: 'approved')
+    if current_user.admin?
+      job_requirement.update(status: 'approved')
+      send_job_post_approve_notification(job_requirement.user_id)
+      send_new_post_notification(job_requirement.skills_required, job_requirement.user_id)
 
-    send_job_post_approve_notification(job_requirement.user_id)
-    send_new_post_notification(job_requirement.skills_required, job_requirement.user_id)
-
-    redirect_to job_requirements_path, notice: 'Job requirement approved.'
+      redirect_to job_requirements_path, notice: 'Job requirement approved.'
+    else
+      redirect_to root_path, alert: 'Only Admin can approve job_post.'
+    end
   end
 
   def reject
-    job_requirement = JobRequirement.find(params[:id])
-    job_requirement.update(status: 'rejected')
-    redirect_to job_requirements_path, notice: 'Job requirement rejected.'
+    if current_user.admin?
+      job_requirement = JobRequirement.find(params[:id])
+      job_requirement.update(status: 'rejected')
+      redirect_to job_requirements_path, notice: 'Job requirement rejected.'
+    else
+      redirect_to root_path, alert: 'Only Admin can reject job_post.'
+    end
   end
 
   def apply
@@ -80,6 +87,8 @@ class JobRequirementsController < ApplicationController
       current_user.email,
       cv_file
     ).deliver_now
+  rescue Net::ReadTimeout
+    flash.now[:alert] = 'An error occurred while sending the application email. Please try again later.'
   end
 
   def job_requirement_params

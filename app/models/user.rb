@@ -15,9 +15,23 @@ class User < ApplicationRecord
   has_many :friendships
   has_many :friends, through: :friendships
 
-  validates :email, presence: true, uniqueness: true
-  validates :username, presence: true
+  validates :email, presence: true, uniqueness: true,
+                    format: { with: URI::MailTo::EMAIL_REGEXP, message: 'must be a valid email format' }
+  validates :username, presence: true, format: { with: /\A[a-zA-Z]+\z/, message: 'can only contain letters' }
   validates :password, presence: true, if: :password_required?
+
+  validate :password_complexity, if: :password_required?
+
+  def password_complexity
+    return if password.match?(/\A(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}\z/)
+
+    errors.add(:password,
+               'must contain at least 1 capital letter, 1 number, 1 special character, and be at least 8 characters')
+  end
+
+  def password_required?
+    password.present?
+  end
 
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
@@ -65,10 +79,6 @@ class User < ApplicationRecord
     job_profiles.each do |job_profile|
       job_profile.mark_for_destruction if job_profile.title.blank?
     end
-  end
-
-  def password_required?
-    return false unless password.present?
   end
 
   def compressed_profile_photo

@@ -10,12 +10,26 @@
         <%= f.text_field :username, class: 'form-control' %>
       </div>
       <div class="mb-3">
-        <%= f.label :profile_photo, 'Profile Image' , class: 'form-label' %>
-        <%= f.file_field :profile_photo, accept: 'image/jpeg,image/png' , class: 'form-control' %>
+        <%= f.label :profile_photo, 'Upload Profile Image' , class: 'form-label' %>
+        <div class="d-flex flex-row align-items-center justify-content-center">
+          <%= f.file_field :profile_photo, accept: 'image/jpeg,image/png' , class: 'form-control', id: 'profile_photo_field' %>
+          <%= link_to '#', id: 'remove_profile_photo', class: "d-flex flex-column align-items-center ms-2" do %>
+            <span class="material-symbols-outlined text-dark">
+              close
+            </span>
+          <%end%>
+        </div>
       </div>
       <div class="mb-3">
         <%= f.label :cv, 'Upload CV' , class: 'form-label' %>
-        <%= f.file_field :cv, accept: 'application/pdf' , class: 'form-control' %>
+        <div class="d-flex flex-row align-items-center justify-content-center">
+          <%= f.file_field :cv, accept: 'application/pdf' , class: 'form-control' , id: 'cv_field'%>
+          <%= link_to '#', id: 'remove_cv', class: "d-flex flex-column align-items-center ms-2" do %>
+            <span class="material-symbols-outlined text-dark">
+              close
+            </span>
+          <%end%>
+        </div>
       </div>
       <div class="mb-3">
         <%= f.label :cv_download_permission, 'Who can download your CV ?' , class: 'form-label d-block' %>
@@ -40,7 +54,7 @@
       </div>
       <div class="mb-3">
         <%= f.label :qualification, 'Qualification' , class: 'form-label' %>
-        <%= f.select :qualification,['B.Tech','B.A', 'B.Sc' ,'B.Com' ], {}, class: 'form-select' %>
+        <%= f.select :qualification,['B.Tech','B.A', 'B.Sc' ,'B.Com' ], { include_blank: 'Select Qualification' }, class: 'form-select' %>
       </div>
       <div class="mb-3">
         <%= f.label :experience, 'Experience', class: 'form-label d-block' %>

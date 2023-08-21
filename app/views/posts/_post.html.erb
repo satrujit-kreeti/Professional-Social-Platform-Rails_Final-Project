@@ -1,73 +1,104 @@
-<div class="posts mb-2 profile1" id="post-container-<%= p.id %>" data-post-id="<%= p.id %>">
-  <div class="details-container">
-    <% if p.user.profile_photo.attached? %>
-      <%= image_tag p.user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
-    <% else %>
-      <div class="default-profile-picture">
-        <i class="fas fa-user fa-lg"></i>
-      </div>
-    <% end %>
-    <div class="secondary-details-container">
-      <% if current_user.id == p.user.id %>
-        <%= link_to p.user.username, profile_path, class: 'title-text' , method: :get%>
+<div class="posts mb-2 profile1 w-100" id="post-container-<%= p.id %>" data-post-id="<%= p.id %>">
+  <div class="d-flex flex-row stretch">
+    <div class="details-container">
+      <% if p.user.profile_photo.attached? %>
+        <%= image_tag p.user.compressed_profile_photo, class: 'rounded-circle avatar-image' %>
       <% else %>
-        <%= link_to p.user.username, user_profile_path(p.user), class: 'title-text' , method: :get %>
+        <div class="default-profile-picture">
+          <i class="fas fa-user fa-lg"></i>
+        </div>
       <% end %>
-      <span class="description-text">
-        <%= p.user.current_organization %>
-      </span>
+      <div class="secondary-details-container">
+        <% if current_user.id == p.user.id %>
+          <%= link_to p.user.username, profile_path, class: 'title-text' , method: :get%>
+        <% else %>
+          <%= link_to p.user.username, user_profile_path(p.user), class: 'title-text' , method: :get %>
+        <% end %>
+        <span class="description-text">
+          <%= p.user.current_organization %>
+        </span>
+      </div>
     </div>
+    <% if current_page?(controller.my_posts_path) %>
+      <% if p.status == "pending"%>
+        <span class="skill-chip-status pending">
+          <%= p.status.capitalize %>
+        </span>
+      <% elsif p.status == "approved"%>
+        <span class="skill-chip-status success">
+          <%= p.status.capitalize %>
+        </span>
+      <% else %>
+        <span class="skill-chip-status rejected">
+          <%= p.status.capitalize %>
+        </span>
+      <% end %>
+    <% end %>
   </div>
   <article class="content">
     <%= link_to post_path(p), class: 'post-link w-100' , method: :get do %>
       <p class="post-content pt-3"><%= p.content %></p>
     <% end %>
-    <div class="line"></div>
+    <% if p.status =='approved' || current_user.admin?%>
+      <div class="line"></div>
+    <% end%>
     <div class="post-buttons comments align-items-center">
       <div class="post-buttons">
         <% if current_user&.admin? %>
-          <%= link_to post_path(p), method: :delete, data: { confirm: 'Are you sure you want to delete this post?' }, class: 'post-button delete-button' do %>
-            <span class="material-symbols-outlined">delete</span>
-            <span class="post-button-title">Delete</span>
-          <% end %>
-        <% else %>
-          <%= link_to post_path(p), method: :get do %>
-            <div class="post-button">
-              <span class="material-symbols-outlined">chat_bubble</span>
-              <span class="post-button-title">Comment</span>
-            </div>
-          <% end %>
-          <div class="post-button">
-            <% if current_user && p.liking_users.include?(current_user) %>
-              <span class="material-symbols-rounded <%= p.liked_by?(current_user) ? 'liked' : '' %> icon" >
-                thumb_up
-              </span>
-              <%= link_to "Liked", post_likes_path(p), method: :post, remote: true, class: "post-button-title-on like-button" %>
-            <% else %>
-              <span class="material-symbols-outlined <%= p.liked_by?(current_user) ? '' : 'liked' %> icon" >
-                thumb_up
-              </span>
-              <%= link_to "Like", post_likes_path(p), method: :post, remote: true,  class: "post-button-title like-button" %>
+          <div class="d-flex flex-row gap-4 align-items-center">
+            <% if p.status == 'pending'%>
+              <div class="d-flex flex-row gap-2">
+                <%= link_to 'Approve', approve_post_path(p), class: "btn secondary-btn btn-success" , method: :post%>
+                <%= link_to 'Reject', reject_post_path(p), class: "btn secondary-btn btn-danger" , method: :post%>
+              </div>
+            <% end%>
+            <%= link_to post_path(p), method: :delete, data: { confirm: 'Are you sure you want to delete this post?' }, class: 'post-button delete-button' do %>
+              <span class="material-symbols-outlined">delete</span>
+              <span class="post-button-title">Delete</span>
             <% end %>
           </div>
+        <% else %>
+          <% if p.status =='approved'%>
+            <%= link_to post_path(p), method: :get do %>
+              <div class="post-button">
+                <span class="material-symbols-outlined">chat_bubble</span>
+                <span class="post-button-title">Comment</span>
+              </div>
+            <% end %>
+            <div class="post-button">
+              <% if current_user && p.liking_users.include?(current_user) %>
+                <span class="material-symbols-rounded <%= p.liked_by?(current_user) ? 'liked' : '' %> icon" >
+                  thumb_up
+                </span>
+                <%= link_to "Liked", post_likes_path(p), method: :post, remote: true, class: "post-button-title-on like-button" %>
+              <% else %>
+                <span class="material-symbols-outlined <%= p.liked_by?(current_user) ? '' : 'liked' %> icon" >
+                  thumb_up
+                </span>
+                <%= link_to "Like", post_likes_path(p), method: :post, remote: true,  class: "post-button-title like-button" %>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
       </div>
-      <div class="d-flex flex-row">
-        <%= render partial: "comments/comment", locals: { comment: p.comments, p: p, likecount: p.likes.count }, class: "w-50"%>
-        <%if p.comments.count > 3%>
-          <div class="align-self-center">
-            <span class="align-items-center extra"> & </span>
-            <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
-          </div>
-        <% elsif p.comments.count <4 && p.comments.count >0%>
-          <div class="align-self-center more-photos">
-            <span class="align-items-center extra"> & </span>
-            <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
-          </div>
-        <%else%>
-          <div class="align-self-center"><span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span></div>
-        <% end %>
-      </div>
+      <% if p.status =='approved'%>
+        <div class="d-flex flex-row">
+          <%= render partial: "comments/comment", locals: { comment: p.comments, p: p, likecount: p.likes.count }, class: "w-50"%>
+          <%if p.comments.count > 3%>
+            <div class="align-self-center">
+              <span class="align-items-center extra"> & </span>
+              <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
+            </div>
+          <% elsif p.comments.count <4 && p.comments.count >0%>
+            <div class="align-self-center more-photos">
+              <span class="align-items-center extra"> & </span>
+              <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
+            </div>
+          <%else%>
+            <div class="align-self-center"><span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span></div>
+          <% end %>
+        </div>
+      <% end%>
     </div>
   </article>
 </div>
