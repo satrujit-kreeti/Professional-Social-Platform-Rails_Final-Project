@@ -10,16 +10,13 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   get '/home', to: 'users#home'
 
-  get '/users/details/:id', to: 'users#edit', as: 'edit_user'
-  patch '/users/details/:id', to: 'users#update'
+  # get '/users/details/:id', to: 'users#edit', as: 'edit_user'
 
   # delete '/users/:id/delete_account', to: 'users#delete_account', as: 'delete_account'
   match '/users/:id/delete_account', to: 'users#delete_account', via: %i[delete get], as: 'delete_account'
 
   get '/profile', to: 'users#profile'
-
   get '/home/:id/profiles', to: 'users#profiles', as: 'user_profile'
-
   get '/edit_password', to: 'users#edit_password', as: 'edit_password_user'
 
   resources :users do
@@ -30,11 +27,9 @@ Rails.application.routes.draw do
       post 'connect', to: 'users#connect'
       match 'disconnect', to: 'users#disconnect', via: %i[delete get post]
       delete :remove_cv
+      get :edit
+      patch :update
     end
-    get 'connections', on: :member
-  end
-
-  resources :users do
     resources :posts, only: %i[new create]
   end
 

@@ -33,20 +33,22 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    if current_user.id != @user.id
+      redirect_to profile_path, alert: 'You cant access other peoples profiile'
+    elsif current_user.admin?
+      redirect_to profile_path, alert: 'Admin cant edit its profiile' if current_user.admin?
+    end
   end
 
   def update
     @user = User.find(params[:id])
-
     User.__elasticsearch__.create_index! force: true
     User.import
 
     if @user.update(update_params)
       redirect_to profile_path, notice: 'User was successfully updated.'
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
-
-      render :edit
+      render :edit, alert: @user.errors.full_messages.join(', ')
     end
   end
 

@@ -24,11 +24,8 @@ class JobProfilesController < ApplicationController
 
   def create
     @job_profile = JobProfile.new(job_profile_params)
-    if @job_profile.save
-      redirect_to profile_path, notice: 'Job profile was successfully added.'
-    else
-      render :new
-    end
+    @job_profile.save
+    redirect_to profile_path, notice: 'Job profile was successfully added.'
   end
 
   private

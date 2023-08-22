@@ -18,11 +18,11 @@
               <a href="<%= current_user.linkedin_profile %>" class="btn full-btn btn-primary w-100" target= '_blank' >LinkedIn Profile</a>
             <% end %>
           </div>
+          <div class="profile-2 w-100">
+            <%= link_to "Edit Profile" , edit_user_path(current_user), class: "btn  full-btn btn-success w-100" %>
+            <%= link_to 'Delete Account' , delete_account_path(current_user), method: :delete, data: { confirm: 'Are you sure you want to delete your account?' }, class: 'btn full-btn btn-danger' %>
+          </div>
         <%end%>
-        <div class="profile-2 w-100">
-          <%= link_to "Edit Profile" , edit_user_path(current_user), class: "btn  full-btn btn-success w-100" %>
-          <%= link_to 'Delete Account' , delete_account_path(current_user), method: :delete, data: { confirm: 'Are you sure you want to delete your account?' }, class: 'btn full-btn btn-danger' %>
-        </div>
       </div>
     </div>
     <div class="col-12 col-md-8">

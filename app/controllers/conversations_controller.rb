@@ -33,10 +33,18 @@ class ConversationsController < ApplicationController
   private
 
   def restrict_messages
+    if Conversation.exists?(params[:id])
+      if_exist
+    else
+      redirect_to conversations_path, alert: 'Conversation doesnt exist'
+    end
+  end
+
+  def if_exist
     @id = Conversation.find(params[:id])
     return unless @id.sender_id != current_user.id && @id.recipient_id != current_user.id
 
-    redirect_to '/', notice: 'Cannot show messages'
+    redirect_to conversations_path, alert: 'Cannot show messages'
   end
 
   def check_admin

@@ -7,7 +7,10 @@
     </div>
   <%end%>
   <% if current_user.admin?%>
-    <% Post.order(created_at: :desc).each do |p| %>
+    <% Post.where(status: 'pending').each do |p| %>
+      <%= render partial: "posts/post", locals: { p: p } %>
+    <% end%>
+    <% Post.where.not(status: 'pending').each do |p| %>
       <%= render partial: "posts/post", locals: { p: p } %>
     <% end%>
   <%else%>

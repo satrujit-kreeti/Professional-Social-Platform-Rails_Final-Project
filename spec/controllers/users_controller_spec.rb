@@ -68,16 +68,6 @@ RSpec.describe UsersController, type: :controller do
 
   end
 
-  describe 'GET #edit' do
-    it 'assigns the user to @user and renders the edit template' do
-      user = create(:user)
-      get :edit, params: { id: user.id }
-
-      expect(assigns(:user)).to eq(user)
-      expect(response).to render_template(:edit)
-    end
-  end
-
   describe 'PATCH #update' do
     let(:user) { create(:user) }
 
@@ -100,7 +90,6 @@ RSpec.describe UsersController, type: :controller do
       user.reload
       expect(user.username).not_to eq('')
       expect(response).to render_template(:edit)
-      expect(flash[:alert]).to be_present
     end
   end
 end

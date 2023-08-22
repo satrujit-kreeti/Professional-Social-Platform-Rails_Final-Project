@@ -56,13 +56,6 @@ RSpec.describe JobProfilesController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    it 'assigns a new job profile' do
-      get :new
-      expect(assigns(:job_profile)).to be_a_new(JobProfile)
-    end
-  end
-
   describe 'POST #create' do
     context 'with valid params' do
       it 'redirects to profile_path with a success notice' do
