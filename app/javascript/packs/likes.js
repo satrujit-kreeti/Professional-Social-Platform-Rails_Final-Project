@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if ((postContainers && likeButtons) || deleteButtons) {
     for (let i = 0; i < postContainers.length; i++) {
       const likeButton = postContainers[i].querySelector(".like-button");
-      const icon = postContainers[i].querySelector(".icon");
       const likeCountElement = postContainers[i].querySelector(".like-count");
       const postId = likeCountElement.dataset.postId;
+      const icon = postContainers[i].querySelector(".icon");
 
       handleAjax(likeButton, icon, likeCountElement, postId);
       updateLikeCount(postId, likeCountElement);

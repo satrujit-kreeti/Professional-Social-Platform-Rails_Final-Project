@@ -77,7 +77,7 @@ def create_comment(user, post, content)
 end
 
 # Create comments for posts
-posts = Post.all
+posts = Post.where(status: 'approved')
 
 posts.each do |post|
   users.sample(3).each do |user| # You can change the number of comments per post here (3 in this case)
@@ -138,7 +138,7 @@ end
 
 # Helper method to get all post IDs
 def all_post_ids
-  Post.pluck(:id)
+  Post.where(status: 'approved').pluck(:id)
 end
 
 # Seed data for likes

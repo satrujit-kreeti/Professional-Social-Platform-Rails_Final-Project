@@ -36,7 +36,11 @@
     <% end %>
   </div>
   <article class="content">
-    <%= link_to post_path(p), class: 'post-link w-100' , method: :get do %>
+    <% unless current_user.admin? %>
+      <%= link_to post_path(p), class: 'post-link w-100' , method: :get do %>
+        <p class="post-content pt-3"><%= p.content %></p>
+      <% end %>
+    <%else%>
       <p class="post-content pt-3"><%= p.content %></p>
     <% end %>
     <% if p.status =='approved' || current_user.admin?%>
@@ -81,24 +85,22 @@
           <% end %>
         <% end %>
       </div>
-      <% if p.status =='approved'%>
-        <div class="d-flex flex-row">
-          <%= render partial: "comments/comment", locals: { comment: p.comments, p: p, likecount: p.likes.count }, class: "w-50"%>
-          <%if p.comments.count > 3%>
-            <div class="align-self-center">
-              <span class="align-items-center extra"> & </span>
-              <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
-            </div>
-          <% elsif p.comments.count <4 && p.comments.count >0%>
-            <div class="align-self-center more-photos">
-              <span class="align-items-center extra"> & </span>
-              <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
-            </div>
-          <%else%>
-            <div class="align-self-center"><span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span></div>
-          <% end %>
-        </div>
-      <% end%>
+      <div class="d-flex flex-row">
+        <%= render partial: "comments/comment", locals: { comment: p.comments, p: p, likecount: p.likes.count }, class: "w-50"%>
+        <%if p.comments.count > 3%>
+          <div class="align-self-center">
+            <span class="align-items-center extra"> & </span>
+            <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
+          </div>
+        <% elsif p.comments.count <4 && p.comments.count >0%>
+          <div class="align-self-center more-photos">
+            <span class="align-items-center extra"> & </span>
+            <span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span>
+          </div>
+        <%else%>
+          <div class="align-self-center"><span class="like-count align-items-center extra"  data-post-id="<%= p.id %>"></span></div>
+        <% end %>
+      </div>
     </div>
   </article>
 </div>
