@@ -13,7 +13,7 @@ class FriendshipsController < ApplicationController
     @friendship = Friendship.find(params[:id])
     send_accept_request_notification(@friendship.user_id)
     @friendship.update(connected: true)
-    redirect_to pending_requests_path, notice: 'Friendship request approved.'
+    redirect_to pending_requests_friendships_path, notice: 'Friendship request approved.'
   end
 
   def reject
@@ -21,7 +21,7 @@ class FriendshipsController < ApplicationController
     send_reject_request_notification(@friendship.user_id)
     @friendship.destroy
 
-    redirect_to pending_requests_path, notice: 'Friendship request rejected.'
+    redirect_to pending_requests_friendships_path, notice: 'Friendship request rejected.'
   end
 
   private
@@ -29,6 +29,6 @@ class FriendshipsController < ApplicationController
   def check_admin
     return unless current_user&.admin?
 
-    redirect_to home_path, alert: 'Admins are not allowed to access this page.'
+    redirect_to home_users_path, alert: 'Admins are not allowed to access this page.'
   end
 end

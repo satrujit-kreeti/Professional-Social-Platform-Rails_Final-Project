@@ -11,9 +11,9 @@
       <% end %>
       <div class="secondary-details-container">
         <% if current_user.id == @post.user.id %>
-          <%= link_to @post.user.username, profile_path, class: 'title-text' , method: :get%>
+          <%= link_to @post.user.username, profile_users_path, class: 'title-text' , method: :get%>
         <% else %>
-          <%= link_to @post.user.username, user_profile_path(@post.user), class: 'title-text' , method: :get %>
+          <%= link_to @post.user.username, user_profile_user_path(@post.user), class: 'title-text' , method: :get %>
         <% end %>
         <span class="description-text">
           <%= @post.user.current_organization %>

@@ -36,6 +36,6 @@ class CommentsController < ApplicationController
   def check_admin
     return unless current_user&.admin?
 
-    redirect_to home_path, alert: 'Admins are not allowed to access this page.'
+    redirect_to home_users_path, alert: 'Admins are not allowed to access this page.'
   end
 end

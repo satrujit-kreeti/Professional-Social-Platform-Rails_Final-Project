@@ -48,6 +48,6 @@ class ConversationsController < ApplicationController
   end
 
   def check_admin
-    redirect_to home_path, notice: 'Access denied, admins can\'t perform this action.' if current_user&.admin?
+    redirect_to home_users_path, notice: 'Access denied, admins can\'t perform this action.' if current_user&.admin?
   end
 end

@@ -5,7 +5,7 @@ class CertificatesController < ApplicationController
 
   def destroy
     @certificate.destroy
-    redirect_to user_profile_path(current_user), notice: 'Certificate deleted successfully.'
+    redirect_to user_profile_user_path(current_user), notice: 'Certificate deleted successfully.'
   end
 
   private

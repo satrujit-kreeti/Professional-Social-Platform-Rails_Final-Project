@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
 
-      redirect_to home_path, notice: 'Logged in sucesssfully'
+      redirect_to home_users_path, notice: 'Logged in sucesssfully'
 
     else
       flash.now[:alert] = 'Invalid email or password'
@@ -27,7 +27,7 @@ class SessionsController < ApplicationController
     user = find_or_create_user_from_linkedin(auth)
     if user
       session[:user_id] = user.id
-      redirect_to home_path, notice: 'Logged in successfully.'
+      redirect_to home_users_path, notice: 'Logged in successfully.'
 
     else
       redirect_to root_path, alert: 'Failed to create an account.'

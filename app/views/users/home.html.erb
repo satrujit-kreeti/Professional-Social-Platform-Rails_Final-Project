@@ -2,7 +2,7 @@
 <div class="container">
   <% if current_user&.admin? == false %>
     <div class="d-flex flex-row gap-3">
-      <%= link_to "Create Post", "/users/#{current_user.id}/posts/new", class: "btn full-btn btn-primary w-100 mb-4" %>
+      <%= link_to "Create Post", new_post_path, class: "btn full-btn btn-primary w-100 mb-4" %>
       <%= link_to "Create Job", new_job_requirement_path, class: "btn full-btn btn-success w-100 mb-4" %>
     </div>
   <%end%>

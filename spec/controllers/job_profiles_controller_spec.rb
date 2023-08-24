@@ -27,9 +27,9 @@ RSpec.describe JobProfilesController, type: :controller do
         expect(job_profile.title).to eq(valid_params[:title])
       end
 
-      it 'redirects to profile_path with a success notice' do
+      it 'redirects to profile_users_path with a success notice' do
         patch :update, params: { id: job_profile.id, job_profile: valid_params }
-        expect(response).to redirect_to(profile_path)
+        expect(response).to redirect_to(profile_users_path)
         expect(flash[:notice]).to eq('Job profile was successfully updated.')
       end
     end
@@ -49,16 +49,16 @@ RSpec.describe JobProfilesController, type: :controller do
       expect(JobProfile.exists?(job_profile.id)).to be_falsey
     end
 
-    it 'redirects to profile_path with a success notice' do
+    it 'redirects to profile_users_path with a success notice' do
       delete :destroy, params: { id: job_profile.id }
-      expect(response).to redirect_to(profile_path)
+      expect(response).to redirect_to(profile_users_path)
       expect(flash[:notice]).to eq('Job profile was successfully deleted.')
     end
   end
 
   describe 'POST #create' do
     context 'with valid params' do
-      it 'redirects to profile_path with a success notice' do
+      it 'redirects to profile_users_path with a success notice' do
         expect do
             new_comment = create(:job_profile)
             post :create, params: { job_profile: valid_params }

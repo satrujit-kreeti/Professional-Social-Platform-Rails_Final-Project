@@ -7,10 +7,10 @@ RSpec.describe SessionsController, type: :controller do
     let(:user) { create(:user, email: 'test@example.com', password: 'Super@71') }
 
     context 'with valid email and password' do
-      it 'sets the user_id in the session and redirects to home_path' do
+      it 'sets the user_id in the session and redirects to home_users_path' do
         post :create, params: { email: user.email, password: 'Super@71' }
         expect(session[:user_id]).to eq(user.id)
-        expect(response).to redirect_to(home_path)
+        expect(response).to redirect_to(home_users_path)
         expect(flash[:notice]).to eq('Logged in sucesssfully')
       end
     end

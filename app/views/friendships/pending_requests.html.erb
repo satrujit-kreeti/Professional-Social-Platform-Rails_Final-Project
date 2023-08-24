@@ -24,7 +24,7 @@
                 </div>
               <% end %>
               <div class="secondary-details-container">
-                <%= link_to requested_user.username, user_profile_path(requested_user), class:'title-text' , method: :get%>
+                <%= link_to requested_user.username, user_profile_user_path(requested_user), class:'title-text' , method: :get%>
                 <span class="description-text">
                   <%= requested_user.current_organization %>
                 </span>
@@ -77,7 +77,7 @@
                       </div>
                     <% end %>
                     <div class="secondary-details-container">
-                      <%= link_to u.username, user_profile_path(u), class: 'title-text', method: :get %>
+                      <%= link_to u.username, user_profile_user_path(u), class: 'title-text', method: :get %>
                       <span class="description-text">
                         <%= u.current_organization %>
                       </span>

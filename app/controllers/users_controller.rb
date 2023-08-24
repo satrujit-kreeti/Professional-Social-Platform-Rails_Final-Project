@@ -5,14 +5,14 @@ class UsersController < ApplicationController
   include UsersControllerConcern
 
   require 'elasticsearch'
-  before_action :require_login, only: %i[home profile delete_account search]
-  before_action :require_admin, only: %i[users_list search], except: %i[connect disconnect connections]
+  before_action :require_login, only: %i[home profile delete_account show]
+  before_action :require_admin, only: %i[users_list show], except: %i[connect disconnect connections]
 
   def index
     @users = User.all
   end
 
-  def show
+  def search
     @users = if params[:query].present?
                User.search_items(params[:query]).records.where.not(role: 'admin')
              else
@@ -34,9 +34,9 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     if current_user.id != @user.id
-      redirect_to profile_path, alert: 'You cant access other peoples profiile'
+      redirect_to profile_users_path, alert: 'You cant access other peoples profiile'
     elsif current_user.admin?
-      redirect_to profile_path, alert: 'Admin cant edit its profiile' if current_user.admin?
+      redirect_to profile_users_path, alert: 'Admin cant edit its profiile' if current_user.admin?
     end
   end
 
@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     User.import
 
     if @user.update(update_params)
-      redirect_to profile_path, notice: 'User was successfully updated.'
+      redirect_to profile_users_path, notice: 'User was successfully updated.'
     else
       render :edit, alert: @user.errors.full_messages.join(', ')
     end
@@ -118,6 +118,6 @@ class UsersController < ApplicationController
   def require_admin
     return if current_user&.admin?
 
-    redirect_to home_path, notice: 'Access denied. Only admins can perform this action.'
+    redirect_to home_users_path, notice: 'Access denied. Only admins can perform this action.'
   end
 end

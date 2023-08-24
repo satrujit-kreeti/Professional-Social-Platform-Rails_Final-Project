@@ -13,14 +13,14 @@
               </div>
             <% end %>
             <div class="secondary-details-container">
-              <%= link_to u.username, user_profile_path(u), class: 'title-text' , method: :get%>
+              <%= link_to u.username, user_profile_user_path(u), class: 'title-text' , method: :get%>
               <span class="description-text">
                 <%= u.email %>
               </span>
             </div>
           </div>
           <div class="details-container">
-            <%= link_to 'View profile', user_profile_path(u), class: "btn secondary-btn btn-primary" , method: :get%>
+            <%= link_to 'View profile', user_profile_user_path(u), class: "btn secondary-btn btn-primary" , method: :get%>
             <%= link_to link_to 'Delete Account', delete_account_path(u), method: :delete, data: { confirm: 'Are you sure you want to delete your account?' } , class: "btn secondary-btn btn-primary btn-danger" %>
           </div>
         </div>

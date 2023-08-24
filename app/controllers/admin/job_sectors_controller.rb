@@ -57,7 +57,6 @@ module Admin
       job_sector = JobSector.find(params[:id])
       job_roles = job_sector.job_roles
 
-      # if current_user.admin?==  false
       render json: job_roles, only: %i[id name]
     end
 

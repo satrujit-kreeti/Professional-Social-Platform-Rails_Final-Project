@@ -10,16 +10,16 @@
       <% end %>
       <div class="secondary-details-container">
         <% if current_user.id == p.user.id %>
-          <%= link_to p.user.username, profile_path, class: 'title-text' , method: :get%>
+          <%= link_to p.user.username, profile_users_path, class: 'title-text' , method: :get%>
         <% else %>
-          <%= link_to p.user.username, user_profile_path(p.user), class: 'title-text' , method: :get %>
+          <%= link_to p.user.username, user_profile_user_path(p.user), class: 'title-text' , method: :get %>
         <% end %>
         <span class="description-text">
           <%= p.user.current_organization %>
         </span>
       </div>
     </div>
-    <% if current_page?(controller.my_posts_path) %>
+    <% if current_page?(controller.my_posts_posts_path) %>
       <% if p.status == "pending"%>
         <span class="skill-chip-status pending">
           <%= p.status.capitalize %>

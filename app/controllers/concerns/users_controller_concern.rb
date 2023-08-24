@@ -5,15 +5,19 @@ module UsersControllerConcern
   include UsersHelper
 
   included do
-    before_action :require_login, only: %i[home profile delete_account search]
-    before_action :require_admin, only: %i[users_list search], except: %i[connect disconnect connections]
+    before_action :require_login, only: %i[home profile delete_account show]
+    before_action :require_admin, only: %i[users_list show], except: %i[connect disconnect connections]
   end
 
   def profiles
-    if User.find(params[:id]) == current_user
-      render :profile
+    if User.exists?(params[:id])
+      if User.find(params[:id]) == current_user
+        render :profile
+      else
+        @user = User.find(params[:id])
+      end
     else
-      @user = User.find(params[:id])
+      redirect_to home_users_path, alert: "User doesn't exist"
     end
   end
 
@@ -60,7 +64,7 @@ module UsersControllerConcern
 
   def connections
     @user = current_user
-    redirect_to home_path, notice: 'Access denied. Admins can\'t perform this action.' if current_user&.admin?
+    redirect_to home_users_path, notice: 'Access denied. Admins can\'t perform this action.' if current_user&.admin?
     @friends = @user.friends.where(friendships: { connected: true })
     @pending_requests = Friendship.where(friend_id: @user.id, connected: false)
     @requests = @user.friends.where(friendships: { connected: false })
@@ -76,7 +80,7 @@ module UsersControllerConcern
 
   def remove_cv
     current_user.cv&.purge
-    redirect_to profile_path, notice: 'CV removed successfully!'
+    redirect_to profile_users_path, notice: 'CV removed successfully!'
   end
 
   def edit_password

@@ -4,17 +4,15 @@ class PostsController < ApplicationController
   before_action :require_login
 
   def new
-    @user = User.find(params[:user_id])
-    @post = @user.posts.build
+    @post = current_user.posts.build
   end
 
   def create
-    @user = User.find(params[:user_id])
-    @post = @user.posts.build(post_params)
+    @post = current_user.posts.build(post_params)
 
     if @post.save
       send_post_creation_notification
-      redirect_to home_path, notice: 'Post created successfully.'
+      redirect_to home_users_path, notice: 'Post created successfully.'
     else
       flash.now[:alert] = 'Post field can\'t be empty'
       render :new
@@ -26,10 +24,11 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
-    @user = @post.user
-    @friends = @user.friends.where(friendships: { connected: true })
-    @comment = Comment.new
+    if Post.exists?(params[:id])
+      post_exist
+    else
+      redirect_to home_users_path, alert: "Post doesn't exist"
+    end
   end
 
   def destroy
@@ -37,7 +36,7 @@ class PostsController < ApplicationController
     @post.likes.destroy_all
     @post.comments.destroy_all
     @post.destroy
-    redirect_to home_path, notice: 'Post deleted successfully.'
+    redirect_to home_users_path, notice: 'Post deleted successfully.'
   end
 
   def approve
@@ -46,7 +45,7 @@ class PostsController < ApplicationController
       post.update(status: 'approved')
       send_post_approve_notification(post.user_id)
 
-      redirect_to home_path, notice: 'Job requirement approved.'
+      redirect_to home_users_path, notice: 'Job requirement approved.'
     else
       redirect_to root_path, alert: 'Only Admin can approve post.'
     end
@@ -56,7 +55,7 @@ class PostsController < ApplicationController
     post = Post.find(params[:id])
     if current_user.admin?
       post.update(status: 'rejected')
-      redirect_to home_path, notice: 'Job requirement rejected.'
+      redirect_to home_users_path, notice: 'Job requirement rejected.'
     else
       redirect_to root_path, alert: 'Only Admin can reject post.'
     end
@@ -71,6 +70,17 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def post_exist
+    @post = Post.find(params[:id])
+    @user = @post.user
+    @friends = current_user.friends.where(friendships: { connected: true })
+    unless @friends.include?(@user) || @user == current_user
+      redirect_to home_users_path,
+                  alert: "You can't see the post"
+    end
+    @comment = Comment.new
+  end
 
   def post_params
     params.require(:post).permit(:content)

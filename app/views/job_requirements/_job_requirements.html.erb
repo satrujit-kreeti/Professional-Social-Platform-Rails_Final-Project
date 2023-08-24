@@ -1,7 +1,7 @@
 <div class="d-flex flex-column w-100 job profile1 posts">
   <div class="d-flex flex-row stretch">
     <p class="job-title"><%= job_requirement.job_title %></p>
-    <% if current_page?(controller.my_jobs_path) %>
+    <% if current_page?(controller.my_jobs_job_requirements_path) %>
       <% if job_requirement.status == "pending"%>
         <span class="skill-chip-status pending">
           <%= job_requirement.status.capitalize %>
@@ -51,8 +51,8 @@
       <% end %>
     </div>
   <% end %>
-  <% if current_page?(controller.my_jobs_path)==false &&  current_user&.admin? == false%>
-    <%= form_tag apply_job_requirements_path(job_requirement), method: :post, multipart: true, class:"w-100" do %>
+  <% if current_page?(controller.my_jobs_job_requirements_path)==false &&  current_user&.admin? == false%>
+    <%= form_tag apply_job_requirement_path(job_requirement), method: :post, multipart: true, class:"w-100" do %>
       <%= link_to job_requirement_path(job_requirement), class: 'post-link w-100', method: :get do %>
         <div class="line mt-3"></div>
         <div class="post-buttons comments align-items-center">

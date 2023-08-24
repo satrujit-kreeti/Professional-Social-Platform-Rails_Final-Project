@@ -8,10 +8,10 @@ RSpec.describe UsersController, type: :controller do
   let(:admin_user) { create(:user, role: 'admin') }
 
 
-  describe 'GET #show' do
-    it 'renders the show template' do
-      get :show, params: { id: user.id }
-      expect(response).to render_template(:show)
+  describe 'GET #search' do
+    it 'renders the search template' do
+      get :search, params: { id: user.id }
+      expect(response).to render_template(:search)
     end
   end
 
@@ -71,14 +71,14 @@ RSpec.describe UsersController, type: :controller do
   describe 'PATCH #update' do
     let(:user) { create(:user) }
 
-    it 'updates the user and redirects to the profile_path on success' do
+    it 'updates the user and redirects to the profile_users_path on success' do
       new_attributes = { skills: 'NewSkillsname' }
 
       patch :update, params: { id: user.id, user: new_attributes }
 
       user.reload
       expect(user.skills).to eq('NewSkillsname')
-      expect(response).to redirect_to(profile_path)
+      expect(response).to redirect_to(profile_users_path)
       expect(flash[:notice]).to eq('User was successfully updated.')
     end
 

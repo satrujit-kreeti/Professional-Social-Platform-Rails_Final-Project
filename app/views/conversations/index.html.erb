@@ -22,7 +22,7 @@
                 </div>
               <% end %>
               <div class="secondary-details-container">
-                <%= link_to chat_user_list.username, user_profile_path(chat_user_list), class: 'title-text' , method: :get%>
+                <%= link_to chat_user_list.username, user_profile_user_path(chat_user_list), class: 'title-text' , method: :get%>
               </div>
               <% if conversation.messages.unread_from_sender(current_user).count !=0 %>
                 <span class="pending-requests-count">

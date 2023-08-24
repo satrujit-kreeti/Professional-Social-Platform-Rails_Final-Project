@@ -1,6 +1,9 @@
 # rubocop:disable all
 
 Rails.application.routes.draw do
+
+  mount ActionCable.server => '/cable'
+  
   get '/auth/linkedin/callback', to: 'sessions#linkedin', as: 'linkedin'
 
   root 'sessions#new'
@@ -8,18 +11,15 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
-  get '/home', to: 'users#home'
+  get '/signup', to: 'users#new'
+  post '/signup', to: 'users#create'
 
-  # get '/users/details/:id', to: 'users#edit', as: 'edit_user'
 
-  # delete '/users/:id/delete_account', to: 'users#delete_account', as: 'delete_account'
   match '/users/:id/delete_account', to: 'users#delete_account', via: %i[delete get], as: 'delete_account'
+  patch '/mark_all_as_read', to: 'notifications#mark_all_as_read', as: 'mark_all_as_read'
 
-  get '/profile', to: 'users#profile'
-  get '/home/:id/profiles', to: 'users#profiles', as: 'user_profile'
-  get '/edit_password', to: 'users#edit_password', as: 'edit_password_user'
 
-  resources :users do
+  resources :users, shallow: true, path: '' do
     member do
       post 'report'
       patch 'update_password'
@@ -29,77 +29,69 @@ Rails.application.routes.draw do
       delete :remove_cv
       get :edit
       patch :update
+      get :profiles, as: 'user_profile'
     end
-    resources :posts, only: %i[new create]
-  end
+    collection do
+      get :profile
+      get :connections, as: 'user_connections'
+      get :edit_password
+      get :home
+      get :users_list
+      get :search
 
-  resources :posts, only: [:show] do
-    resources :comments, only: %i[new create]
-  end
+      resources :certificates, only: [:destroy]
 
-  resources :posts do
-    member do
-      post :approve
-      post :reject
+      resources :posts, shallow: true do
+        member do
+          post :approve
+          post :reject
+        end
+        collection  do
+          get :my_posts
+        end
+        resources :comments, only: %i[new create]
+        resources :likes, only: %i[create index]
+      end
+
+      resources :friendships, shallow: true, path: '', only: %i[] do
+        collection do
+          get :pending_requests
+        end
+        member do
+          patch :approve
+          delete :reject
+        end
+      end
+
+      resources :job_requirements do
+        member do
+          patch :approve
+          patch :reject
+          post :apply
+        end
+        collection do
+          get :my_jobs
+        end
+        resources :job_comments, only: %i[new create]
+      end
+
+      resources :conversations, only: %i[index show create new] do
+        resources :messages, only: [:create]
+      end
+
+      resources :job_profiles do
+        member do
+          get 'toggle_edit'
+        end
+      end
     end
-    resources :likes, only: %i[create index]
   end
-
-  get '/my_posts', to: 'posts#my_posts', as: 'my_posts'
-
-  get '/connections', to: 'users#connections', as: 'user_connections'
-
-  get '/pending-requests', to: 'friendships#pending_requests', as: 'pending_requests'
-  patch '/friendships/:id/approve', to: 'friendships#approve', as: 'approve_friendship'
-  delete '/friendships/:id/reject', to: 'friendships#reject', as: 'reject_friendship'
-
-  get '/signup', to: 'users#new'
-  post '/signup', to: 'users#create'
-
-  get 'users_list', to: 'users#users_list', as: 'users_list'
 
   namespace :admin do
     resources :job_sectors do
       get 'job_roles', on: :member, defaults: { format: :json }
     end
     resources :job_roles
-  end
-
-  post '/admin/job_sectors/increment_number', to: 'admin/job_sectors#increment_number', as: 'increment_number'
-
-  resources :job_requirements do
-    member do
-      patch :approve
-      patch :reject
-    end
-  end
-
-  get '/my_jobs', to: 'job_requirements#my_jobs', as: 'my_jobs'
-  post 'job_requirements/:id/apply', to: 'job_requirements#apply', as: 'apply_job_requirements'
-
-  resources :job_requirements do
-    resources :job_comments, only: %i[new create]
-  end
-
-  resources :users do
-    collection do
-      get 'search', to: 'users#search'
-    end
-  end
-
-  resources :conversations, only: %i[index show create new] do
-    resources :messages, only: [:create]
-  end
-
-  mount ActionCable.server => '/cable'
-
-  patch '/mark_all_as_read', to: 'notifications#mark_all_as_read', as: 'mark_all_as_read'
-  resources :certificates, only: [:destroy]
-
-  resources :job_profiles do
-    member do
-      get 'toggle_edit'
-    end
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

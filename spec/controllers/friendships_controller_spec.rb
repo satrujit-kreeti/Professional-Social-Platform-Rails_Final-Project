@@ -32,9 +32,9 @@ RSpec.describe FriendshipsController, type: :controller do
     context 'when user is an admin' do
       before { sign_in(admin_user) }
 
-      it 'redirects to home_path with an alert' do
+      it 'redirects to home_users_path with an alert' do
         get :pending_requests
-        expect(response).to redirect_to(home_path)
+        expect(response).to redirect_to(home_users_path)
         expect(flash[:alert]).to eq('Admins are not allowed to access this page.')
       end
     end
@@ -51,10 +51,10 @@ RSpec.describe FriendshipsController, type: :controller do
       end.to change(friendship, :connected).to(true)
     end
 
-    it 'redirects to pending_requests_path with success message' do
+    it 'redirects to pending_requests_friendships_path with success message' do
       friendship
       post :approve, params: { id: friendship.id }
-      expect(response).to redirect_to(pending_requests_path)
+      expect(response).to redirect_to(pending_requests_friendships_path)
       expect(flash[:notice]).to eq('Friendship request approved.')
     end
   end
@@ -69,10 +69,10 @@ RSpec.describe FriendshipsController, type: :controller do
       end.to change(Friendship, :count).by(-1)
     end
 
-    it 'redirects to pending_requests_path with success message' do
+    it 'redirects to pending_requests_friendships_path with success message' do
       friendship
       delete :reject, params: { id: friendship.id }
-      expect(response).to redirect_to(pending_requests_path)
+      expect(response).to redirect_to(pending_requests_friendships_path)
       expect(flash[:notice]).to eq('Friendship request rejected.')
     end
   end

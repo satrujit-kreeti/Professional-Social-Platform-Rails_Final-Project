@@ -74,9 +74,9 @@ RSpec.describe PostsController, type: :controller do
                                  .and change(Comment, :count).by(-1)
     end
 
-    it 'redirects to home_path with success message' do
+    it 'redirects to home_users_path with success message' do
       delete :destroy, params: { id: post.id }
-      expect(response).to redirect_to(home_path)
+      expect(response).to redirect_to(home_users_path)
       expect(flash[:notice]).to eq('Post deleted successfully.')
     end
   end

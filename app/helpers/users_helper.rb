@@ -13,7 +13,7 @@ module UsersHelper
     if request.referer.include?('profiles')
       render :profiles
     else
-      redirect_to user_connections_path(current_user)
+      redirect_to user_connections_users_path
     end
   end
 
@@ -46,7 +46,7 @@ module UsersHelper
 
   def redirect_after_deletion
     if current_user.admin?
-      redirect_to users_list_path, notice: 'User account deleted successfully.'
+      redirect_to users_list_users_path, notice: 'User account deleted successfully.'
     else
       notice_message = 'Your account has been deleted. Create a new account to use our app.'
       redirect_to root_path, notice: notice_message, status: :see_other

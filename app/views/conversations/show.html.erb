@@ -11,10 +11,10 @@
         </div>
       <% end %>
       <div class="secondary-details-container">
-        <%= link_to chat_user_list.username, user_profile_path(chat_user_list), class: 'title-text', method: :get %>
+        <%= link_to chat_user_list.username, user_profile_user_path(chat_user_list), class: 'title-text', method: :get %>
       </div>
     </div>
-    <%= link_to 'View Profile', user_profile_path(chat_user_list), class: "btn secondary-btn btn-primary btn-success", method: :get %>
+    <%= link_to 'View Profile', user_profile_user_path(chat_user_list), class: "btn secondary-btn btn-primary btn-success", method: :get %>
   </div>
 </nav>
 <div class= "mt-0.5"> </div>

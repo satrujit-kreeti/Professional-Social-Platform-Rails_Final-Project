@@ -7,7 +7,7 @@ class JobProfilesController < ApplicationController
 
   def update
     if @job_profile.update(job_profile_params)
-      redirect_to profile_path, notice: 'Job profile was successfully updated.'
+      redirect_to profile_users_path, notice: 'Job profile was successfully updated.'
     else
       render :edit
     end
@@ -15,7 +15,7 @@ class JobProfilesController < ApplicationController
 
   def destroy
     @job_profile.destroy
-    redirect_to profile_path, notice: 'Job profile was successfully deleted.'
+    redirect_to profile_users_path, notice: 'Job profile was successfully deleted.'
   end
 
   def new
@@ -25,7 +25,7 @@ class JobProfilesController < ApplicationController
   def create
     @job_profile = JobProfile.new(job_profile_params)
     @job_profile.save
-    redirect_to profile_path, notice: 'Job profile was successfully added.'
+    redirect_to profile_users_path, notice: 'Job profile was successfully added.'
   end
 
   private
