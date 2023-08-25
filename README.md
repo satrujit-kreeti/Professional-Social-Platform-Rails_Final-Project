@@ -19,7 +19,7 @@ Follow these steps to set up the application:
 1. Clone the repository to your local machine:
 
    ```bash
-   https://github.com/satrujit-kreeti/Professional-Social-Platform-Rails_Final-Project.git
+   git clone https://github.com/satrujit-kreeti/Professional-Social-Platform-Rails_Final-Project.git
    cd Professional-Social-Platform-Rails_Final-Project
    ```
 2. Install required dependency
@@ -69,11 +69,11 @@ rails s
 
 ## Authentication Credentials
 
-| Role  | Email             | Password |
-| ----- | ----------------- | -------- |
-| Admin | ```admin@example.com``` | ```Super@71``` |
-| User  | ```user1@example.com``` | ```Super@71``` |
-| User  | ```user2@example.com``` | ```Super@71``` |
-| User  | ```user3@example.com``` | ```Super@71``` |
+| Role  | Email                 | Password     |
+| ----- | --------------------- | ------------ |
+| Admin | ``admin@example.com`` | ``Super@71`` |
+| User  | ``user1@example.com`` | ``Super@71`` |
+| User  | ``user2@example.com`` | ``Super@71`` |
+| User  | ``user3@example.com`` | ``Super@71`` |
 
 For other data follow seeds.rb file
