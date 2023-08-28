@@ -5,13 +5,15 @@ class Certificate < ApplicationRecord
   has_one_attached :document
   validates :name, presence: true, if: -> { document.attached? }
 
-  validate :validate_presence_of_name_or_document, on: :create
+  validate :name_and_document_presence
 
   private
 
-  def validate_presence_of_name_or_document
-    return if name.blank? && document.blank? && user_id.blank?
-
-    errors.add(:base, 'Name or Document must be present')
+  def name_and_document_presence
+    if name.blank? && document.attached?
+      errors.add(:base, 'Both name and document must be present if one of them is present')
+    elsif name.present? && !document.attached?
+      errors.add(:base, 'Both name and document must be present if one of them is present')
+    end
   end
 end

@@ -17,7 +17,8 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true,
                     format: { with: URI::MailTo::EMAIL_REGEXP, message: 'must be a valid email format' }
-  validates :username, presence: true, format: { with: /\A[a-zA-Z]+\z/, message: 'can only contain letters' }
+  validates :username, presence: true,
+                       format: { with: /\A[a-zA-Z\s]+\z/, message: 'can only contain letters and spaces' }
   validates :password, presence: true, if: :password_required?
 
   validate :password_complexity, if: :password_required?

@@ -25,6 +25,7 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    @user.certificates.build
     if current_user.id != @user.id
       redirect_to profile_users_path, alert: 'You cant access other peoples profiile'
     elsif current_user.admin?
@@ -34,13 +35,11 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    User.__elasticsearch__.create_index! force: true
-    User.import
-
+    attach_certificates_documents if params[:user][:certificates_documents].present?
     if @user.update(update_params)
       redirect_to profile_users_path, notice: 'User was successfully updated.'
     else
-      render :edit, alert: @user.errors.full_messages.join(', ')
+      render :edit, flash: { alert: @user.errors.full_messages.join(', ') }
     end
   end
 
