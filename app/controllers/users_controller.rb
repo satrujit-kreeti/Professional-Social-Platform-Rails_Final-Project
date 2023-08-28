@@ -35,11 +35,11 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    attach_certificates_documents if params[:user][:certificates_documents].present?
+    certificate
     if @user.update(update_params)
       redirect_to profile_users_path, notice: 'User was successfully updated.'
     else
-      render :edit, flash: { alert: @user.errors.full_messages.join(', ') }
+      render :edit, alert: @user.errors.full_messages.join(', ')
     end
   end
 
@@ -55,6 +55,12 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def certificate
+    attach_certificates_documents if params[:user][:certificates_documents].present?
+    User.__elasticsearch__.create_index! force: true
+    User.import
+  end
 
   def user_params
     params.require(:user).permit(
