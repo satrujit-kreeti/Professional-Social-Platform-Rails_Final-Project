@@ -12,14 +12,6 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  def search
-    @users = if params[:query].present?
-               User.search_items(params[:query]).records.where.not(role: 'admin')
-             else
-               User.where.not(role: 'admin')
-             end
-  end
-
   def new
     @user = User.new
     @user.certificates.build

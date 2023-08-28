@@ -96,4 +96,13 @@ module UsersControllerConcern
       render :edit_password
     end
   end
+
+  def search
+    query = params[:query].gsub(/[^\w\s]/, '')
+    @users = if query.present?
+               User.search_items(query).records.where.not(role: 'admin')
+             else
+               User.where.not(role: 'admin')
+             end
+  end
 end
