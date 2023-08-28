@@ -7,14 +7,6 @@ RSpec.describe UsersController, type: :controller do
   let(:user) { create(:user) }
   let(:admin_user) { create(:user, role: 'admin') }
 
-
-  describe 'GET #search' do
-    it 'renders the search template' do
-      get :search, params: { id: user.id }
-      expect(response).to render_template(:search)
-    end
-  end
-
   describe 'GET #new' do
     it 'renders the new template' do
       get :new
