@@ -29,8 +29,7 @@ class JobRequirementsController < ApplicationController
       send_job_post_creation_notification
       redirect_to job_requirements_path, notice: 'Job requirement created successfully.'
     else
-      flash[:alert] = @job_requirement.errors.full_messages.join(', ')
-      render :new
+      render :new, alert: @job_requirement.errors.full_messages.map { |message| "• #{message}" }.join('<br>').html_safe
     end
   end
 
@@ -51,6 +50,7 @@ class JobRequirementsController < ApplicationController
     if current_user.admin?
       job_requirement = JobRequirement.find(params[:id])
       job_requirement.update(status: 'rejected')
+      send_job_post_reject_notification(job_requirement.user_id)
       redirect_to job_requirements_path, notice: 'Job requirement rejected.'
     else
       redirect_to root_path, alert: 'Only Admin can reject job_post.'

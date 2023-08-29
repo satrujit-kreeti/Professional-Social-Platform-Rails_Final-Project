@@ -4,7 +4,7 @@
     <%= form_for @user, url: user_path(@user), method: :patch, multipart: true do |f| %>
       <div class="mb-3">
         <div class="d-flex flex-row align-items-center gap-1">
-          <%= f.label :username, 'Name' , class: 'form-label' %>
+          <%= f.label :username, 'Username' , class: 'form-label' %>
           <span class="star">*</span>
         </div>
         <%= f.text_field :username, class: 'form-control' %>

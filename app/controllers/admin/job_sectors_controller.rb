@@ -18,7 +18,7 @@ module Admin
       if @job_sector.save
         redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles added successfully!'
       else
-        flash[:alert] = @job_sector.errors.full_messages.join(', ')
+        flash[:alert] = @job_sector.errors.full_messages.map { |message| "• #{message}" }.join('<br>').html_safe
 
         render :new
       end
@@ -33,7 +33,7 @@ module Admin
       if @job_sector.update(job_sector_params)
         redirect_to admin_job_sectors_path, notice: 'Job Sector and Roles updated successfully!'
       else
-        flash[:alert] = @job_sector.errors.full_messages.join(', ')
+        flash[:alert] = @job_sector.errors.full_messages.map { |message| "• #{message}" }.join('<br>').html_safe
 
         render :edit
       end

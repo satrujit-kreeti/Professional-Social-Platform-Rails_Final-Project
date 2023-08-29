@@ -71,7 +71,7 @@ module UsersHelper
     if @user.save
       redirect_to login_path, notice: 'User created successfully. Please log in'
     else
-      flash[:alert] = @user.errors.full_messages.join(', ')
+      flash[:alert] = @user.errors.full_messages.map { |message| "• #{message}" }.join('<br>').html_safe
       render :new
     end
   end

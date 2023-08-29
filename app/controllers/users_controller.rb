@@ -39,19 +39,20 @@ class UsersController < ApplicationController
     if @user.update(update_params)
       redirect_to profile_users_path, notice: 'User was successfully updated.'
     else
-      render :edit, alert: @user.errors.full_messages.join(', ')
+      render :edit, alert: @user.errors.full_messages.map { |message| "• #{message}" }.join('<br>').html_safe
     end
+  rescue Elasticsearch::Transport::Transport::Errors::BadRequest
+    redirect_to profile_users_path, notice: 'User was successfully updated.'
   end
 
   def delete_account
     @user = User.find(params[:id])
-    User.transaction do
-      delete_attributes
-      @user.destroy
-      redirect_after_deletion
-    rescue StandardError => e
-      redirect_to_error(e)
-    end
+    delete_attributes
+    @user.destroy
+    redirect_after_deletion
+  rescue Elasticsearch::Transport::Transport::Errors::NotFound
+    flash[:notice] = 'User account deleted successfully.'
+    redirect_to users_list_users_path
   end
 
   private

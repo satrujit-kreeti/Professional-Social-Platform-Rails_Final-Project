@@ -4,6 +4,10 @@ class User < ApplicationRecord
   include Elasticsearch::Model
   include Elasticsearch::Model::Callbacks
 
+  after_commit -> { __elasticsearch__.index_document },  on: :create
+  after_commit -> { __elasticsearch__.update_document }, on: :update
+  after_commit -> { __elasticsearch__.delete_document }, on: :destroy
+
   has_secure_password
   has_one_attached :profile_photo
   has_one_attached :cv
@@ -19,6 +23,7 @@ class User < ApplicationRecord
                     format: { with: URI::MailTo::EMAIL_REGEXP, message: 'must be a valid email format' }
   validates :username, presence: true,
                        format: { with: /\A[a-zA-Z\s]+\z/, message: 'can only contain letters and spaces' }
+
   validates :password, presence: true, if: :password_required?
 
   validate :password_complexity, if: :password_required?

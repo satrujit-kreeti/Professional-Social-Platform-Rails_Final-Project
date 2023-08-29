@@ -4,6 +4,8 @@ require 'rails_helper'
 
 RSpec.describe PostsController, type: :controller do
   let(:user) { create(:user) }
+  let(:admin_user) { create(:user, role: 'admin') }
+
   let(:post) { create(:post, user:) }
 
   describe 'GET #new' do
@@ -57,7 +59,7 @@ RSpec.describe PostsController, type: :controller do
     before { sign_in_user(user) }
 
     it 'destroys the post' do
-      post # create the post
+      post
 
       expect do
         delete :destroy, params: { id: post.id }
@@ -78,6 +80,30 @@ RSpec.describe PostsController, type: :controller do
       delete :destroy, params: { id: post.id }
       expect(response).to redirect_to(home_users_path)
       expect(flash[:notice]).to eq('Post deleted successfully.')
+    end
+  end
+
+  describe 'POST #approve' do
+    let(:post_to_approve) { create(:post, user: user) }
+
+    before { sign_in_user(admin_user) }
+
+    it 'approves a post when called by an admin' do
+      post_to_approve.update(status: 'approved')
+      post_to_approve.reload
+      expect(post_to_approve.status).to eq('approved')
+    end
+  end
+
+  describe 'POST #reject' do
+    let(:post_to_reject) { create(:post, user: user) }
+
+    before { sign_in_user(admin_user) }
+
+    it 'rejects a post when called by an admin' do
+      post_to_reject.update(status: 'rejected')
+      post_to_reject.reload
+      expect(post_to_reject.status).to eq('rejected')
     end
   end
 

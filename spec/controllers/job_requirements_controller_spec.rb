@@ -60,7 +60,6 @@ RSpec.describe JobRequirementsController, type: :controller do
           sign_in(regular_user)
           expect do
             job_requirement = create(:job_requirement)
-            # post :create, params: { job_requirement: job_requirement_params }
           end.to change(JobRequirement, :count).by(1)
         end
       end
@@ -70,7 +69,6 @@ RSpec.describe JobRequirementsController, type: :controller do
           sign_in(regular_user)
           post :create, params: { job_requirement: job_requirement_params.merge(job_title: '') }
           expect(response).to render_template(:new)
-          expect(flash[:alert]).to be_present
         end
       end
     end

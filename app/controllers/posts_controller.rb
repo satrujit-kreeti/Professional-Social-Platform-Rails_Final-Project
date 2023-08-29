@@ -33,6 +33,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post = Post.find(params[:id])
+    send_post_delete_notification(@post.user_id)
     @post.likes.destroy_all
     @post.comments.destroy_all
     @post.destroy
@@ -44,8 +45,7 @@ class PostsController < ApplicationController
     if current_user.admin?
       post.update(status: 'approved')
       send_post_approve_notification(post.user_id)
-
-      redirect_to home_users_path, notice: 'Job requirement approved.'
+      redirect_to home_users_path, notice: 'Post is approved.'
     else
       redirect_to root_path, alert: 'Only Admin can approve post.'
     end
@@ -55,7 +55,8 @@ class PostsController < ApplicationController
     post = Post.find(params[:id])
     if current_user.admin?
       post.update(status: 'rejected')
-      redirect_to home_users_path, notice: 'Job requirement rejected.'
+      send_post_reject_notification(post.user_id)
+      redirect_to home_users_path, notice: 'Post is rejected.'
     else
       redirect_to root_path, alert: 'Only Admin can reject post.'
     end
