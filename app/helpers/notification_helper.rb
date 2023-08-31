@@ -63,7 +63,9 @@ module NotificationHelper
   end
 
   def send_new_post_notification(skills_required, job_provider_id)
-    all_users_except_admins = User.where.not(role: 'admin').where.not(id: job_provider_id)
+    all_users_except_admins = User.where.not(role: 'admin')
+                                  .where.not(id: job_provider_id)
+                                  .where(relevant_skill_notification: true)
     requirement_skills = skills_required.split(',').map(&:strip).map(&:downcase)
     users_with_matching_skills = find_users_with_matching_skills(all_users_except_admins, requirement_skills)
     users_with_matching_skills.each do |user|
