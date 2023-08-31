@@ -48,6 +48,17 @@ class SessionsController < ApplicationController
       temp_file = Down.download(auth.info.picture_url)
       new_user.profile_photo.attach(io: temp_file, filename: 'profile_photo.jpg')
     end
-    new_user.password = SecureRandom.hex(10)
+    new_user.password = generate_complex_password
+  end
+
+  def generate_complex_password(length = 12)
+    lowercase_letters = ('a'..'z').to_a
+    uppercase_letters = ('A'..'Z').to_a
+    digits = ('0'..'9').to_a
+    special_characters = ['!', '@', '#', '$', '%', '^', '&', '*']
+    all_characters = lowercase_letters + uppercase_letters + digits + special_characters
+    password = [lowercase_letters.sample, uppercase_letters.sample, digits.sample, special_characters.sample]
+    password += all_characters.sample(length - password.length)
+    password.shuffle.join
   end
 end
