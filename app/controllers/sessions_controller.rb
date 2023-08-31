@@ -48,7 +48,14 @@ class SessionsController < ApplicationController
       temp_file = Down.download(auth.info.picture_url)
       new_user.profile_photo.attach(io: temp_file, filename: 'profile_photo.jpg')
     end
+    attributes(new_user)
+  end
+
+  def attributes(new_user)
     new_user.password = generate_complex_password
+    new_user.linkedin_profile = ''
+    new_user.qualification = ''
+    new_user.skills = ''
   end
 
   def generate_complex_password(length = 12)
