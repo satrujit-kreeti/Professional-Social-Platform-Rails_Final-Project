@@ -115,12 +115,14 @@ document.addEventListener("turbolinks:load", () => {
   );
   const cvField = document.getElementById("cv_field");
   const removeCvButton = document.getElementById("remove_cv");
+  const flashMessage = document.getElementById("flashMessage");
 
   if (
     profilePhotoField &&
     removeProfilePhotoButton &&
     cvField &&
-    removeCvButton
+    removeCvButton &&
+    flashMessage
   ) {
     removeProfilePhotoButton.style.display = "none";
     toggleRemoveButtonVisibility(profilePhotoField, removeProfilePhotoButton);
@@ -133,6 +135,7 @@ document.addEventListener("turbolinks:load", () => {
       event.preventDefault();
       profilePhotoField.value = ""; // Clear the file input
       toggleRemoveButtonVisibility(profilePhotoField, removeProfilePhotoButton);
+      togggleFlashMesssage();
     });
 
     removeCvButton.style.display = "none";
@@ -146,7 +149,15 @@ document.addEventListener("turbolinks:load", () => {
       event.preventDefault();
       cvField.value = ""; // Clear the file input
       toggleRemoveButtonVisibility(cvField, removeCvButton);
+      togggleFlashMesssage();
     });
+
+    function togggleFlashMesssage() {
+      flashMessage.style.display = "block";
+      setTimeout(function () {
+        flashMessage.style.display = "none";
+      }, 3000);
+    }
 
     function toggleRemoveButtonVisibility(fileInput, button) {
       if (fileInput.value === "") {

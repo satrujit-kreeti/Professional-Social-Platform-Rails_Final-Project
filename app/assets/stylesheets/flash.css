@@ -24,3 +24,17 @@
   background-color: #f8e6e6;
   color: #b31c1c;
 }
+
+.notification-container-flash-js {
+  position: fixed;
+  bottom: 0px !important;
+  left: 0px !important;
+  margin: 0;
+  padding: 16px;
+  z-index: 9999;
+  width: 100%;
+  background-color: #e1f0e8;
+  color: #238636;
+  text-align: center;
+  display: none;
+}
