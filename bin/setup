@@ -28,17 +28,14 @@ FileUtils.chdir APP_ROOT do
   # end
 
 
-  puts "\n== Create database if not existed =="
-  system! "bin/rails db:reset"
-
   puts "\n== Removing old logs and tempfiles =="
   system! 'bin/rails log:clear tmp:clear'
 
   puts "\n== Starting Elasticsearch =="
   system! "systemctl start elasticsearch.service"
 
-  puts "\n== Setting up database =="
-  system! "bin/rails db:setup"
+  puts "\n== Create database if not existed =="
+  system! "bin/rails db:reset"
 
   puts "\n== Restarting application server =="
   system! 'bin/rails restart'
