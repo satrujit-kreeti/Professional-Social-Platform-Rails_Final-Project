@@ -1,13 +1,22 @@
 #!/bin/bash
 
-# Clone the repository
-echo "== Cloning the repository =="
-git clone https://github.com/satrujit-kreeti/Professional-Social-Platform-Rails_Final-Project.git
-cd Professional-Social-Platform-Rails_Final-Project
+REPO_DIR="Professional-Social-Platform-Rails_Final-Project"
 
-# Check if git clone was successful
+# Check if the directory already exists
+if [ -d "$REPO_DIR" ]; then
+  echo "Directory '$REPO_DIR' already exists. Performing git pull."
+  cd "$REPO_DIR"
+  git pull
+else
+  # Directory doesn't exist, so clone the repository
+  echo "Cloning the repository..."
+  git clone https://github.com/satrujit-kreeti/Professional-Social-Platform-Rails_Final-Project.git "$REPO_DIR"
+  cd "$REPO_DIR"
+fi
+
+# Check if the git operation was successful
 if [ $? -ne 0 ]; then
-  echo "Error: Git clone failed."
+  echo "Error: Git operation failed."
   exit 1
 fi
 
